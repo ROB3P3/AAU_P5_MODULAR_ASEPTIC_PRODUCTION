@@ -1,8 +1,5 @@
-# ***We bopping! + Test***
+# **ROB5 P5 at AAU Fall semester 2024**
+Modular production.
 
-womp womp
-iiii
-
-ffs
-+Anton
-sssS
+## **OBS**
+It would be appreciated if people explored git functionality in their own repositories to keep this one as uncluttered as possible.
