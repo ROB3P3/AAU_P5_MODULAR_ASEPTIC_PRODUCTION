@@ -2,27 +2,27 @@ import mysql.connector
 
 # Step 1: Establish the connection
 db = mysql.connector.connect(
-    host="localhost",        # Replace with your MySQL server host
-    user="yourusername",      # Replace with your MySQL username
-    password="yourpassword",  # Replace with your MySQL password
-    database="testdb"         # Replace with your database name
+    host="localhost",        # MySQL server host
+    user="anton",            # Your MySQL username
+    password="anton",        # Your MySQL password
+    database="pets"         # Name of the database that you want to connect
 )
 
 # Step 2: Create a cursor object
-cursor = db.cursor()
-
-# Step 3: Prepare the SQL query to insert data
-sql = "INSERT INTO users (name, email) VALUES (%s, %s)"
-values = ("John Doe", "john@example.com")
-
-# Step 4: Execute the SQL query
-cursor.execute(sql, values)
-
-# Step 5: Commit the transaction (saves the data in the database)
+mycursor = db.cursor()
+mycursor.execute("CREATE TABLE cat (name VARCHAR(255), owner VARCHAR(255), birth YEAR(4))")
+# Step 3: Execute a query to show databases
+mycursor.execute("INSERT INTO cat (name, owner, birth) VALUES (%s,%s,%s )",("retard","hey", 1))
 db.commit()
+#mycursor.execute("SELECT * FROM morten")
+#for x in mycursor:
+    #print(x)
 
-# Step 6: Print the number of records inserted
-print(cursor.rowcount, "record inserted.")
 
-# Step 7: Close the connection
-db.close()
+# Step 4: Fetch and print the results
+
+
+# Step 5: Close the cursor and connection
+
+
+
