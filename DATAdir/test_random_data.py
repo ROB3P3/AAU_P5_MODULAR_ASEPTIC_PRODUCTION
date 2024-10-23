@@ -65,6 +65,7 @@ class RandomDataGenerator:
         """Initialize the random data generator with a database instance."""
         self.db = db
         self.sensor_id = sensor_id
+        self.generate_data()
 
     def generate_data(self):
         """Generate random data and insert it into the database."""
@@ -78,4 +79,24 @@ class RandomDataGenerator:
 
             time.sleep(5)  # Adjust the sleep time as needed
             
+from test_random_data import Database
+from test_random_data  import RandomDataGenerator
 
+if __name__ == "__main__":
+    # Database configuration
+    db_host = "localhost"
+    db_user = "anton"  # Your MySQL username
+    db_password = "anton"  # Your MySQL password
+    db_name = "pets"  # Your MySQL database name
+
+    # Create a database instance
+    db = Database(db_host, db_user, db_password, db_name)
+
+    # Create a random data generator instance
+    sensor_id = "random_sensor_1"  # Define a sensor ID for the random data
+    RandomDataGenerator(db, sensor_id)
+
+    # Start generating random data and storing it in the database
+        # Ensure the database connection is closed when done
+    db.close()
+    
