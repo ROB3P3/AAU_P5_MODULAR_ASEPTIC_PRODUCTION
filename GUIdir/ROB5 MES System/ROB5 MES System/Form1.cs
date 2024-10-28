@@ -84,6 +84,7 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left)
             {
+                Debug.WriteLine("Exit button clicked");
                 Close();
             }
         }
