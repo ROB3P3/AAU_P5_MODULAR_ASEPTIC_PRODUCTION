@@ -6,8 +6,10 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
+        public List<Order> orders { get; set; }
         public MainWindowForm()
         {
+            orders = GetOrders();
             InitializeComponent();
 
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -16,6 +18,19 @@ namespace ROB5_MES_System
             timer.Start();
 
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+        }
+
+        private List<Order>? GetOrders()
+        {
+            var orderList = new List<Order>();
+
+            orderList.Add(new Order() { OrderID = 0, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 10, ContainerType = 1, OrderState = "Finished" });
+            orderList.Add(new Order() { OrderID = 1, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 29, ContainerType = 2, OrderState = "Started" });
+            orderList.Add(new Order() { OrderID = 2, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 100, ContainerType = 2, OrderState = "Filling" });
+            orderList.Add(new Order() { OrderID = 3, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 1, ContainerType = 1, OrderState = "Stoppering" });
+            orderList.Add(new Order() { OrderID = 4, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 5, ContainerType = 2, OrderState = "Finished" });
+
+            return orderList;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

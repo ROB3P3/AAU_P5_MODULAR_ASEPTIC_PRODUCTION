@@ -70,7 +70,8 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { dataToolStripMenuItem, toolsToolStripMenuItem, windowsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1002, 28);
+            menuStrip1.Padding = new Padding(5, 2, 0, 2);
+            menuStrip1.Size = new Size(877, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -78,13 +79,13 @@
             // 
             dataToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
             dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            dataToolStripMenuItem.Size = new Size(55, 24);
+            dataToolStripMenuItem.Size = new Size(43, 20);
             dataToolStripMenuItem.Text = "Data";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(116, 26);
+            exitToolStripMenuItem.Size = new Size(93, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.MouseUp += exitToolStripMenuItem_MouseUp;
             // 
@@ -92,72 +93,76 @@
             // 
             toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { whaToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            toolsToolStripMenuItem.Size = new Size(58, 24);
+            toolsToolStripMenuItem.Size = new Size(46, 20);
             toolsToolStripMenuItem.Text = "Tools";
             // 
             // whaToolStripMenuItem
             // 
             whaToolStripMenuItem.Name = "whaToolStripMenuItem";
-            whaToolStripMenuItem.Size = new Size(119, 26);
+            whaToolStripMenuItem.Size = new Size(96, 22);
             whaToolStripMenuItem.Text = "wha";
             // 
             // windowsToolStripMenuItem
             // 
             windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem });
             windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-            windowsToolStripMenuItem.Size = new Size(84, 24);
+            windowsToolStripMenuItem.Size = new Size(68, 20);
             windowsToolStripMenuItem.Text = "Windows";
             // 
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(122, 26);
+            saveToolStripMenuItem.Size = new Size(97, 22);
             saveToolStripMenuItem.Text = "save";
             // 
             // loadToolStripMenuItem
             // 
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(122, 26);
+            loadToolStripMenuItem.Size = new Size(97, 22);
             loadToolStripMenuItem.Text = "load";
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new Size(55, 24);
+            helpToolStripMenuItem.Size = new Size(44, 20);
             helpToolStripMenuItem.Text = "Help";
             // 
             // button1
             // 
-            button1.Location = new Point(12, 233);
+            button1.Location = new Point(10, 175);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(94, 29);
+            button1.Size = new Size(82, 22);
             button1.TabIndex = 1;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            button2.Location = new Point(12, 77);
+            button2.Location = new Point(10, 58);
+            button2.Margin = new Padding(3, 2, 3, 2);
             button2.Name = "button2";
-            button2.Size = new Size(94, 29);
+            button2.Size = new Size(82, 22);
             button2.TabIndex = 2;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            button3.Location = new Point(12, 123);
+            button3.Location = new Point(10, 92);
+            button3.Margin = new Padding(3, 2, 3, 2);
             button3.Name = "button3";
-            button3.Size = new Size(94, 29);
+            button3.Size = new Size(82, 22);
             button3.TabIndex = 3;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            button4.Location = new Point(12, 169);
+            button4.Location = new Point(10, 127);
+            button4.Margin = new Padding(3, 2, 3, 2);
             button4.Name = "button4";
-            button4.Size = new Size(94, 29);
+            button4.Size = new Size(82, 22);
             button4.TabIndex = 4;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
@@ -168,9 +173,10 @@
             menuStrip2.Dock = DockStyle.Left;
             menuStrip2.ImageScalingSize = new Size(20, 20);
             menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, ResourcesSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem, QualityManagementMenuItem, EfficiencyReportSubMenuItem, OEEReportSubMenuItem, MasterDataMenuItem, PartsSubMenuItem, WorkPlansSubMenuItem, ResourcesSubMenuItem2, OperationsSubMenuItem });
-            menuStrip2.Location = new Point(0, 28);
+            menuStrip2.Location = new Point(0, 24);
             menuStrip2.Name = "menuStrip2";
-            menuStrip2.Size = new Size(180, 625);
+            menuStrip2.Padding = new Padding(5, 2, 0, 2);
+            menuStrip2.Size = new Size(158, 466);
             menuStrip2.TabIndex = 5;
             menuStrip2.Text = "menuStrip2";
             // 
@@ -316,9 +322,9 @@
             // DateLabel
             // 
             DateLabel.AutoSize = true;
-            DateLabel.Location = new Point(912, 44);
+            DateLabel.Location = new Point(810, 42);
             DateLabel.Name = "DateLabel";
-            DateLabel.Size = new Size(39, 20);
+            DateLabel.Size = new Size(30, 15);
             DateLabel.TabIndex = 6;
             DateLabel.Text = "date";
             // 
@@ -330,9 +336,9 @@
             // 
             // MainWindowForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1002, 653);
+            ClientSize = new Size(877, 490);
             Controls.Add(DateLabel);
             Controls.Add(menuStrip2);
             Controls.Add(button4);
@@ -342,6 +348,7 @@
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "MainWindowForm";
             Text = "MES System";
             menuStrip1.ResumeLayout(false);
