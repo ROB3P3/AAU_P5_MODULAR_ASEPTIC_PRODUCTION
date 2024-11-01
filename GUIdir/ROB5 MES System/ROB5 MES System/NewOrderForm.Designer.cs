@@ -31,6 +31,7 @@
             button1 = new Button();
             numericUpDown1 = new NumericUpDown();
             comboBox1 = new ComboBox();
+            dateTimePicker1 = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
@@ -63,11 +64,22 @@
             comboBox1.Size = new Size(151, 28);
             comboBox1.TabIndex = 3;
             // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.Location = new Point(31, 203);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.ShowUpDown = true;
+            dateTimePicker1.Size = new Size(250, 27);
+            dateTimePicker1.TabIndex = 4;
+            // 
             // NewOrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(465, 349);
+            Controls.Add(dateTimePicker1);
             Controls.Add(comboBox1);
             Controls.Add(numericUpDown1);
             Controls.Add(button1);
@@ -82,5 +94,6 @@
         private Button button1;
         private NumericUpDown numericUpDown1;
         private ComboBox comboBox1;
+        private DateTimePicker dateTimePicker1;
     }
 }

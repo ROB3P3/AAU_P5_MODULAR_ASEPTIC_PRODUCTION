@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,8 @@ namespace ROB5_MES_System
                         csv.NextRecord();
                     }
                 }
+
+                MainWindowForm.orders.Add(new Order() { OrderID = MainWindowForm.orders.Count, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = Convert.ToInt32(containerAmount), ContainerType = containerType, OrderState = "Created" });
             }
         }
     }

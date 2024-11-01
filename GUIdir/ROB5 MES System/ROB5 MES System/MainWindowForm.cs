@@ -6,7 +6,7 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        public List<Order> orders { get; set; }
+        public static List<Order> orders { get; set; }
         public MainWindowForm()
         {
             orders = GetOrders();
@@ -24,11 +24,11 @@ namespace ROB5_MES_System
         {
             var orderList = new List<Order>();
 
-            orderList.Add(new Order() { OrderID = 0, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 10, ContainerType = 1, OrderState = "Finished" });
-            orderList.Add(new Order() { OrderID = 1, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 29, ContainerType = 2, OrderState = "Started" });
-            orderList.Add(new Order() { OrderID = 2, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 100, ContainerType = 2, OrderState = "Filling" });
-            orderList.Add(new Order() { OrderID = 3, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 1, ContainerType = 1, OrderState = "Stoppering" });
-            orderList.Add(new Order() { OrderID = 4, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 5, ContainerType = 2, OrderState = "Finished" });
+            orderList.Add(new Order() { OrderID = 0, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 10, ContainerType = "vials", OrderState = "Finished" });
+            orderList.Add(new Order() { OrderID = 1, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 29, ContainerType = "pre-filled syringes", OrderState = "Started" });
+            orderList.Add(new Order() { OrderID = 2, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 100, ContainerType = "syringes", OrderState = "Filling" });
+            orderList.Add(new Order() { OrderID = 3, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 1, ContainerType = "vials", OrderState = "Stoppering" });
+            orderList.Add(new Order() { OrderID = 4, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = 5, ContainerType = "syringes", OrderState = "Finished" });
 
             return orderList;
         }
@@ -125,9 +125,9 @@ namespace ROB5_MES_System
         private CurrentOrdersForm f3;
         private void CurrentOrdersSubMenuItem_MouseUp(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-                if(f3 == null || f3.IsDisposed)
+                if (f3 == null || f3.IsDisposed)
                 {
                     f3 = new CurrentOrdersForm();
                     f3.MdiParent = this;
@@ -136,6 +136,24 @@ namespace ROB5_MES_System
                 else
                 {
                     f3.Activate();
+                }
+            }
+        }
+
+        private FinishedOrders f4;
+        private void FinishedOrdersSubMenuItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                if (f4 == null || f4.IsDisposed)
+                {
+                    f4 = new FinishedOrders();
+                    f4.MdiParent = this;
+                    f4.Show();
+                }
+                else
+                {
+                    f4.Activate();
                 }
             }
         }
