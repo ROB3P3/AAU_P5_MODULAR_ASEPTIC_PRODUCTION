@@ -28,38 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             menuStrip1 = new MenuStrip();
             dataToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             toolsToolStripMenuItem = new ToolStripMenuItem();
-            whaToolStripMenuItem = new ToolStripMenuItem();
-            windowsToolStripMenuItem = new ToolStripMenuItem();
-            saveToolStripMenuItem = new ToolStripMenuItem();
-            loadToolStripMenuItem = new ToolStripMenuItem();
+            exportToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
+            configurationToolStripMenuItem = new ToolStripMenuItem();
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
-            menuStrip2 = new MenuStrip();
+            DateLabel = new Label();
             ProductionControlMenuItem = new ToolStripMenuItem();
-            ResourcesSubMenuItem = new ToolStripMenuItem();
+            SystemStatusSubMenuItem = new ToolStripMenuItem();
             OrderManagementMenuItem = new ToolStripMenuItem();
             CurrentOrdersSubMenuItem = new ToolStripMenuItem();
             PlannedOrdersSubMenuItem = new ToolStripMenuItem();
             NewOrderSubMenuItem = new ToolStripMenuItem();
             FinishedOrdersSubMenuItem = new ToolStripMenuItem();
-            QualityManagementMenuItem = new ToolStripMenuItem();
-            EfficiencyReportSubMenuItem = new ToolStripMenuItem();
-            OEEReportSubMenuItem = new ToolStripMenuItem();
-            MasterDataMenuItem = new ToolStripMenuItem();
-            PartsSubMenuItem = new ToolStripMenuItem();
             WorkPlansSubMenuItem = new ToolStripMenuItem();
-            ResourcesSubMenuItem2 = new ToolStripMenuItem();
             OperationsSubMenuItem = new ToolStripMenuItem();
-            DateLabel = new Label();
-            contextMenuStrip1 = new ContextMenuStrip(components);
+            menuStrip2 = new MenuStrip();
             menuStrip1.SuspendLayout();
             menuStrip2.SuspendLayout();
             SuspendLayout();
@@ -67,11 +57,11 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { dataToolStripMenuItem, toolsToolStripMenuItem, windowsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { dataToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(6, 3, 0, 3);
-            menuStrip1.Size = new Size(1002, 30);
+            menuStrip1.Size = new Size(1182, 30);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -85,47 +75,35 @@
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(224, 26);
+            exitToolStripMenuItem.Size = new Size(116, 26);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.MouseUp += exitToolStripMenuItem_MouseUp;
             // 
             // toolsToolStripMenuItem
             // 
-            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { whaToolStripMenuItem });
+            toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exportToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
             // 
-            // whaToolStripMenuItem
+            // exportToolStripMenuItem
             // 
-            whaToolStripMenuItem.Name = "whaToolStripMenuItem";
-            whaToolStripMenuItem.Size = new Size(119, 26);
-            whaToolStripMenuItem.Text = "wha";
-            // 
-            // windowsToolStripMenuItem
-            // 
-            windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem });
-            windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
-            windowsToolStripMenuItem.Size = new Size(84, 24);
-            windowsToolStripMenuItem.Text = "Windows";
-            // 
-            // saveToolStripMenuItem
-            // 
-            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(122, 26);
-            saveToolStripMenuItem.Text = "save";
-            // 
-            // loadToolStripMenuItem
-            // 
-            loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(122, 26);
-            loadToolStripMenuItem.Text = "load";
+            exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            exportToolStripMenuItem.Size = new Size(183, 26);
+            exportToolStripMenuItem.Text = "Export to CSV";
             // 
             // helpToolStripMenuItem
             // 
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { configurationToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(55, 24);
             helpToolStripMenuItem.Text = "Help";
+            // 
+            // configurationToolStripMenuItem
+            // 
+            configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
+            configurationToolStripMenuItem.Size = new Size(183, 26);
+            configurationToolStripMenuItem.Text = "Configuration";
             // 
             // button1
             // 
@@ -163,18 +141,15 @@
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
             // 
-            // menuStrip2
+            // DateLabel
             // 
-            menuStrip2.AutoSize = false;
-            menuStrip2.Dock = DockStyle.Left;
-            menuStrip2.ImageScalingSize = new Size(20, 20);
-            menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, ResourcesSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem, QualityManagementMenuItem, EfficiencyReportSubMenuItem, OEEReportSubMenuItem, MasterDataMenuItem, PartsSubMenuItem, WorkPlansSubMenuItem, ResourcesSubMenuItem2, OperationsSubMenuItem });
-            menuStrip2.Location = new Point(0, 30);
-            menuStrip2.Name = "menuStrip2";
-            menuStrip2.Padding = new Padding(6, 3, 0, 3);
-            menuStrip2.Size = new Size(181, 623);
-            menuStrip2.TabIndex = 5;
-            menuStrip2.Text = "menuStrip2";
+            DateLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DateLabel.AutoSize = true;
+            DateLabel.Location = new Point(20, 700);
+            DateLabel.Name = "DateLabel";
+            DateLabel.Size = new Size(39, 20);
+            DateLabel.TabIndex = 6;
+            DateLabel.Text = "date";
             // 
             // ProductionControlMenuItem
             // 
@@ -185,16 +160,16 @@
             ProductionControlMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             ProductionControlMenuItem.TextDirection = ToolStripTextDirection.Horizontal;
             ProductionControlMenuItem.Click += ProductionControlMenuItem_Click;
-            ProductionControlMenuItem.MouseUp += ProductionControlMenuItem_MouseUp;
             // 
-            // ResourcesSubMenuItem
+            // SystemStatusSubMenuItem
             // 
-            ResourcesSubMenuItem.AutoSize = false;
-            ResourcesSubMenuItem.Name = "ResourcesSubMenuItem";
-            ResourcesSubMenuItem.Size = new Size(130, 30);
-            ResourcesSubMenuItem.Text = "Resources";
-            ResourcesSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            ResourcesSubMenuItem.Visible = false;
+            SystemStatusSubMenuItem.AutoSize = false;
+            SystemStatusSubMenuItem.Name = "SystemStatusSubMenuItem";
+            SystemStatusSubMenuItem.Size = new Size(130, 30);
+            SystemStatusSubMenuItem.Text = "System Status";
+            SystemStatusSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
+            SystemStatusSubMenuItem.Visible = false;
+            SystemStatusSubMenuItem.Click += SystemStatusSubMenuItem_Click;
             // 
             // OrderManagementMenuItem
             // 
@@ -203,7 +178,7 @@
             OrderManagementMenuItem.Size = new Size(165, 60);
             OrderManagementMenuItem.Text = "Order Management";
             OrderManagementMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            OrderManagementMenuItem.MouseUp += OrderManagementMenuItem_MouseUp;
+            OrderManagementMenuItem.Click += OrderManagementMenuItem_Click;
             // 
             // CurrentOrdersSubMenuItem
             // 
@@ -213,7 +188,7 @@
             CurrentOrdersSubMenuItem.Text = "Current Orders";
             CurrentOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             CurrentOrdersSubMenuItem.Visible = false;
-            CurrentOrdersSubMenuItem.MouseUp += CurrentOrdersSubMenuItem_MouseUp;
+            CurrentOrdersSubMenuItem.Click += CurrentOrdersSubMenuItem_Click;
             // 
             // PlannedOrdersSubMenuItem
             // 
@@ -223,6 +198,7 @@
             PlannedOrdersSubMenuItem.Text = "Planned Orders";
             PlannedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             PlannedOrdersSubMenuItem.Visible = false;
+            PlannedOrdersSubMenuItem.Click += PlannedOrdersSubMenuItem_Click;
             // 
             // NewOrderSubMenuItem
             // 
@@ -232,7 +208,7 @@
             NewOrderSubMenuItem.Text = "New Order";
             NewOrderSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             NewOrderSubMenuItem.Visible = false;
-            NewOrderSubMenuItem.MouseUp += NewOrderSubMenuItem_MouseUp;
+            NewOrderSubMenuItem.Click += NewOrderSubMenuItem_Click;
             // 
             // FinishedOrdersSubMenuItem
             // 
@@ -242,52 +218,7 @@
             FinishedOrdersSubMenuItem.Text = "Finished Orders";
             FinishedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             FinishedOrdersSubMenuItem.Visible = false;
-            FinishedOrdersSubMenuItem.MouseUp += FinishedOrdersSubMenuItem_MouseUp;
-            // 
-            // QualityManagementMenuItem
-            // 
-            QualityManagementMenuItem.AutoSize = false;
-            QualityManagementMenuItem.Name = "QualityManagementMenuItem";
-            QualityManagementMenuItem.Size = new Size(165, 60);
-            QualityManagementMenuItem.Text = "Quality Management";
-            QualityManagementMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            QualityManagementMenuItem.MouseUp += QualityManagementMenuItem_MouseUp;
-            // 
-            // EfficiencyReportSubMenuItem
-            // 
-            EfficiencyReportSubMenuItem.AutoSize = false;
-            EfficiencyReportSubMenuItem.Name = "EfficiencyReportSubMenuItem";
-            EfficiencyReportSubMenuItem.Size = new Size(130, 30);
-            EfficiencyReportSubMenuItem.Text = "Efficiency Report";
-            EfficiencyReportSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            EfficiencyReportSubMenuItem.Visible = false;
-            // 
-            // OEEReportSubMenuItem
-            // 
-            OEEReportSubMenuItem.AutoSize = false;
-            OEEReportSubMenuItem.Name = "OEEReportSubMenuItem";
-            OEEReportSubMenuItem.Size = new Size(130, 30);
-            OEEReportSubMenuItem.Text = "OEE Report";
-            OEEReportSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            OEEReportSubMenuItem.Visible = false;
-            // 
-            // MasterDataMenuItem
-            // 
-            MasterDataMenuItem.AutoSize = false;
-            MasterDataMenuItem.Name = "MasterDataMenuItem";
-            MasterDataMenuItem.Size = new Size(165, 60);
-            MasterDataMenuItem.Text = "Master Data";
-            MasterDataMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            MasterDataMenuItem.MouseUp += MasterDataMenuItem_MouseUp;
-            // 
-            // PartsSubMenuItem
-            // 
-            PartsSubMenuItem.AutoSize = false;
-            PartsSubMenuItem.Name = "PartsSubMenuItem";
-            PartsSubMenuItem.Size = new Size(130, 30);
-            PartsSubMenuItem.Text = "Parts";
-            PartsSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            PartsSubMenuItem.Visible = false;
+            FinishedOrdersSubMenuItem.Click += FinishedOrdersSubMenuItem_Click;
             // 
             // WorkPlansSubMenuItem
             // 
@@ -297,15 +228,7 @@
             WorkPlansSubMenuItem.Text = "Work Plans";
             WorkPlansSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             WorkPlansSubMenuItem.Visible = false;
-            // 
-            // ResourcesSubMenuItem2
-            // 
-            ResourcesSubMenuItem2.AutoSize = false;
-            ResourcesSubMenuItem2.Name = "ResourcesSubMenuItem2";
-            ResourcesSubMenuItem2.Size = new Size(130, 30);
-            ResourcesSubMenuItem2.Text = "Resources";
-            ResourcesSubMenuItem2.TextAlign = ContentAlignment.MiddleLeft;
-            ResourcesSubMenuItem2.Visible = false;
+            WorkPlansSubMenuItem.Click += WorkPlansSubMenuItem_Click;
             // 
             // OperationsSubMenuItem
             // 
@@ -315,27 +238,26 @@
             OperationsSubMenuItem.Text = "Operations";
             OperationsSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             OperationsSubMenuItem.Visible = false;
+            OperationsSubMenuItem.Click += OperationsSubMenuItem_Click;
             // 
-            // DateLabel
+            // menuStrip2
             // 
-            DateLabel.AutoSize = true;
-            DateLabel.Location = new Point(926, 56);
-            DateLabel.Name = "DateLabel";
-            DateLabel.Size = new Size(39, 20);
-            DateLabel.TabIndex = 6;
-            DateLabel.Text = "date";
-            // 
-            // contextMenuStrip1
-            // 
-            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(61, 4);
+            menuStrip2.AutoSize = false;
+            menuStrip2.Dock = DockStyle.Left;
+            menuStrip2.ImageScalingSize = new Size(20, 20);
+            menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, SystemStatusSubMenuItem, OperationsSubMenuItem, WorkPlansSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem });
+            menuStrip2.Location = new Point(0, 30);
+            menuStrip2.Name = "menuStrip2";
+            menuStrip2.Padding = new Padding(6, 3, 0, 3);
+            menuStrip2.Size = new Size(180, 723);
+            menuStrip2.TabIndex = 5;
+            menuStrip2.Text = "menuStrip2";
             // 
             // MainWindowForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1002, 653);
+            ClientSize = new Size(1182, 753);
             Controls.Add(DateLabel);
             Controls.Add(menuStrip2);
             Controls.Add(button4);
@@ -361,32 +283,23 @@
         private ToolStripMenuItem dataToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem toolsToolStripMenuItem;
-        private ToolStripMenuItem whaToolStripMenuItem;
-        private ToolStripMenuItem windowsToolStripMenuItem;
-        private ToolStripMenuItem saveToolStripMenuItem;
-        private ToolStripMenuItem loadToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private Button button1;
         private Button button2;
         private Button button3;
         private Button button4;
-        private MenuStrip menuStrip2;
+        private Label DateLabel;
         private ToolStripMenuItem ProductionControlMenuItem;
+        private ToolStripMenuItem SystemStatusSubMenuItem;
         private ToolStripMenuItem OrderManagementMenuItem;
-        private ToolStripMenuItem QualityManagementMenuItem;
-        private ToolStripMenuItem MasterDataMenuItem;
-        private ToolStripMenuItem ResourcesSubMenuItem;
         private ToolStripMenuItem CurrentOrdersSubMenuItem;
         private ToolStripMenuItem PlannedOrdersSubMenuItem;
         private ToolStripMenuItem NewOrderSubMenuItem;
         private ToolStripMenuItem FinishedOrdersSubMenuItem;
-        private ToolStripMenuItem EfficiencyReportSubMenuItem;
-        private ToolStripMenuItem OEEReportSubMenuItem;
-        private ToolStripMenuItem PartsSubMenuItem;
         private ToolStripMenuItem WorkPlansSubMenuItem;
-        private ToolStripMenuItem ResourcesSubMenuItem2;
         private ToolStripMenuItem OperationsSubMenuItem;
-        private Label DateLabel;
-        private ContextMenuStrip contextMenuStrip1;
+        private MenuStrip menuStrip2;
+        private ToolStripMenuItem exportToolStripMenuItem;
+        private ToolStripMenuItem configurationToolStripMenuItem;
     }
 }

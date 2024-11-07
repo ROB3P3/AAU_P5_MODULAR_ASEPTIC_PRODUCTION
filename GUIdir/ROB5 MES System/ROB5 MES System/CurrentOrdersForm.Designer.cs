@@ -28,42 +28,116 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            components = new System.ComponentModel.Container();
+            currentOrdersDataGrid = new DataGridView();
+            orderRightClickMenuStrip = new ContextMenuStrip(components);
+            disableOrderToolStripMenuItem = new ToolStripMenuItem();
+            deleteOrderToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            showDetailsToolStripMenuItem = new ToolStripMenuItem();
+            DeleteAllOrdersButton = new Button();
+            DisableAllOrdersButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)currentOrdersDataGrid).BeginInit();
+            orderRightClickMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // dataGridView1
+            // currentOrdersDataGrid
             // 
-            dataGridView1.AllowUserToResizeColumns = false;
-            dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(14, 16);
-            dataGridView1.Margin = new Padding(3, 4, 3, 4);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(541, 456);
-            dataGridView1.TabIndex = 0;
-            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            currentOrdersDataGrid.AllowUserToResizeColumns = false;
+            currentOrdersDataGrid.AllowUserToResizeRows = false;
+            currentOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            currentOrdersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            currentOrdersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            currentOrdersDataGrid.Location = new Point(14, 13);
+            currentOrdersDataGrid.Margin = new Padding(3, 4, 3, 4);
+            currentOrdersDataGrid.Name = "currentOrdersDataGrid";
+            currentOrdersDataGrid.ReadOnly = true;
+            currentOrdersDataGrid.RowHeadersVisible = false;
+            currentOrdersDataGrid.RowHeadersWidth = 51;
+            currentOrdersDataGrid.Size = new Size(805, 429);
+            currentOrdersDataGrid.TabIndex = 0;
+            currentOrdersDataGrid.CellDoubleClick += currentOrdersDataGrid_CellDoubleClick;
+            currentOrdersDataGrid.CellMouseClick += currentOrdersDataGrid_CellMouseClick;
+            // 
+            // orderRightClickMenuStrip
+            // 
+            orderRightClickMenuStrip.ImageScalingSize = new Size(20, 20);
+            orderRightClickMenuStrip.Items.AddRange(new ToolStripItem[] { disableOrderToolStripMenuItem, deleteOrderToolStripMenuItem, toolStripSeparator1, showDetailsToolStripMenuItem });
+            orderRightClickMenuStrip.Name = "orderRightClickMenuStrip";
+            orderRightClickMenuStrip.Size = new Size(171, 82);
+            // 
+            // disableOrderToolStripMenuItem
+            // 
+            disableOrderToolStripMenuItem.Name = "disableOrderToolStripMenuItem";
+            disableOrderToolStripMenuItem.Size = new Size(170, 24);
+            disableOrderToolStripMenuItem.Text = "Disable Order";
+            disableOrderToolStripMenuItem.MouseUp += disableOrderToolStripMenuItem_MouseUp;
+            // 
+            // deleteOrderToolStripMenuItem
+            // 
+            deleteOrderToolStripMenuItem.Name = "deleteOrderToolStripMenuItem";
+            deleteOrderToolStripMenuItem.Size = new Size(170, 24);
+            deleteOrderToolStripMenuItem.Text = "Delete Order";
+            deleteOrderToolStripMenuItem.MouseUp += deleteOrderToolStripMenuItem_MouseUp;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(167, 6);
+            // 
+            // showDetailsToolStripMenuItem
+            // 
+            showDetailsToolStripMenuItem.Name = "showDetailsToolStripMenuItem";
+            showDetailsToolStripMenuItem.Size = new Size(170, 24);
+            showDetailsToolStripMenuItem.Text = "Show Details";
+            showDetailsToolStripMenuItem.MouseUp += showDetailsToolStripMenuItem_MouseUp;
+            // 
+            // DeleteAllOrdersButton
+            // 
+            DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DeleteAllOrdersButton.Location = new Point(14, 449);
+            DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
+            DeleteAllOrdersButton.Size = new Size(136, 29);
+            DeleteAllOrdersButton.TabIndex = 1;
+            DeleteAllOrdersButton.Text = "Delete All Orders";
+            DeleteAllOrdersButton.UseVisualStyleBackColor = true;
+            DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
+            // 
+            // DisableAllOrdersButton
+            // 
+            DisableAllOrdersButton.Location = new Point(156, 449);
+            DisableAllOrdersButton.Name = "DisableAllOrdersButton";
+            DisableAllOrdersButton.Size = new Size(139, 29);
+            DisableAllOrdersButton.TabIndex = 2;
+            DisableAllOrdersButton.Text = "Disable All Orders";
+            DisableAllOrdersButton.UseVisualStyleBackColor = true;
+            DisableAllOrdersButton.MouseClick += DisableAllOrdersButton_MouseClick;
             // 
             // CurrentOrdersForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(568, 488);
-            Controls.Add(dataGridView1);
+            ClientSize = new Size(832, 488);
+            Controls.Add(DisableAllOrdersButton);
+            Controls.Add(DeleteAllOrdersButton);
+            Controls.Add(currentOrdersDataGrid);
             Name = "CurrentOrdersForm";
             Text = "Current Orders";
             Load += CurrentOrdersForm_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)currentOrdersDataGrid).EndInit();
+            orderRightClickMenuStrip.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
+        private DataGridView currentOrdersDataGrid;
+        private ContextMenuStrip orderRightClickMenuStrip;
+        private ToolStripMenuItem disableOrderToolStripMenuItem;
+        private ToolStripMenuItem deleteOrderToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem showDetailsToolStripMenuItem;
+        private Button DeleteAllOrdersButton;
+        private Button DisableAllOrdersButton;
     }
 }

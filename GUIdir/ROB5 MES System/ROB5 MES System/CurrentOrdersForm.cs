@@ -20,10 +20,34 @@ namespace ROB5_MES_System
             InitializeComponent();
         }
 
+        public void RefreshOrders()
+        {
+            currentOrdersDataGrid.DataSource = null;
+            currentOrdersDataGrid.DataSource = MainWindowForm.currentOrders;
+        }
+
+        public Order getOrderFromCell(DataGridViewCell cell)
+        {
+            DataGridViewCellCollection rowCells = currentOrdersDataGrid.Rows[cell.RowIndex].Cells;
+
+            Order order = new Order()
+            {
+                OrderID = Convert.ToInt32(rowCells["OrderID"].Value),
+                StartTime = Convert.ToDateTime(rowCells["startTime"].Value),
+                EndTime = Convert.ToDateTime(rowCells["endTime"].Value),
+                ContainerAmount = Convert.ToInt32(rowCells["ContainerAmount"].Value),
+                ContainerType = rowCells["ContainerType"].Value?.ToString() ?? string.Empty,
+                CompanyName = rowCells["CompanyName"].Value?.ToString() ?? string.Empty,
+                State = Enum.TryParse<OrderState>(rowCells["State"].Value.ToString(), out OrderState state) ? state : OrderState.PEND
+            };
+
+            return order;
+        }
+
         private OrderForm orderForm;
         private void ShowOrderForm(Order clickedOrder)
         {
-            if(orderForm == null || orderForm.IsDisposed)
+            if (orderForm == null || orderForm.IsDisposed)
             {
                 orderForm = new OrderForm();
                 orderForm.MdiParent = this.MdiParent;
@@ -38,29 +62,114 @@ namespace ROB5_MES_System
 
         private void CurrentOrdersForm_Load(object sender, EventArgs e)
         {
-            var orderList = MainWindowForm.orders;
-
-            dataGridView1.DataSource = orderList;
+            RefreshOrders();
         }
 
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void currentOrdersDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Debug.WriteLine("cell doubleclicked");
-            Debug.WriteLine(String.Format("{0} {1} {2}", e.RowIndex.ToString(), e.ColumnIndex.ToString(), dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString()));
-
-            DataGridViewCellCollection cells = dataGridView1.Rows[e.RowIndex].Cells;
-
-            Order clickedOrder = new Order()
+            if (e.RowIndex >= 0)
             {
-                OrderID = Convert.ToInt32(cells["OrderID"].Value),
-                startTime = Convert.ToDateTime(cells["startTime"].Value),
-                endTime = Convert.ToDateTime(cells["endTime"].Value),
-                ContainerAmount = Convert.ToInt32(cells["ContainerAmount"].Value),
-                ContainerType = cells["ContainerType"].Value?.ToString() ?? string.Empty,
-                OrderState = cells["OrderState"].Value?.ToString() ?? string.Empty
-            }; 
+                Order clickedOrder = getOrderFromCell(currentOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex]);
 
-            ShowOrderForm(clickedOrder);
+                ShowOrderForm(clickedOrder);
+            }
+        }
+
+        private DataGridViewCell rightClickedCell;
+        private void currentOrdersDataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                rightClickedCell = currentOrdersDataGrid.CurrentCell = currentOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                orderRightClickMenuStrip.Show(Control.MousePosition);
+            }
+        }
+
+        private void showDetailsToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = getOrderFromCell(rightClickedCell);
+
+                ShowOrderForm(clickedOrder);
+            }
+        }
+
+        private void disableOrderToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = getOrderFromCell(rightClickedCell);
+                if(clickedOrder.State != OrderState.BUSY)
+                {
+                    MainWindowForm.currentOrders.RemoveAll(order => order.OrderID == clickedOrder.OrderID);
+                    MainWindowForm.plannedOrders.Add(clickedOrder);
+
+                    RefreshOrders();
+
+                    PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
+                    if (plannedOrdersForm != null)
+                    {
+                        plannedOrdersForm.RefreshOrders();
+                    }
+                }
+            }
+        }
+
+        private void deleteOrderToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = getOrderFromCell(rightClickedCell);
+
+                MainWindowForm.currentOrders.RemoveAll(order => order.OrderID == clickedOrder.OrderID);
+
+                RefreshOrders();
+            }
+        }
+
+        private void DeleteAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (MainWindowForm.currentOrders.Count > 0)
+                {
+                    MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
+                    DialogResult result = MessageBox.Show("Are you sure you want to delete all orders?", "Delete All Orders", messageBoxButtons, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        MainWindowForm.currentOrders.Clear();
+                        RefreshOrders();
+                    }
+                }
+            }
+        }
+
+        private void DisableAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                if(MainWindowForm.currentOrders.Count > 0)
+                {
+                    MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
+                    DialogResult result = MessageBox.Show("Are you sure you want to disable all orders?", "Disable All Orders", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if(result == DialogResult.Yes)
+                    {
+                        var selectedOrders = MainWindowForm.currentOrders.Where(order => order.State != OrderState.BUSY).ToList();
+                        MainWindowForm.currentOrders = MainWindowForm.currentOrders.Except(selectedOrders).ToList();
+                        MainWindowForm.plannedOrders.AddRange(selectedOrders);
+                        RefreshOrders();
+
+                        PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
+                        if(plannedOrdersForm != null)
+                        {
+                            plannedOrdersForm.RefreshOrders();
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,10 @@ namespace ROB5_MES_System
 
         public void UpdateOrderForm(Order order)
         {
+            this.Text = "Order " + order.OrderID;
             OrderNumberDispLabel.Text = order.OrderID.ToString();
-            PlannedStartTimeDispLabel.Text = order.startTime.ToString();
-            PlannedEndTimeDispLabel.Text = order.endTime.ToString();
+            PlannedStartTimeDispLabel.Text = order.StartTime.ToString("yyyy/MM/dd hh:mm:ss");
+            PlannedEndTimeDispLabel.Text = order.EndTime.ToString("yyyy/MM/dd hh:mm:ss");
             ContainerAmountDispLabel.Text = order.ContainerAmount.ToString();
             ContainerTypeDispLabel.Text = order.ContainerType.ToString();
         }

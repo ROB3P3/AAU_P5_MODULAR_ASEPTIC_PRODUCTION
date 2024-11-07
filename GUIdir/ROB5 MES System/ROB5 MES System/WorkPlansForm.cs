@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,17 +10,11 @@ using System.Windows.Forms;
 
 namespace ROB5_MES_System
 {
-    public partial class FinishedOrders : Form
+    public partial class WorkPlansForm : Form
     {
-        public FinishedOrders()
+        public WorkPlansForm()
         {
             InitializeComponent();
-        }
-
-        private void FinishedOrders_Load(object sender, EventArgs e)
-        {
-            // load data from database here and display it in the dataGridView
-
         }
     }
 }

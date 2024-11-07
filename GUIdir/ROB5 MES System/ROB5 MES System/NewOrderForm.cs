@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using ROB5_MES_System;
+
 namespace ROB5_MES_System
 {
     public partial class NewOrderForm : Form
@@ -17,47 +19,91 @@ namespace ROB5_MES_System
         public NewOrderForm()
         {
             InitializeComponent();
-            comboBox1.SelectedIndex = 0;
+            ContainerTypeComboBox.SelectedIndex = 0;
+            LoadNewOrderForm();
         }
 
-        public class CsvText
+        public void LoadNewOrderForm()
         {
-            public string ContainerType { get; set; }
-            public decimal ContainerAmount { get; set; }
+            StartTimePicker.MinDate = DateTime.Now;
+            int maxOrderID = MainWindowForm.currentOrders.Count > 0 ? MainWindowForm.currentOrders.Max(order => order.OrderID) : -1;
+            OrderNumberDispLabel.Text = (maxOrderID + 1).ToString();
         }
 
-        private void button1_MouseUp(object sender, MouseEventArgs e)
+        private void StartOrderButton_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                string containerType = comboBox1.Text;
-                decimal containerAmount = numericUpDown1.Value;
+                string containerType = ContainerTypeComboBox.Text;
+                decimal containerAmount = ContainerAmountNumeric.Value;
+                string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
+                DateTime startTime = StartTimePicker.Value;
 
-                var records = new List<CsvText>
+                int maxOrderID = MainWindowForm.currentOrders.Count > 0 ? MainWindowForm.currentOrders.Max(order => order.OrderID) : -1;
+
+                MainWindowForm.currentOrders.Add(new Order()
                 {
-                    new CsvText {ContainerType = containerType, ContainerAmount = containerAmount}
-                };
+                    OrderID = maxOrderID + 1,
+                    StartTime = startTime,
+                    EndTime = startTime.AddMinutes(10),
+                    ContainerAmount = Convert.ToInt32(containerAmount),
+                    ContainerType = containerType,
+                    CompanyName = companyName,
+                    State = OrderState.PEND
+                });
 
-                var filePath = "orders.csv";
-                bool fileExists = File.Exists(filePath);
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                String caption = String.Format("Order {0} created", MainWindowForm.currentOrders.Max(order => order.OrderID));
+                DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
 
-                using (var writer = new StreamWriter(filePath, append: true))
-                using (var csv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture))
+                if (result == DialogResult.OK)
                 {
-                    if (!fileExists)
-                    {
-                        csv.WriteHeader<CsvText>();
-                        csv.NextRecord();
-                    }
+                    LoadNewOrderForm();
 
-                    foreach (var record in records)
+                    CurrentOrdersForm currentOrdersForm = Application.OpenForms.OfType<CurrentOrdersForm>().FirstOrDefault();
+
+                    if (currentOrdersForm != null)
                     {
-                        csv.WriteRecord(record);
-                        csv.NextRecord();
+                        currentOrdersForm.RefreshOrders();
                     }
                 }
+            }
+        }
 
-                MainWindowForm.orders.Add(new Order() { OrderID = MainWindowForm.orders.Count, startTime = DateTime.Now, endTime = DateTime.Now, ContainerAmount = Convert.ToInt32(containerAmount), ContainerType = containerType, OrderState = "Created" });
+        private void PlanOrderButton_Click(object sender, EventArgs e)
+        {
+            string containerType = ContainerTypeComboBox.Text;
+            decimal containerAmount = ContainerAmountNumeric.Value;
+            string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
+            DateTime startTime = StartTimePicker.Value;
+
+            int maxOrderID = MainWindowForm.plannedOrders.Count > 0 ? MainWindowForm.plannedOrders.Max(order => order.OrderID) : -1;
+
+            MainWindowForm.plannedOrders.Add(new Order()
+            {
+                OrderID = maxOrderID + 1,
+                StartTime = startTime,
+                EndTime = startTime.AddMinutes(10),
+                ContainerAmount = Convert.ToInt32(containerAmount),
+                ContainerType = containerType,
+                CompanyName = companyName,
+                State = OrderState.PEND
+            });
+
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            String caption = String.Format("Order {0} created", MainWindowForm.plannedOrders.Max(order => order.OrderID));
+            DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
+
+            if (result == DialogResult.OK)
+            {
+                LoadNewOrderForm();
+
+                PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
+
+                if (plannedOrdersForm != null)
+                {
+                    plannedOrdersForm.RefreshOrders();
+                }
             }
         }
     }
