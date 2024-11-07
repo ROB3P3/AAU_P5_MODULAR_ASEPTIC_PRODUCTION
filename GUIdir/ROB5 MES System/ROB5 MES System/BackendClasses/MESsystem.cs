@@ -15,7 +15,7 @@ namespace MESBackendConsoleApp
         {
             _productionStatus = 1;
         }
-        public void AddOrderToEndOfProductionQueu(int numberOfVials, string vialType, string costumer)
+        public void AddOrderToEndOfProductionQueue(int numberOfVials, string vialType, string costumer)
         {
             // Get current odre nr from DB and add one for the order 
             _orders.AddLast(new Order(numberOfVials, vialType, "Novo nordisk", 1));

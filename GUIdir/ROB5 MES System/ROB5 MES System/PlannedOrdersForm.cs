@@ -45,7 +45,7 @@ namespace ROB5_MES_System
         }
 
         // event function for enable all orders button
-        private void EnableAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
+        private void SendOrdersToQueueButton_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
             {
@@ -60,7 +60,7 @@ namespace ROB5_MES_System
                         MainWindowForm.plannedOrders.Clear();
                         RefreshOrders();
 
-                        CurrentOrdersForm currentOrdersForm = Application.OpenForms.OfType<CurrentOrdersForm>().FirstOrDefault();
+                        ProductionQueueForm currentOrdersForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
 
                         if (currentOrdersForm != null)
                         {

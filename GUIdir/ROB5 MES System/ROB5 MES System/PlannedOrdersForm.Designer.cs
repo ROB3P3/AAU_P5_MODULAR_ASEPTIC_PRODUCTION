@@ -30,7 +30,7 @@
         {
             plannedOrdersDataGrid = new DataGridView();
             DeleteAllOrdersButton = new Button();
-            EnableAllOrdersButton = new Button();
+            SendOrdersToQueueButton = new Button();
             ((System.ComponentModel.ISupportInitialize)plannedOrdersDataGrid).BeginInit();
             SuspendLayout();
             // 
@@ -56,30 +56,30 @@
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(136, 29);
             DeleteAllOrdersButton.TabIndex = 2;
-            DeleteAllOrdersButton.Text = "Delete All Orders";
+            DeleteAllOrdersButton.Text = "Delete all orders";
             DeleteAllOrdersButton.UseVisualStyleBackColor = true;
             DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
             // 
-            // EnableAllOrdersButton
+            // SendOrdersToQueueButton
             // 
-            EnableAllOrdersButton.Location = new Point(154, 452);
-            EnableAllOrdersButton.Name = "EnableAllOrdersButton";
-            EnableAllOrdersButton.Size = new Size(133, 29);
-            EnableAllOrdersButton.TabIndex = 3;
-            EnableAllOrdersButton.Text = "Enable All Orders";
-            EnableAllOrdersButton.UseVisualStyleBackColor = true;
-            EnableAllOrdersButton.MouseClick += EnableAllOrdersButton_MouseClick;
+            SendOrdersToQueueButton.Location = new Point(154, 452);
+            SendOrdersToQueueButton.Name = "SendOrdersToQueueButton";
+            SendOrdersToQueueButton.Size = new Size(257, 29);
+            SendOrdersToQueueButton.TabIndex = 3;
+            SendOrdersToQueueButton.Text = "Send all orders to production queue";
+            SendOrdersToQueueButton.UseVisualStyleBackColor = true;
+            SendOrdersToQueueButton.MouseClick += SendOrdersToQueueButton_MouseClick;
             // 
             // PlannedOrdersForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(832, 488);
-            Controls.Add(EnableAllOrdersButton);
+            Controls.Add(SendOrdersToQueueButton);
             Controls.Add(DeleteAllOrdersButton);
             Controls.Add(plannedOrdersDataGrid);
             Name = "PlannedOrdersForm";
-            Text = "Planned Orders";
+            Text = "Orders";
             ((System.ComponentModel.ISupportInitialize)plannedOrdersDataGrid).EndInit();
             ResumeLayout(false);
         }
@@ -88,6 +88,6 @@
 
         private DataGridView plannedOrdersDataGrid;
         private Button DeleteAllOrdersButton;
-        private Button EnableAllOrdersButton;
+        private Button SendOrdersToQueueButton;
     }
 }

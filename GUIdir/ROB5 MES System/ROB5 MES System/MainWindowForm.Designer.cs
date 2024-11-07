@@ -184,8 +184,8 @@
             // 
             CurrentOrdersSubMenuItem.AutoSize = false;
             CurrentOrdersSubMenuItem.Name = "CurrentOrdersSubMenuItem";
-            CurrentOrdersSubMenuItem.Size = new Size(130, 30);
-            CurrentOrdersSubMenuItem.Text = "Current Orders";
+            CurrentOrdersSubMenuItem.Size = new Size(130, 28);
+            CurrentOrdersSubMenuItem.Text = "Production Queue";
             CurrentOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             CurrentOrdersSubMenuItem.Visible = false;
             CurrentOrdersSubMenuItem.Click += CurrentOrdersSubMenuItem_Click;
@@ -195,7 +195,7 @@
             PlannedOrdersSubMenuItem.AutoSize = false;
             PlannedOrdersSubMenuItem.Name = "PlannedOrdersSubMenuItem";
             PlannedOrdersSubMenuItem.Size = new Size(130, 30);
-            PlannedOrdersSubMenuItem.Text = "Planned Orders";
+            PlannedOrdersSubMenuItem.Text = "Orders";
             PlannedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             PlannedOrdersSubMenuItem.Visible = false;
             PlannedOrdersSubMenuItem.Click += PlannedOrdersSubMenuItem_Click;

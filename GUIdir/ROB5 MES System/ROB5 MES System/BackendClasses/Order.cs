@@ -6,11 +6,11 @@ namespace MESBackendConsoleApp
 {
     public class  Order
     {
-        private int _ordernumber;
-        private string _ordername;
-        private string _orderdescription;
-        private string _ordertype; 
-        private string _orderdate;
+        private int _orderNumber;
+        private string _orderName;
+        private string _orderDescription;
+        private string _orderType; 
+        private string _orderDate;
         private string _orderedBy;
 
         private string _vialType;
@@ -27,20 +27,20 @@ namespace MESBackendConsoleApp
         private void GenerateCarriers(string vialType, int vialAmount)
         {
             int fullCarriers = 0;
-            int vialRemaineder = 0;
+            int vialRemainder = 0;
 
             fullCarriers = vialAmount / 5;
-            vialRemaineder = vialAmount % 5;
+            vialRemainder = vialAmount % 5;
 
             for (int i = 0; i < fullCarriers; i++)
             {
-                Carrier carrier = new Carrier(i + 1, 5, vialType, _ordernumber);
+                Carrier carrier = new Carrier(i + 1, 5, vialType, _orderNumber);
                 _carriersInOrder.AddLast(carrier);
                 Console.WriteLine("Full carrier added");
             }
-            _carriersInOrder.AddLast(new Carrier(fullCarriers+1, vialRemaineder, vialType, _ordernumber));
-            Console.WriteLine(string.Format("Remainder carrier added with {0} vials added", vialRemaineder));
-            Console.WriteLine(string.Format("{0} full carriers added and 1 renauinder carrier with {1} vials, making for {2} vials", fullCarriers, vialRemaineder, vialAmount));
+            _carriersInOrder.AddLast(new Carrier(fullCarriers+1, vialRemainder, vialType, _orderNumber));
+            Console.WriteLine(string.Format("Remainder carrier added with {0} vials added", vialRemainder));
+            Console.WriteLine(string.Format("{0} full carriers added and 1 renauinder carrier with {1} vials, making for {2} vials", fullCarriers, vialRemainder, vialAmount));
 
         }
         private void AddTaskToCarriers(string taskName, string taskDescription, string taskType, int taskId, string statusDescription)
@@ -66,7 +66,7 @@ namespace MESBackendConsoleApp
         public Order(int vialAmaount, string vialType, string costumer, int orderNumber)
         {
             _vialAmount = vialAmaount;
-            _ordernumber = orderNumber;
+            _orderNumber = orderNumber;
             _vialType = vialType;
             _orderedBy = costumer;
             _carriersInOrder = new LinkedList<Carrier>();

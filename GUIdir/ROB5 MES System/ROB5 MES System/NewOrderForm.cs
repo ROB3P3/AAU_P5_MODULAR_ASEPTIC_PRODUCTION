@@ -69,7 +69,7 @@ namespace ROB5_MES_System
                     LoadNewOrderForm();
 
                     // refresh the current orders form if it is open 
-                    CurrentOrdersForm currentOrdersForm = Application.OpenForms.OfType<CurrentOrdersForm>().FirstOrDefault();
+                    ProductionQueueForm currentOrdersForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
 
                     if (currentOrdersForm != null)
                     {

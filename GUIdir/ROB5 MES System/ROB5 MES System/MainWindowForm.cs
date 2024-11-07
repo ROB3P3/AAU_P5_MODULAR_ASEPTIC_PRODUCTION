@@ -110,18 +110,18 @@ namespace ROB5_MES_System
         }
 
         // event function to show current orders form
-        private CurrentOrdersForm currentOrdersForm;
+        private ProductionQueueForm productionQueueForm;
         private void CurrentOrdersSubMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentOrdersForm == null || currentOrdersForm.IsDisposed)
+            if (productionQueueForm == null || productionQueueForm.IsDisposed)
             {
-                currentOrdersForm = new CurrentOrdersForm();
-                currentOrdersForm.MdiParent = this;
-                currentOrdersForm.Show();
+                productionQueueForm = new ProductionQueueForm();
+                productionQueueForm.MdiParent = this;
+                productionQueueForm.Show();
             }
             else
             {
-                currentOrdersForm.Activate();
+                productionQueueForm.Activate();
             }
         }
 

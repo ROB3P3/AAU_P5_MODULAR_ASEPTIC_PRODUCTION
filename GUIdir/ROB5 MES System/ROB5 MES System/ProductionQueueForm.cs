@@ -13,9 +13,9 @@ using ROB5_MES_System;
 
 namespace ROB5_MES_System
 {
-    public partial class CurrentOrdersForm : Form
+    public partial class ProductionQueueForm : Form
     {
-        public CurrentOrdersForm()
+        public ProductionQueueForm()
         {
             InitializeComponent();
             RefreshOrders();

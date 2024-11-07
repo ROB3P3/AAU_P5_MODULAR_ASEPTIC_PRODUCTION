@@ -1,6 +1,6 @@
 ﻿namespace ROB5_MES_System
 {
-    partial class CurrentOrdersForm
+    partial class ProductionQueueForm
     {
         /// <summary>
         /// Required designer variable.
@@ -99,7 +99,7 @@
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(136, 29);
             DeleteAllOrdersButton.TabIndex = 1;
-            DeleteAllOrdersButton.Text = "Delete All Orders";
+            DeleteAllOrdersButton.Text = "Delete all orders";
             DeleteAllOrdersButton.UseVisualStyleBackColor = true;
             DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
             // 
@@ -109,11 +109,11 @@
             DisableAllOrdersButton.Name = "DisableAllOrdersButton";
             DisableAllOrdersButton.Size = new Size(139, 29);
             DisableAllOrdersButton.TabIndex = 2;
-            DisableAllOrdersButton.Text = "Disable All Orders";
+            DisableAllOrdersButton.Text = "Disable all orders";
             DisableAllOrdersButton.UseVisualStyleBackColor = true;
             DisableAllOrdersButton.MouseClick += DisableAllOrdersButton_MouseClick;
             // 
-            // CurrentOrdersForm
+            // ProductionQueueForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -121,8 +121,8 @@
             Controls.Add(DisableAllOrdersButton);
             Controls.Add(DeleteAllOrdersButton);
             Controls.Add(currentOrdersDataGrid);
-            Name = "CurrentOrdersForm";
-            Text = "Current Orders";
+            Name = "ProductionQueueForm";
+            Text = "Production Queue";
             ((System.ComponentModel.ISupportInitialize)currentOrdersDataGrid).EndInit();
             orderRightClickMenuStrip.ResumeLayout(false);
             ResumeLayout(false);
