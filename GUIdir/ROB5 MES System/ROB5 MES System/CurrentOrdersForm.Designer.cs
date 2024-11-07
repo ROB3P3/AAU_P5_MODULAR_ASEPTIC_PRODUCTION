@@ -123,7 +123,6 @@
             Controls.Add(currentOrdersDataGrid);
             Name = "CurrentOrdersForm";
             Text = "Current Orders";
-            Load += CurrentOrdersForm_Load;
             ((System.ComponentModel.ISupportInitialize)currentOrdersDataGrid).EndInit();
             orderRightClickMenuStrip.ResumeLayout(false);
             ResumeLayout(false);

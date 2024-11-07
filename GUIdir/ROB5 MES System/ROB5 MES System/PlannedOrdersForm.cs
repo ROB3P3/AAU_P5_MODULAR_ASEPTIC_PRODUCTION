@@ -18,12 +18,14 @@ namespace ROB5_MES_System
             RefreshOrders();
         }
 
+        // function to refresh the planned orders data grid
         public void RefreshOrders()
         {
             plannedOrdersDataGrid.DataSource = null;
             plannedOrdersDataGrid.DataSource = MainWindowForm.plannedOrders;
         }
 
+        // event function for click on delete all orders button
         private void DeleteAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -42,6 +44,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for enable all orders button
         private void EnableAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)

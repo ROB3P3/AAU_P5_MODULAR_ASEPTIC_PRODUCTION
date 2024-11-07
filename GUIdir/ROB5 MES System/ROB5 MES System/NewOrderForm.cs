@@ -23,6 +23,7 @@ namespace ROB5_MES_System
             LoadNewOrderForm();
         }
 
+        // function to load the new order form
         public void LoadNewOrderForm()
         {
             StartTimePicker.MinDate = DateTime.Now;
@@ -30,17 +31,22 @@ namespace ROB5_MES_System
             OrderNumberDispLabel.Text = (maxOrderID + 1).ToString();
         }
 
+        // event function for click on start order button
         private void StartOrderButton_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
+                // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;
                 decimal containerAmount = ContainerAmountNumeric.Value;
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
                 DateTime startTime = StartTimePicker.Value;
 
+                // get maximum order id before adding a new order to the list incase the current orders list is empty
+                // need to replace the way to get maximum order id as it should be based on all lists and not just the current orders one
                 int maxOrderID = MainWindowForm.currentOrders.Count > 0 ? MainWindowForm.currentOrders.Max(order => order.OrderID) : -1;
 
+                // add new order to current orders list
                 MainWindowForm.currentOrders.Add(new Order()
                 {
                     OrderID = maxOrderID + 1,
@@ -52,14 +58,17 @@ namespace ROB5_MES_System
                     State = OrderState.PEND
                 });
 
+                // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 String caption = String.Format("Order {0} created", MainWindowForm.currentOrders.Max(order => order.OrderID));
                 DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
 
                 if (result == DialogResult.OK)
                 {
+                    // reload new order form to update order id and reset input fields
                     LoadNewOrderForm();
 
+                    // refresh the current orders form if it is open 
                     CurrentOrdersForm currentOrdersForm = Application.OpenForms.OfType<CurrentOrdersForm>().FirstOrDefault();
 
                     if (currentOrdersForm != null)
@@ -70,6 +79,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for click on plan order button
         private void PlanOrderButton_Click(object sender, EventArgs e)
         {
             string containerType = ContainerTypeComboBox.Text;

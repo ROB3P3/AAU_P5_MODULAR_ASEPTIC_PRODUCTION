@@ -18,14 +18,17 @@ namespace ROB5_MES_System
         public CurrentOrdersForm()
         {
             InitializeComponent();
+            RefreshOrders();
         }
 
+        // function to refresh the current orders data grid
         public void RefreshOrders()
         {
             currentOrdersDataGrid.DataSource = null;
             currentOrdersDataGrid.DataSource = MainWindowForm.currentOrders;
         }
 
+        // function to get an order based on a cell clicked in the current orders data grid
         public Order getOrderFromCell(DataGridViewCell cell)
         {
             DataGridViewCellCollection rowCells = currentOrdersDataGrid.Rows[cell.RowIndex].Cells;
@@ -44,6 +47,7 @@ namespace ROB5_MES_System
             return order;
         }
 
+        // function to show the order details form
         private OrderForm orderForm;
         private void ShowOrderForm(Order clickedOrder)
         {
@@ -60,11 +64,7 @@ namespace ROB5_MES_System
             orderForm.UpdateOrderForm(clickedOrder);
         }
 
-        private void CurrentOrdersForm_Load(object sender, EventArgs e)
-        {
-            RefreshOrders();
-        }
-
+        // function to show order details based on a clicked cell
         private void currentOrdersDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -75,6 +75,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // function to show right click menu strip when a cell is right clicked
         private DataGridViewCell rightClickedCell;
         private void currentOrdersDataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -85,6 +86,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for show details sub menu item in menu strip
         private void showDetailsToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
@@ -95,6 +97,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for disable order sub menu item in menu strip
         private void disableOrderToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
@@ -116,6 +119,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for delete order sub menu item in menu strip
         private void deleteOrderToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
@@ -128,6 +132,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for delete all orders button
         private void DeleteAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -146,6 +151,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for the disable all orders button
         private void DisableAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)

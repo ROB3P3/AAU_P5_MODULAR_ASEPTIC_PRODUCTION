@@ -18,6 +18,7 @@ namespace ROB5_MES_System
             InitializeComponent();
         }
 
+        // function to update the order details form
         public void UpdateOrderForm(Order order)
         {
             this.Text = "Order " + order.OrderID;
