@@ -2,6 +2,7 @@
 
 namespace MESBackendConsoleApp
 {
+    /* */
     public class Task
     {
         private string _taskName;

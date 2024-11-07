@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace MESBackendConsoleApp
 {
@@ -8,9 +9,11 @@ namespace MESBackendConsoleApp
         private int _id;
         private int _orderId;
         private int _quantityOfTasks;
+        private int _quantityOfCompletetTasks;
         private int _vialAmount;
         private string _vialType;
         private LinkedList<Task> _queue;
+        private LinkedList<Task> _completetTasks;
 
         // Her skal gerne være en dubble linked list af tasks så der kan laves en dynamisk version af køen
         public void AddTaskToStartOfCarrier(Task taskToBeAdded)
@@ -18,13 +21,11 @@ namespace MESBackendConsoleApp
             _queue.AddFirst(taskToBeAdded);
             _quantityOfTasks++;
         }
-
         public void AddTaskToEndOfCarrier(Task taskToBeAdded)
         {
             _queue.AddLast(taskToBeAdded);
             _quantityOfTasks++;
         }
-
         public void AddTaskToCarrierAfterTask(int IdOfTaskToInsertAfter, Task taskToBeAdded)
         {
             if (_quantityOfTasks == 0) throw new ArgumentException("You can't indrt task in the queu after the given task, queu is empty. Use Add task to start or end method");
@@ -39,7 +40,6 @@ namespace MESBackendConsoleApp
             }
 
         }
-
         public void DeleteTaskFromCarrier(int taskId)
         {
             if (_quantityOfTasks == 0) throw new ArgumentException("You can't delete a task when the task queu is empty");
@@ -52,7 +52,20 @@ namespace MESBackendConsoleApp
                 }
             }
         }
-
+        public void CompleteFirstTaskInCarrierQueu()
+        {
+            if (_quantityOfTasks <= 0) throw new ArgumentException("You can't remove a task from an empty carrier queu");
+            Task completeTask = _queue.First.Value;
+            _completetTasks.AddLast(completeTask);
+            _queue.RemoveFirst();
+            _quantityOfTasks --;
+            _quantityOfCompletetTasks ++;
+        }
+        public void TerminateCarrier()
+        {
+            Console.WriteLine("Terminating carrier");
+            /* Send shit til anton*/ 
+        }
         public void PrintCarrierInfo()
         {
             Console.WriteLine(string.Format("Order ID: {0} \n" +
@@ -70,7 +83,9 @@ namespace MESBackendConsoleApp
         public Carrier(int id, int vialAmount, string vialType, int orderId)
         {
             _queue = new LinkedList<Task>();
+            _completetTasks = new LinkedList<Task>();
             _quantityOfTasks = 0;
+            _quantityOfCompletetTasks = 0;
             _id = id;
             _orderId = orderId;
             _vialAmount = vialAmount;

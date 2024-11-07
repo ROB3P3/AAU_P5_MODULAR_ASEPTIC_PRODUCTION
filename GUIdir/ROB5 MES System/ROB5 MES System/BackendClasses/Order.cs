@@ -51,6 +51,18 @@ namespace MESBackendConsoleApp
                 carrier.AddTaskToEndOfCarrier(task);
             }
         }
+        private void SendOrderInfoToDatabase()
+        {
+            // Anton shit
+        }
+        private void StartOrderProduction()
+        {
+
+        }
+        private void ProductionHandeler()
+        {
+
+        }
         public Order(int vialAmaount, string vialType, string costumer, int orderNumber)
         {
             _vialAmount = vialAmaount;

@@ -11,7 +11,7 @@ namespace MESBackendConsoleApp
         static void Main(string[] args)
         {   
             MESsystem mESsystem = new MESsystem();
-            mESsystem.AddOrderToEndOfProductionQueu(17, "Syringes");
+            mESsystem.AddOrderToEndOfProductionQueu(17, "Syringes", "NovoNordic");
         }
     }
 }
