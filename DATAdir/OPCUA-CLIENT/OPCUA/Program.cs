@@ -13,11 +13,15 @@ namespace OPCUA
 {
     static void Main(string[] args)
     {
+        // Setup the endpoint URL
         var endpointUrl = "opc.tcp://172.20.1.1:4840";
+        // Create the application configuration
         var applicationConfiguration = CreateApplicationConfiguration();
+        // Create the endpoint
         var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
 
-        using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
+            // Connect to the server, read 2 nodes and write a new value to another node
+            using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
         {
             DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.PLCid", "PLCid");
             DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "AppType");
@@ -25,26 +29,38 @@ namespace OPCUA
         }
     }
 
-    private static ApplicationConfiguration CreateApplicationConfiguration()
-    {
-        return new ApplicationConfiguration()
+        private static ApplicationConfiguration CreateApplicationConfiguration()
         {
-            ApplicationName = "OPCUAClient",
-            ApplicationType = ApplicationType.Client,
-            SecurityConfiguration = new SecurityConfiguration
+            // Create a ApplicationConfiguration object
+            return new ApplicationConfiguration()
             {
-                ApplicationCertificate = new CertificateIdentifier()
-            },
-            ClientConfiguration = new ClientConfiguration()
-        };
-    }
+                // Set the application name
+                ApplicationName = "OPCUAClient",
+                // Set the application type to Client as Server is on the PLC
+                ApplicationType = ApplicationType.Client,
+                // don't really know what the next 3 things are exactly beyond being preset configurations
+                // Configure security settings
+                SecurityConfiguration = new SecurityConfiguration
+                {
+                    // Set the application certificate identifier, 
+                    ApplicationCertificate = new CertificateIdentifier()
+                },
+                // Configure client settings
+                ClientConfiguration = new ClientConfiguration()
+            };
+        }
 
-    private static ConfiguredEndpoint CreateEndpoint(ApplicationConfiguration applicationConfiguration, string endpointUrl)
-    {
-        var endpointConfiguration = EndpointConfiguration.Create(applicationConfiguration);
-        var selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointUrl, useSecurity: false);
-        return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
-    }
+        private static ConfiguredEndpoint CreateEndpoint(ApplicationConfiguration applicationConfiguration, string endpointUrl)
+        {
+            // Create an endpoint configuration using the application configuration, said so online!
+            var endpointConfiguration = EndpointConfiguration.Create(applicationConfiguration);
+
+            // Select the endpoint using the provided URL and disable security, let us get hacked lmao
+            var selectedEndpoint = CoreClientUtils.SelectEndpoint(endpointUrl, useSecurity: false);
+
+            // Return a configured endpoint with the selected endpoint and endpoint configuration
+            return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
+        }
 
     private static void DisplayNodeValue(Session client, string nodeId, string variableName)
     {
