@@ -28,15 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            TreeNode treeNode1 = new TreeNode("Process: Filling | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00 ");
-            TreeNode treeNode2 = new TreeNode("Process: Stoppering | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00 ");
-            TreeNode treeNode3 = new TreeNode("CID: 1 | Amount: 5 | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00", new TreeNode[] { treeNode1, treeNode2 });
-            TreeNode treeNode4 = new TreeNode("Process: Filling | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00");
-            TreeNode treeNode5 = new TreeNode("Process: Stoppering | State: BUSY | Start: 00/00/00 00:00:00");
-            TreeNode treeNode6 = new TreeNode("CID: 2 | Amount: 5 | State: BUSY | Start: 00/00/00 00:00:00", new TreeNode[] { treeNode4, treeNode5 });
-            TreeNode treeNode7 = new TreeNode("Process: Filling | State: PEND");
-            TreeNode treeNode8 = new TreeNode("Process: Stoppering | State: PEND");
-            TreeNode treeNode9 = new TreeNode("CID: 3 | Amount: 3 | State: PEND", new TreeNode[] { treeNode7, treeNode8 });
             groupBox1 = new GroupBox();
             ContainerTypeDispLabel = new Label();
             ContainerTypeLabel = new Label();
@@ -49,7 +40,7 @@
             OrderNumberDispLabel = new Label();
             OrderNumberLabel = new Label();
             groupBox2 = new GroupBox();
-            treeView1 = new TreeView();
+            CarrierTreeView = new TreeView();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -181,7 +172,7 @@
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(treeView1);
+            groupBox2.Controls.Add(CarrierTreeView);
             groupBox2.Location = new Point(12, 369);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(655, 262);
@@ -189,41 +180,13 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Carrier Queue";
             // 
-            // treeView1
+            // CarrierTreeView
             // 
-            treeView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            treeView1.Location = new Point(6, 26);
-            treeView1.Name = "treeView1";
-            treeNode1.BackColor = Color.FromArgb(128, 128, 255);
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Process: Filling | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00 ";
-            treeNode2.BackColor = Color.FromArgb(128, 128, 255);
-            treeNode2.Name = "Node2";
-            treeNode2.Text = "Process: Stoppering | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00 ";
-            treeNode3.BackColor = Color.FromArgb(128, 128, 255);
-            treeNode3.Name = "Node0";
-            treeNode3.Text = "CID: 1 | Amount: 5 | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00";
-            treeNode4.BackColor = Color.FromArgb(128, 128, 255);
-            treeNode4.Name = "Node4";
-            treeNode4.Text = "Process: Filling | State: DONE | Start: 00/00/00 00:00:00 | End: 00/00/00 00:00:00";
-            treeNode5.BackColor = Color.FromArgb(255, 255, 128);
-            treeNode5.Name = "Node5";
-            treeNode5.Text = "Process: Stoppering | State: BUSY | Start: 00/00/00 00:00:00";
-            treeNode6.BackColor = Color.FromArgb(255, 255, 128);
-            treeNode6.Name = "Node3";
-            treeNode6.Text = "CID: 2 | Amount: 5 | State: BUSY | Start: 00/00/00 00:00:00";
-            treeNode7.BackColor = Color.White;
-            treeNode7.Name = "Node7";
-            treeNode7.Text = "Process: Filling | State: PEND";
-            treeNode8.BackColor = Color.White;
-            treeNode8.Name = "Node8";
-            treeNode8.Text = "Process: Stoppering | State: PEND";
-            treeNode9.BackColor = Color.White;
-            treeNode9.Name = "Node6";
-            treeNode9.Text = "CID: 3 | Amount: 3 | State: PEND";
-            treeView1.Nodes.AddRange(new TreeNode[] { treeNode3, treeNode6, treeNode9 });
-            treeView1.Size = new Size(643, 228);
-            treeView1.TabIndex = 0;
+            CarrierTreeView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CarrierTreeView.Location = new Point(6, 26);
+            CarrierTreeView.Name = "CarrierTreeView";
+            CarrierTreeView.Size = new Size(643, 228);
+            CarrierTreeView.TabIndex = 0;
             // 
             // OrderForm
             // 
@@ -254,6 +217,6 @@
         private Label ContainerAmountDispLabel;
         private Label ContainerAmountLabel;
         private GroupBox groupBox2;
-        private TreeView treeView1;
+        private TreeView CarrierTreeView;
     }
 }

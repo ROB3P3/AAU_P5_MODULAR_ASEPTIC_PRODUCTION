@@ -52,17 +52,16 @@
             StartOrderButton.Name = "StartOrderButton";
             StartOrderButton.Size = new Size(134, 66);
             StartOrderButton.TabIndex = 4;
-            StartOrderButton.Text = "Start Order";
+            StartOrderButton.Text = "Add Order to Queue";
             StartOrderButton.UseVisualStyleBackColor = true;
             StartOrderButton.MouseUp += StartOrderButton_MouseUp;
             // 
             // ContainerAmountNumeric
             // 
             ContainerAmountNumeric.Location = new Point(162, 156);
-            ContainerAmountNumeric.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
             ContainerAmountNumeric.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             ContainerAmountNumeric.Name = "ContainerAmountNumeric";
-            ContainerAmountNumeric.Size = new Size(43, 27);
+            ContainerAmountNumeric.Size = new Size(74, 27);
             ContainerAmountNumeric.TabIndex = 2;
             ContainerAmountNumeric.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 

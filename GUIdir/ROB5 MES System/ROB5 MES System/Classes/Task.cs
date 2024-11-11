@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MESBackendConsoleApp
+namespace ROB5_MES_System
 {
     /* */
     public class Task
@@ -11,8 +11,8 @@ namespace MESBackendConsoleApp
         private int _taskId;
         private string _status;
         private string _statusDescription;
-        private int ? _startTime;
-        private int? _endTime;
+        private DateTime _startTime;
+        private DateTime _endTime;
         private int _itemsInCarrier;
         private string _itemType;
         private int _carrierId;
@@ -77,22 +77,22 @@ namespace MESBackendConsoleApp
                 _statusDescription = value;
             }
         }
-        public int ? StartTime
+        public DateTime StartTime
         {
             get { return _startTime; }
             set
             {
-                if (value != null)
+                if (value < DateTime.Now)
                     throw new ArgumentNullException("Start time is null");
                 _startTime = value;
             }
         }
-        public int ? EndTime
+        public DateTime EndTime
         {
             get { return _endTime; }
             set
             {
-                if (value != null)
+                if (value < DateTime.Now)
                     throw new ArgumentNullException("End time is null");
                 _endTime = value;
             }

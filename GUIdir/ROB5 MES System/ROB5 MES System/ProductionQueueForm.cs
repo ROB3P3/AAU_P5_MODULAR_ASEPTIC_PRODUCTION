@@ -25,43 +25,17 @@ namespace ROB5_MES_System
         public void RefreshOrders()
         {
             currentOrdersDataGrid.DataSource = null;
-            currentOrdersDataGrid.DataSource = MainWindowForm.currentOrders;
-        }
+            currentOrdersDataGrid.DataSource = MainWindowForm.mesSystem.Orders.ToList();
 
-        // function to get an order based on a cell clicked in the current orders data grid
-        public Order getOrderFromCell(DataGridViewCell cell)
-        {
-            DataGridViewCellCollection rowCells = currentOrdersDataGrid.Rows[cell.RowIndex].Cells;
+            currentOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+            currentOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
-            Order order = new Order()
-            {
-                OrderID = Convert.ToInt32(rowCells["OrderID"].Value),
-                StartTime = Convert.ToDateTime(rowCells["startTime"].Value),
-                EndTime = Convert.ToDateTime(rowCells["endTime"].Value),
-                ContainerAmount = Convert.ToInt32(rowCells["ContainerAmount"].Value),
-                ContainerType = rowCells["ContainerType"].Value?.ToString() ?? string.Empty,
-                CompanyName = rowCells["CompanyName"].Value?.ToString() ?? string.Empty,
-                State = Enum.TryParse<OrderState>(rowCells["State"].Value.ToString(), out OrderState state) ? state : OrderState.PEND
-            };
-
-            return order;
-        }
-
-        // function to show the order details form
-        private OrderForm orderForm;
-        private void ShowOrderForm(Order clickedOrder)
-        {
-            if (orderForm == null || orderForm.IsDisposed)
-            {
-                orderForm = new OrderForm();
-                orderForm.MdiParent = this.MdiParent;
-                orderForm.Show();
-            }
-            else
-            {
-                orderForm.BringToFront();
-            }
-            orderForm.UpdateOrderForm(clickedOrder);
+            currentOrdersDataGrid.Columns["OrderName"].Visible = false;
+            currentOrdersDataGrid.Columns["OrderDescription"].Visible = false;
+            currentOrdersDataGrid.Columns["OrderType"].Visible = false;
+            currentOrdersDataGrid.Columns["VialsInProduction"].Visible = false;
+            currentOrdersDataGrid.Columns["VialsProduced"].Visible = false;
+            currentOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
         }
 
         // function to show order details based on a clicked cell
@@ -69,9 +43,9 @@ namespace ROB5_MES_System
         {
             if (e.RowIndex >= 0)
             {
-                Order clickedOrder = getOrderFromCell(currentOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex]);
+                Order clickedOrder = MainWindowForm.getOrderFromCell(currentOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex], MainWindowForm.mesSystem.Orders);
 
-                ShowOrderForm(clickedOrder);
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
             }
         }
 
@@ -91,9 +65,9 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
             {
-                Order clickedOrder = getOrderFromCell(rightClickedCell);
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
 
-                ShowOrderForm(clickedOrder);
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
             }
         }
 
@@ -102,11 +76,11 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
             {
-                Order clickedOrder = getOrderFromCell(rightClickedCell);
-                if(clickedOrder.State != OrderState.BUSY)
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
+                if(clickedOrder.OrderState != OrderState.BUSY)
                 {
-                    MainWindowForm.currentOrders.RemoveAll(order => order.OrderID == clickedOrder.OrderID);
-                    MainWindowForm.plannedOrders.Add(clickedOrder);
+                    MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
+                    MainWindowForm.mesSystem.PlannedOrders.AddLast(clickedOrder);
 
                     RefreshOrders();
 
@@ -124,9 +98,9 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
             {
-                Order clickedOrder = getOrderFromCell(rightClickedCell);
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
 
-                MainWindowForm.currentOrders.RemoveAll(order => order.OrderID == clickedOrder.OrderID);
+                MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
 
                 RefreshOrders();
             }
@@ -137,14 +111,14 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (MainWindowForm.currentOrders.Count > 0)
+                if (MainWindowForm.mesSystem.Orders.Count > 0)
                 {
                     MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show("Are you sure you want to delete all orders?", "Delete All Orders", messageBoxButtons, MessageBoxIcon.Warning);
 
                     if (result == DialogResult.Yes)
                     {
-                        MainWindowForm.currentOrders.Clear();
+                        MainWindowForm.mesSystem.Orders.Clear();
                         RefreshOrders();
                     }
                 }
@@ -156,16 +130,26 @@ namespace ROB5_MES_System
         {
             if(e.Button == MouseButtons.Left)
             {
-                if(MainWindowForm.currentOrders.Count > 0)
+                if(MainWindowForm.mesSystem.Orders.Count > 0)
                 {
                     MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show("Are you sure you want to disable all orders?", "Disable All Orders", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if(result == DialogResult.Yes)
                     {
-                        var selectedOrders = MainWindowForm.currentOrders.Where(order => order.State != OrderState.BUSY).ToList();
-                        MainWindowForm.currentOrders = MainWindowForm.currentOrders.Except(selectedOrders).ToList();
-                        MainWindowForm.plannedOrders.AddRange(selectedOrders);
+                        var currentNode = MainWindowForm.mesSystem.Orders.First;
+
+                        while (currentNode != null)
+                        {
+                            var nextNode = currentNode.Next;
+                            if (currentNode.Value.OrderState != OrderState.BUSY)
+                            {
+                                MainWindowForm.mesSystem.Orders.Remove(currentNode);
+                                MainWindowForm.mesSystem.PlannedOrders.AddLast(currentNode.Value);
+                            }
+                            currentNode = nextNode;
+                        }
+
                         RefreshOrders();
 
                         PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();

@@ -97,15 +97,15 @@
             DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             DeleteAllOrdersButton.Location = new Point(14, 449);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
-            DeleteAllOrdersButton.Size = new Size(136, 29);
+            DeleteAllOrdersButton.Size = new Size(194, 29);
             DeleteAllOrdersButton.TabIndex = 1;
-            DeleteAllOrdersButton.Text = "Delete all orders";
+            DeleteAllOrdersButton.Text = "Delete all orders in queue";
             DeleteAllOrdersButton.UseVisualStyleBackColor = true;
             DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
             // 
             // DisableAllOrdersButton
             // 
-            DisableAllOrdersButton.Location = new Point(156, 449);
+            DisableAllOrdersButton.Location = new Point(214, 449);
             DisableAllOrdersButton.Name = "DisableAllOrdersButton";
             DisableAllOrdersButton.Size = new Size(139, 29);
             DisableAllOrdersButton.TabIndex = 2;

@@ -22,7 +22,17 @@ namespace ROB5_MES_System
         public void RefreshOrders()
         {
             plannedOrdersDataGrid.DataSource = null;
-            plannedOrdersDataGrid.DataSource = MainWindowForm.plannedOrders;
+            plannedOrdersDataGrid.DataSource = MainWindowForm.mesSystem.PlannedOrders.ToList();
+
+            plannedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+            plannedOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+
+            plannedOrdersDataGrid.Columns["OrderName"].Visible = false;
+            plannedOrdersDataGrid.Columns["OrderDescription"].Visible = false;
+            plannedOrdersDataGrid.Columns["OrderType"].Visible = false;
+            plannedOrdersDataGrid.Columns["VialsInProduction"].Visible = false;
+            plannedOrdersDataGrid.Columns["VialsProduced"].Visible = false;
+            plannedOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
         }
 
         // event function for click on delete all orders button
@@ -30,14 +40,14 @@ namespace ROB5_MES_System
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (MainWindowForm.plannedOrders.Count > 0)
+                if (MainWindowForm.mesSystem.PlannedOrders.Count > 0)
                 {
                     MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show("Are you sure you want to delete all planned orders?", "Delete All Planned Orders", messageBoxButtons, MessageBoxIcon.Warning);
 
                     if (result == DialogResult.Yes)
                     {
-                        MainWindowForm.plannedOrders.Clear();
+                        MainWindowForm.mesSystem.PlannedOrders.Clear();
                         RefreshOrders();
                     }
                 }
@@ -47,17 +57,21 @@ namespace ROB5_MES_System
         // event function for enable all orders button
         private void SendOrdersToQueueButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-                if(MainWindowForm.plannedOrders.Count > 0)
+                if (MainWindowForm.mesSystem.PlannedOrders.Count > 0)
                 {
                     MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show("Are you sure you want to enable all planned orders?", "Enable All Planned Orders", messageBoxButtons, MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
-                        MainWindowForm.currentOrders.AddRange(MainWindowForm.plannedOrders);
-                        MainWindowForm.plannedOrders.Clear();
+                        foreach (var order in MainWindowForm.mesSystem.PlannedOrders)
+                        {
+                            MainWindowForm.mesSystem.Orders.AddLast(order);
+                        }
+                        MainWindowForm.mesSystem.PlannedOrders.Clear();
+
                         RefreshOrders();
 
                         ProductionQueueForm currentOrdersForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
@@ -68,6 +82,68 @@ namespace ROB5_MES_System
                         }
                     }
                 }
+            }
+        }
+
+        private void plannedOrdersDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(plannedOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex], MainWindowForm.mesSystem.PlannedOrders);
+
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
+            }
+        }
+
+        // function to show right click menu strip when a cell is right clicked
+        private DataGridViewCell rightClickedCell;
+        private void plannedOrdersDataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                rightClickedCell = plannedOrdersDataGrid.CurrentCell = plannedOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                orderRightClickMenuStrip.Show(Control.MousePosition);
+            }
+        }
+
+        private void showDetailsToolMenuStripItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders);
+
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
+            }
+        }
+
+        private void enableOrderToolMenuStripItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders);
+
+                MainWindowForm.mesSystem.PlannedOrders.Remove(clickedOrder);
+                MainWindowForm.mesSystem.Orders.AddLast(clickedOrder);
+
+                RefreshOrders();
+
+                ProductionQueueForm productionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
+                if (productionQueueForm != null)
+                {
+                    productionQueueForm.RefreshOrders();
+                }
+            }
+        }
+
+        private void deleteOrderToolMenuStripItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders);
+
+                MainWindowForm.mesSystem.PlannedOrders.Remove(clickedOrder);
+
+                RefreshOrders();
             }
         }
     }
