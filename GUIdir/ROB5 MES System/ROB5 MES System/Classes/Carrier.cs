@@ -165,8 +165,8 @@ namespace ROB5_MES_System
             get { return _startTime; }
             set
             {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Order date cannot be in the past.");
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
+                    throw new ArgumentException("Order date is null.");
 
                 _startTime = value;
             }
@@ -177,8 +177,8 @@ namespace ROB5_MES_System
             get { return _endTime; }
             set
             {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Order date cannot be in the past.");
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
+                    throw new ArgumentException("Order date is null.");
 
                 _endTime = value;
             }

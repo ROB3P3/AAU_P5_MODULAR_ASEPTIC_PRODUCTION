@@ -122,7 +122,7 @@ namespace ROB5_MES_System
             get { return _orderPlannedStartTime; }
             set
             {
-                if (value < DateTime.Now)
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
                     throw new ArgumentException("Order date cannot be in the past.");
 
                 _orderPlannedStartTime = value;
@@ -134,8 +134,8 @@ namespace ROB5_MES_System
             get { return _orderPlannedEndTime; }
             set
             {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Order date cannot be in the past.");
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
+                    throw new ArgumentException("Order date is null.");
 
                 _orderPlannedEndTime = value;
             }
@@ -146,8 +146,8 @@ namespace ROB5_MES_System
             get { return _orderStartTime; }
             set
             {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Order date cannot be in the past.");
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
+                    throw new ArgumentException("Order date is null.");
 
                 _orderStartTime = value;
             }
@@ -158,8 +158,8 @@ namespace ROB5_MES_System
             get { return _orderEndTime; }
             set
             {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Order date cannot be in the past.");
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
+                    throw new ArgumentException("Order date is null.");
 
                 _orderEndTime = value;
             }
@@ -277,6 +277,7 @@ namespace ROB5_MES_System
             _containerType = containerType;
             _orderCustomer = customer;
             _orderPlannedStartTime = orderDate;
+            _orderPlannedEndTime = orderDate.AddHours(1);
             _orderState = OrderState.PEND;
             _carriersInOrder = new LinkedList<Carrier>();
             GenerateCarriers(_containerType, _containerAmount);

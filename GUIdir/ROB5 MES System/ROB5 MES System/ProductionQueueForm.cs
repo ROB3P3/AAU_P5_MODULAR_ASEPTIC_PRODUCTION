@@ -36,6 +36,9 @@ namespace ROB5_MES_System
             currentOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
             currentOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
             currentOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
+            currentOrdersDataGrid.Columns["CarriersTotal"].HeaderText = "Total Carriers";
+            currentOrdersDataGrid.Columns["CarriersInProduction"].HeaderText = "Carriers in Production";
+            currentOrdersDataGrid.Columns["CarriersProduced"].HeaderText = "Carriers Produced";
             currentOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";

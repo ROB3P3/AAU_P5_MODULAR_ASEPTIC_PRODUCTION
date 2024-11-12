@@ -82,7 +82,7 @@ namespace ROB5_MES_System
             get { return _startTime; }
             set
             {
-                if (value < DateTime.Now)
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
                     throw new ArgumentNullException("Start time is null");
                 _startTime = value;
             }
@@ -92,7 +92,7 @@ namespace ROB5_MES_System
             get { return _endTime; }
             set
             {
-                if (value < DateTime.Now)
+                if (value < DateTime.MinValue || value > DateTime.MaxValue)
                     throw new ArgumentNullException("End time is null");
                 _endTime = value;
             }

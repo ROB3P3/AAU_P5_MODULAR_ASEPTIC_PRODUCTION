@@ -33,6 +33,9 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
             plannedOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
             plannedOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
+            plannedOrdersDataGrid.Columns["CarriersTotal"].HeaderText = "Total Carriers";
+            plannedOrdersDataGrid.Columns["CarriersInProduction"].HeaderText = "Carriers in Production";
+            plannedOrdersDataGrid.Columns["CarriersProduced"].HeaderText = "Carriers Produced";
             plannedOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             plannedOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             plannedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
@@ -155,6 +158,16 @@ namespace ROB5_MES_System
                 MainWindowForm.mesSystem.PlannedOrders.Remove(clickedOrder);
 
                 RefreshOrders();
+            }
+        }
+
+        private void replanOrderToolMenuStripItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left && rightClickedCell != null)
+            {
+                ReplanOrderForm replanOrderForm = new ReplanOrderForm();
+                replanOrderForm.UpdateReplanOrderForm(MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders));
+                replanOrderForm.ShowDialog();
             }
         }
     }
