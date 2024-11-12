@@ -10,15 +10,17 @@ namespace ROB5_MES_System
         private string _orderName;
         private string _orderDescription;
         private string _orderType; 
+        private DateTime _orderPlannedStartTime; // brugt
+        private DateTime _orderPlannedEndTime; // brugt
         private DateTime _orderStartTime; // brugt
         private DateTime _orderEndTime; // brugt
         private string _orderCustomer; // brugt
         private OrderState _orderState; // brugt
 
-        private string _vialType; // brugt
-        private int _vialAmount; // brugt
-        private int _vialsInProduction;
-        private int _vialsProduced;
+        private string _containerType; // brugt
+        private int _containerAmount; // brugt
+        private int _containersInProduction;
+        private int _containersProduced;
 
         private int _carriersTotal; // brugt
         private int _carriersInProduction; // brugt 
@@ -26,31 +28,28 @@ namespace ROB5_MES_System
 
         private LinkedList<Carrier> _carriersInOrder; // brugt
 
-        private void GenerateCarriers(string vialType, int vialAmount)
+        private void GenerateCarriers(string containerType, int containerAmount)
         {
-            int fullCarriers = 0;
-            int vialRemainder = 0;
-
-            fullCarriers = vialAmount / 5;
-            vialRemainder = vialAmount % 5;
+            int fullCarriers = containerAmount / 5;
+            int containerRemainder = containerAmount % 5;
 
             for (int i = 0; i < fullCarriers; i++)
             {
-                Carrier carrier = new Carrier(i + 1, 5, vialType, _orderNumber);
+                Carrier carrier = new Carrier(i + 1, 5, containerType, _orderNumber);
                 _carriersInOrder.AddLast(carrier);
                 Console.WriteLine("Full carrier added");
             }
 
             _carriersTotal = fullCarriers;
 
-            if (vialRemainder != 0)
+            if (containerRemainder != 0)
             {
-                _carriersInOrder.AddLast(new Carrier(fullCarriers + 1, vialRemainder, vialType, _orderNumber));
+                _carriersInOrder.AddLast(new Carrier(fullCarriers + 1, containerRemainder, containerType, _orderNumber));
                 _carriersTotal += 1;
-                Console.WriteLine(string.Format("Remainder carrier added with {0} vials added", vialRemainder));
+                Console.WriteLine(string.Format("Remainder carrier added with {0} containers added", containerRemainder));
             }
 
-            Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} vials, making for {2} vials", fullCarriers, vialRemainder, vialAmount));
+            Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} containers, making for {2} containers", fullCarriers, containerRemainder, containerAmount));
 
         }
         private void AddTaskToCarriers(string taskName, string taskDescription, string taskType, int taskId, string statusDescription)
@@ -118,6 +117,30 @@ namespace ROB5_MES_System
             }
         }
 
+        public DateTime OrderPlannedStartTime
+        {
+            get { return _orderPlannedStartTime; }
+            set
+            {
+                if (value < DateTime.Now)
+                    throw new ArgumentException("Order date cannot be in the past.");
+
+                _orderPlannedStartTime = value;
+            }
+        }
+
+        public DateTime OrderPlannedEndTime
+        {
+            get { return _orderPlannedEndTime; }
+            set
+            {
+                if (value < DateTime.Now)
+                    throw new ArgumentException("Order date cannot be in the past.");
+
+                _orderPlannedEndTime = value;
+            }
+        }
+
         public DateTime OrderStartTime
         {
             get { return _orderStartTime; }
@@ -159,47 +182,47 @@ namespace ROB5_MES_System
             set { _orderState = value; }
         }
 
-        public string VialType
+        public string ContainerType
         {
-            get { return _vialType; }
+            get { return _containerType; }
             set
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Vial type cannot be empty.");
-                _vialType = value;
+                    throw new ArgumentNullException("Container type cannot be empty.");
+                _containerType = value;
             }
         }
 
-        public int VialAmount
+        public int ContainerAmount
         {
-            get { return _vialAmount; }
+            get { return _containerAmount; }
             set
             {
                 if (value <= 0)
-                    throw new ArgumentException("Vial amount must be greater than zero.");
-                _vialAmount = value;
+                    throw new ArgumentException("Container amount must be greater than zero.");
+                _containerAmount = value;
             }
         }
 
-        public int VialsInProduction
+        public int ContainersInProduction
         {
-            get { return _vialsInProduction; }
+            get { return _containersInProduction; }
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("Vials in production cannot be negative.");
-                _vialsInProduction = value;
+                    throw new ArgumentException("Containers in production cannot be negative.");
+                _containersInProduction = value;
             }
         }
 
-        public int VialsProduced
+        public int ContainersProduced
         {
-            get { return _vialsProduced; }
+            get { return _containersProduced; }
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("Vials produced cannot be negative.");
-                _vialsProduced = value;
+                    throw new ArgumentException("Containers produced cannot be negative.");
+                _containersProduced = value;
             }
         }
 
@@ -247,18 +270,18 @@ namespace ROB5_MES_System
             }
         }
 
-        public Order(int vialAmount, string vialType, string customer, int orderNumber, DateTime orderDate)
+        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate)
         {
-            _vialAmount = vialAmount;
+            _containerAmount = containerAmount;
             _orderNumber = orderNumber;
-            _vialType = vialType;
+            _containerType = containerType;
             _orderCustomer = customer;
-            _orderStartTime = orderDate;
+            _orderPlannedStartTime = orderDate;
             _orderState = OrderState.PEND;
             _carriersInOrder = new LinkedList<Carrier>();
-            GenerateCarriers(_vialType, _vialAmount);
-            AddTaskToCarriers("fill", "Fills up the vials", "action on product", 1, "Not yet started");
-            AddTaskToCarriers("stopper", "Seals the vials", "action on product", 2, "Not yet started");
+            GenerateCarriers(_containerType, _containerAmount);
+            AddTaskToCarriers("fill", "Fills up the containers", "action on product", 1, "Not yet started");
+            AddTaskToCarriers("stopper", "Seals the containers", "action on product", 2, "Not yet started");
             foreach (var carrier in _carriersInOrder)
             {
                 carrier.PrintCarrierInfo();

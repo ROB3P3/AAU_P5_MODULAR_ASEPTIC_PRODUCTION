@@ -20,10 +20,10 @@ namespace ROB5_MES_System
         {
             _productionStatus = 1;
         }
-        public void AddOrderToEndOfProductionQueue(int numberOfVials, string vialType, string customer, DateTime orderDate)
+        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate)
         {
             // Get current odre nr from DB and add one for the order 
-            _orders.AddLast(new Order(numberOfVials, vialType, customer, 1, orderDate));
+            _orders.AddLast(new Order(numberOfContainers, containerType, customer, 1, orderDate));
         }
 
         public Order GetOrderAtIndex(int index, LinkedList<Order> list)

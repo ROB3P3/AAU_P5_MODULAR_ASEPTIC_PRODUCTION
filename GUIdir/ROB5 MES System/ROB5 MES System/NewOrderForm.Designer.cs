@@ -146,7 +146,7 @@
             label5.Name = "label5";
             label5.Size = new Size(75, 20);
             label5.TabIndex = 11;
-            label5.Text = "Company:";
+            label5.Text = "Customer:";
             // 
             // OrderNumberDispLabel
             // 

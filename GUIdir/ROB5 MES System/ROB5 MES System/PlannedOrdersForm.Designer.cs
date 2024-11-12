@@ -60,7 +60,7 @@
             // 
             // DeleteAllOrdersButton
             // 
-            DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             DeleteAllOrdersButton.Location = new Point(12, 452);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(193, 29);
@@ -71,6 +71,7 @@
             // 
             // SendOrdersToQueueButton
             // 
+            SendOrdersToQueueButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             SendOrdersToQueueButton.Location = new Point(211, 452);
             SendOrdersToQueueButton.Name = "SendOrdersToQueueButton";
             SendOrdersToQueueButton.Size = new Size(257, 29);
@@ -84,31 +85,31 @@
             orderRightClickMenuStrip.ImageScalingSize = new Size(20, 20);
             orderRightClickMenuStrip.Items.AddRange(new ToolStripItem[] { enableOrderToolMenuStripItem, deleteOrderToolMenuStripItem, toolStripSeparator1, showDetailsToolMenuStripItem });
             orderRightClickMenuStrip.Name = "orderRightClickMenuStrip";
-            orderRightClickMenuStrip.Size = new Size(211, 110);
+            orderRightClickMenuStrip.Size = new Size(166, 82);
             // 
             // enableOrderToolMenuStripItem
             // 
             enableOrderToolMenuStripItem.Name = "enableOrderToolMenuStripItem";
-            enableOrderToolMenuStripItem.Size = new Size(210, 24);
+            enableOrderToolMenuStripItem.Size = new Size(165, 24);
             enableOrderToolMenuStripItem.Text = "Enable Order";
             enableOrderToolMenuStripItem.MouseUp += enableOrderToolMenuStripItem_MouseUp;
             // 
             // deleteOrderToolMenuStripItem
             // 
             deleteOrderToolMenuStripItem.Name = "deleteOrderToolMenuStripItem";
-            deleteOrderToolMenuStripItem.Size = new Size(210, 24);
+            deleteOrderToolMenuStripItem.Size = new Size(165, 24);
             deleteOrderToolMenuStripItem.Text = "Delete Order";
             deleteOrderToolMenuStripItem.MouseUp += deleteOrderToolMenuStripItem_MouseUp;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(207, 6);
+            toolStripSeparator1.Size = new Size(162, 6);
             // 
             // showDetailsToolMenuStripItem
             // 
             showDetailsToolMenuStripItem.Name = "showDetailsToolMenuStripItem";
-            showDetailsToolMenuStripItem.Size = new Size(210, 24);
+            showDetailsToolMenuStripItem.Size = new Size(165, 24);
             showDetailsToolMenuStripItem.Text = "Show Details";
             showDetailsToolMenuStripItem.MouseUp += showDetailsToolMenuStripItem_MouseUp;
             // 

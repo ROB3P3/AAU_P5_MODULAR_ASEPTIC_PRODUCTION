@@ -23,17 +23,20 @@ namespace ROB5_MES_System
         {
             this.Text = "Order " + order.OrderNumber;
             OrderNumberDispLabel.Text = order.OrderNumber.ToString();
-            PlannedStartTimeDispLabel.Text = order.OrderStartTime.ToString("yyyy/MM/dd hh:mm:ss");
-            PlannedEndTimeDispLabel.Text = order.OrderStartTime.AddHours(1).ToString("yyyy/MM/dd hh:mm:ss");
-            ContainerAmountDispLabel.Text = order.VialAmount.ToString();
-            ContainerTypeDispLabel.Text = order.VialType.ToString();
+            CustomerDispLabel.Text = order.OrderCustomer;
+            OrderStateDispLabel.Text = order.OrderState.ToString();
+            PlannedStartTimeDispLabel.Text = order.OrderPlannedStartTime.ToString("yyyy/MM/dd hh:mm:ss");
+            PlannedEndTimeDispLabel.Text = order.OrderPlannedStartTime.AddHours(1).ToString("yyyy/MM/dd hh:mm:ss");
+            ContainerAmountDispLabel.Text = order.ContainerAmount.ToString();
+            ContainerTypeDispLabel.Text = order.ContainerType.ToString();
+            CarrierAmountDispLabel.Text = order.CarriersTotal.ToString();
 
             CarrierTreeView.Nodes.Clear();
 
             foreach(var carrier in order.CarriersInOrder)
             {
                 TreeNode carrierNode = new TreeNode();
-                String carrierNodeString = "CID: " + carrier.CarrierID + " | Amount: " + carrier.VialAmount + " | State: " + carrier.CarrierState;
+                String carrierNodeString = "CID: " + carrier.CarrierID + " | Amount: " + carrier.ContainerAmount + " | State: " + carrier.CarrierState;
                 if(carrier.CarrierState == OrderState.DONE)
                 {
                     carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss") + " | End: " + carrier.EndTime.ToString("yyyy/MM/dd hh:mm:ss");

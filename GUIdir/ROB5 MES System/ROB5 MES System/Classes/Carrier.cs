@@ -11,8 +11,8 @@ namespace ROB5_MES_System
         private OrderState _state;
         private int _quantityOfTasks;
         private int _quantityOfCompletedTasks;
-        private int _vialAmount; // brugt
-        private string _vialType;
+        private int _containerAmount; // brugt
+        private string _containerType;
         private DateTime _startTime; // brugt
         private DateTime _endTime; // brugt
         private LinkedList<Task> _taskQueue; // brugt
@@ -138,25 +138,25 @@ namespace ROB5_MES_System
             }
         }
 
-        public int VialAmount
+        public int ContainerAmount
         {
-            get { return _vialAmount; }
+            get { return _containerAmount; }
             set
             {
                 if (value <= 0)
-                    throw new ArgumentOutOfRangeException("Vial amount must be greater than 0.");
-                _vialAmount = value;
+                    throw new ArgumentOutOfRangeException("Container amount must be greater than 0.");
+                _containerAmount = value;
             }
         }
 
-        public string VialType
+        public string ContainerType
         {
-            get { return _vialType; }
+            get { return _containerType; }
             set
             {
                 if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Vial type cannot be null or empty.");
-                _vialType = value;
+                    throw new ArgumentNullException("Container type cannot be null or empty.");
+                _containerType = value;
             }
         }
 
@@ -206,7 +206,7 @@ namespace ROB5_MES_System
             }
         }
 
-        public Carrier(int id, int vialAmount, string vialType, int orderId)
+        public Carrier(int id, int containerAmount, string containerType, int orderId)
         {
             _taskQueue = new LinkedList<Task>();
             _completedTasks = new LinkedList<Task>();
@@ -214,8 +214,8 @@ namespace ROB5_MES_System
             _quantityOfCompletedTasks = 0;
             _id = id;
             _orderId = orderId;
-            _vialAmount = vialAmount;
-            _vialType = vialType;
+            _containerAmount = containerAmount;
+            _containerType = containerType;
         }
     }
 }

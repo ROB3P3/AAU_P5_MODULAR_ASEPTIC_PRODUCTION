@@ -27,14 +27,25 @@ namespace ROB5_MES_System
             currentOrdersDataGrid.DataSource = null;
             currentOrdersDataGrid.DataSource = MainWindowForm.mesSystem.Orders.ToList();
 
+            currentOrdersDataGrid.Columns["OrderNumber"].HeaderText = "Order Number";
+            currentOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
+            currentOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
+            currentOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
+            currentOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
+            currentOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
+            currentOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
+            currentOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
+            currentOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
+            currentOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+            currentOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
             currentOrdersDataGrid.Columns["OrderName"].Visible = false;
             currentOrdersDataGrid.Columns["OrderDescription"].Visible = false;
             currentOrdersDataGrid.Columns["OrderType"].Visible = false;
-            currentOrdersDataGrid.Columns["VialsInProduction"].Visible = false;
-            currentOrdersDataGrid.Columns["VialsProduced"].Visible = false;
+            currentOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
+            currentOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             currentOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
         }
 
@@ -77,7 +88,7 @@ namespace ROB5_MES_System
             if (e.Button == MouseButtons.Left && rightClickedCell != null)
             {
                 Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
-                if(clickedOrder.OrderState != OrderState.BUSY)
+                if (clickedOrder.OrderState != OrderState.BUSY)
                 {
                     MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
                     MainWindowForm.mesSystem.PlannedOrders.AddLast(clickedOrder);
@@ -128,14 +139,14 @@ namespace ROB5_MES_System
         // event function for the disable all orders button
         private void DisableAllOrdersButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-                if(MainWindowForm.mesSystem.Orders.Count > 0)
+                if (MainWindowForm.mesSystem.Orders.Count > 0)
                 {
                     MessageBoxButtons messageBoxButtons = MessageBoxButtons.YesNo;
                     DialogResult result = MessageBox.Show("Are you sure you want to disable all orders?", "Disable All Orders", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if(result == DialogResult.Yes)
+                    if (result == DialogResult.Yes)
                     {
                         var currentNode = MainWindowForm.mesSystem.Orders.First;
 
@@ -153,7 +164,7 @@ namespace ROB5_MES_System
                         RefreshOrders();
 
                         PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
-                        if(plannedOrdersForm != null)
+                        if (plannedOrdersForm != null)
                         {
                             plannedOrdersForm.RefreshOrders();
                         }

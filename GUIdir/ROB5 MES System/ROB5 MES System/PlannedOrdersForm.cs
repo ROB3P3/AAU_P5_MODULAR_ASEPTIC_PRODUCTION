@@ -24,14 +24,25 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.DataSource = null;
             plannedOrdersDataGrid.DataSource = MainWindowForm.mesSystem.PlannedOrders.ToList();
 
+            plannedOrdersDataGrid.Columns["OrderNumber"].HeaderText = "Order Number";
+            plannedOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
+            plannedOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
+            plannedOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
+            plannedOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
+            plannedOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
+            plannedOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
+            plannedOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
+            plannedOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
+            plannedOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+            plannedOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             plannedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             plannedOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
             plannedOrdersDataGrid.Columns["OrderName"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderDescription"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderType"].Visible = false;
-            plannedOrdersDataGrid.Columns["VialsInProduction"].Visible = false;
-            plannedOrdersDataGrid.Columns["VialsProduced"].Visible = false;
+            plannedOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
+            plannedOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             plannedOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
         }
 

@@ -103,7 +103,7 @@ namespace ROB5_MES_System
             set
             {
                 if (value <= 0)
-                    throw new ArgumentNullException("number of vials is less than 0");
+                    throw new ArgumentNullException("Number of containers is less than 0");
                 _itemsInCarrier = value;
             }
         }
