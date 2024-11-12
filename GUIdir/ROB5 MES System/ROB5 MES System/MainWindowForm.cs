@@ -1,24 +1,19 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        // orders that are currently in queue to be processed
-        public static List<Order> currentOrders { get; set; }
-        // orders that are planned to be processed
-        public static List<Order> plannedOrders { get; set; }
-        // orders that have been processed - pull this data from database upon initialization of program
-        // then update it as orders are processed
-        public static List<Order> finishedOrders { get; set; }
+        public static MESSystem mesSystem;
         // applications/modules that are connected to the system
         public static List<ApplicationClass> applications { get; set; }
         public MainWindowForm()
         {
-            currentOrders = GetOrders();
-            plannedOrders = GetOrders();
+            mesSystem = new MESSystem();
+
             applications = GetApplications();
             InitializeComponent();
 
@@ -29,21 +24,6 @@ namespace ROB5_MES_System
             timer.Start();
 
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
-        }
-
-        // function to test order list by manually adding orders
-        // can change function to pull finished/planned/current orders from database upon initialization
-        private List<Order>? GetOrders()
-        {
-            var orderList = new List<Order>();
-
-            orderList.Add(new Order() { OrderID = 0, StartTime = DateTime.Now, EndTime = DateTime.Now, ContainerAmount = 10, ContainerType = "vials", CompanyName = "N/A", State = OrderState.DONE });
-            orderList.Add(new Order() { OrderID = 1, StartTime = DateTime.Now, EndTime = DateTime.Now, ContainerAmount = 29, ContainerType = "pre-filled syringes", CompanyName = "N/A", State = OrderState.PEND });
-            orderList.Add(new Order() { OrderID = 2, StartTime = DateTime.Now, EndTime = DateTime.Now, ContainerAmount = 100, ContainerType = "syringes", CompanyName = "N/A", State = OrderState.PEND });
-            orderList.Add(new Order() { OrderID = 3, StartTime = DateTime.Now, EndTime = DateTime.Now, ContainerAmount = 1, ContainerType = "vials", CompanyName = "N/A", State = OrderState.BUSY });
-            orderList.Add(new Order() { OrderID = 4, StartTime = DateTime.Now, EndTime = DateTime.Now, ContainerAmount = 5, ContainerType = "syringes", CompanyName = "N/A", State = OrderState.DONE });
-
-            return orderList;
         }
 
         // function to test application list by manually adding applications
@@ -203,6 +183,28 @@ namespace ROB5_MES_System
             {
                 workPlansForm.Activate();
             }
+        }
+
+        // function to show the order details form
+        private static OrderForm orderForm;
+        public static void ShowOrderForm(Order clickedOrder, Form mdiParent)
+        {
+            if (orderForm == null || orderForm.IsDisposed)
+            {
+                orderForm = new OrderForm();
+                orderForm.MdiParent = mdiParent;
+                orderForm.Show();
+            }
+            else
+            {
+                orderForm.BringToFront();
+            }
+            orderForm.UpdateOrderForm(clickedOrder);
+        }
+
+        public static Order getOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)
+        {
+            return mesSystem.GetOrderAtIndex(cell.RowIndex, list);
         }
     }
 }
