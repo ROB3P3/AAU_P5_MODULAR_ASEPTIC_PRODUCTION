@@ -15,8 +15,8 @@ namespace databaseSQL
             string db_host = "localhost";
             string db_user = "anton";
             string db_password = "anton";
-            string db_name = "pets";  
-            
+            string db_name = "pets";
+
             database db = new database(db_host, db_user, db_password, db_name);
 
             db.create_table_order();
@@ -29,7 +29,7 @@ namespace databaseSQL
                     1, 2, 1,
                     1, 2, 2, "modul_used");
 
-            db.insert_data_production(2,2,"sus","df");
+            db.insert_data_production(2, 2, "sus", "df");
 
             Console.WriteLine("jeg er færdig");
 

@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.Collections;
 using MySql.Data.MySqlClient;
 using System;
+using System.Data.SqlClient;
 
 namespace databaseSQL
 {
@@ -42,13 +43,14 @@ namespace databaseSQL
                     company VARCHAR(255),
                     medicine_type VARCHAR(255)
                 );
-            ";
-            
+            "
+            ;
+
             MySqlCommand cmd = new MySqlCommand(createTableOrder, mysql);
             cmd.ExecuteNonQuery();
             Console.WriteLine("orderData table created");
 
-            
+
 
         }
 
@@ -73,15 +75,16 @@ namespace databaseSQL
                 carrier_id INT,
                 modul_used VARCHAR(255)
                 );
-            ";
+            "
+            ;
 
-       
+
             MySqlCommand cmd = new MySqlCommand(createTableProduction, mysql);
             cmd.ExecuteNonQuery();
             Console.WriteLine("table production created ");
 
 
-           
+
 
         }
 
@@ -91,7 +94,7 @@ namespace databaseSQL
                     int end_time_modul_1, int used_time_modul_1, int start_time_modul_2,
                     int end_time_modul_2, int used_time_modul_2, int carrier_id, string modul_used)
         {
-            string insertData= @"
+            string insertData = @"
             INSERT INTO nejnej (
                 order_number, type_container, amount_in_carrier,
                 start_time_full_system, end_time_full_system,
@@ -107,7 +110,7 @@ namespace databaseSQL
                 @usedTimeModule2, @carrierId, @moduleUsed
             );";
             // Ensure the connection is open before executing the command
-            
+
 
             MySqlCommand cmd = new MySqlCommand(insertData, mysql);
 
@@ -128,7 +131,7 @@ namespace databaseSQL
 
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into order");
-            
+
 
 
         }
@@ -145,19 +148,18 @@ namespace databaseSQL
             VALUES (
                 @orderNumber, @amount, @company,
                 @medicineType
-            );";
-            
-
+            );"
+            ;
             MySqlCommand cmd = new MySqlCommand(insertDataProduction, mysql);
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
             cmd.Parameters.AddWithValue("amount", amount);
             cmd.Parameters.AddWithValue("company", company);
             cmd.Parameters.AddWithValue("medicineType", medicine_type);
-            
+
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into production");
-            
+
 
 
 
@@ -171,7 +173,7 @@ namespace databaseSQL
 
 
 
-       
-            
+
+
     }
 }
