@@ -181,28 +181,7 @@ namespace databaseSQL
                 Console.WriteLine("close server");
         }
 
-        public int get_order_number()
-        {   
-            connection();
-            Console.WriteLine("virker");
-            string get_order_number = "SELECT order_number FROM nejnej ORDER BY id DESC LIMIT 1;";
-            MySqlCommand cmd = new MySqlCommand(get_order_number, mysql);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            Console.WriteLine("virker");
-
-            int latest_Order_number = 0;
-            while (rdr.Read())
-            {
-
-                latest_Order_number = Convert.ToInt32(rdr[0]); 
-                Console.WriteLine(latest_Order_number);
-            }
-            rdr.Close();
-            database_close();
-            return latest_Order_number;  
-            
-        }
-
+        
 
 
 
