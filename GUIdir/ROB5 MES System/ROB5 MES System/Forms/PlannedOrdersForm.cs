@@ -27,8 +27,6 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.Columns["OrderNumber"].HeaderText = "Order Number";
             plannedOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
             plannedOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
-            plannedOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
-            plannedOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
             plannedOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
             plannedOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
             plannedOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
@@ -44,6 +42,8 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.Columns["OrderName"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderDescription"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderType"].Visible = false;
+            plannedOrdersDataGrid.Columns["OrderStartTime"].Visible = false;
+            plannedOrdersDataGrid.Columns["OrderEndTime"].Visible = false;
             plannedOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
             plannedOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             plannedOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
