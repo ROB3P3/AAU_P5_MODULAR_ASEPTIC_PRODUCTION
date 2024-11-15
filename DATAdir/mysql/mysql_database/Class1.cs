@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace databaseSQL
 {
@@ -28,8 +29,11 @@ namespace databaseSQL
         {
             string myConnectionString = "server=" + this._db_host + ";uid=" + this._db_user + ";pwd=" + this._db_password + ";database=" + this._db_name;
             mysql = new MySqlConnection(myConnectionString);
-            mysql.Open();
-            Console.WriteLine("open server");
+            if (mysql.State != ConnectionState.Open) {
+                mysql.Open();
+                Console.WriteLine("open server");
+            }
+                
         }
 
 
@@ -45,10 +49,14 @@ namespace databaseSQL
                 );
             "
             ;
+            connection();
 
             MySqlCommand cmd = new MySqlCommand(createTableOrder, mysql);
             cmd.ExecuteNonQuery();
             Console.WriteLine("orderData table created");
+
+            database_close();
+
 
 
 
@@ -77,13 +85,13 @@ namespace databaseSQL
                 );
             "
             ;
-
+            connection();
 
             MySqlCommand cmd = new MySqlCommand(createTableProduction, mysql);
             cmd.ExecuteNonQuery();
             Console.WriteLine("table production created ");
 
-
+            database_close();
 
 
         }
@@ -111,6 +119,7 @@ namespace databaseSQL
             );";
             // Ensure the connection is open before executing the command
 
+            connection();
 
             MySqlCommand cmd = new MySqlCommand(insertData, mysql);
 
@@ -132,7 +141,7 @@ namespace databaseSQL
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into order");
 
-
+            database_close();   
 
         }
 
@@ -150,6 +159,9 @@ namespace databaseSQL
                 @medicineType
             );"
             ;
+
+            connection();
+
             MySqlCommand cmd = new MySqlCommand(insertDataProduction, mysql);
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
@@ -159,15 +171,36 @@ namespace databaseSQL
 
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into production");
+            database_close();   
+        }
+        public void database_close()
+        {
+            if (mysql.State == ConnectionState.Open)
 
+                mysql.Close();
+                Console.WriteLine("close server");
+        }
 
+        public int get_order_number()
+        {   
+            connection();
+            Console.WriteLine("virker");
+            string get_order_number = "SELECT order_number FROM nejnej ORDER BY id DESC LIMIT 1;";
+            MySqlCommand cmd = new MySqlCommand(get_order_number, mysql);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            Console.WriteLine("virker");
 
+            int latest_Order_number = 0;
+            while (rdr.Read())
+            {
 
-
-
-
-
-
+                latest_Order_number = Convert.ToInt32(rdr[0]); 
+                Console.WriteLine(latest_Order_number);
+            }
+            rdr.Close();
+            database_close();
+            return latest_Order_number;  
+            
         }
 
 
@@ -175,5 +208,15 @@ namespace databaseSQL
 
 
 
+
+
+
     }
+
+
+
+
+
+
+    
 }

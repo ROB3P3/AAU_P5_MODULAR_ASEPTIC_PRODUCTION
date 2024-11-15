@@ -31,7 +31,11 @@ namespace databaseSQL
 
             db.insert_data_production(2, 2, "sus", "df");
 
+            db.get_order_number();
+
             Console.WriteLine("jeg er færdig");
+
+
 
 
         }
