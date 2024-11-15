@@ -46,7 +46,7 @@
             currentOrdersDataGrid.AllowUserToResizeColumns = false;
             currentOrdersDataGrid.AllowUserToResizeRows = false;
             currentOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            currentOrdersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            currentOrdersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             currentOrdersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             currentOrdersDataGrid.Location = new Point(14, 13);
             currentOrdersDataGrid.Margin = new Padding(3, 4, 3, 4);
@@ -94,18 +94,19 @@
             // 
             // DeleteAllOrdersButton
             // 
-            DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             DeleteAllOrdersButton.Location = new Point(14, 449);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
-            DeleteAllOrdersButton.Size = new Size(136, 29);
+            DeleteAllOrdersButton.Size = new Size(194, 29);
             DeleteAllOrdersButton.TabIndex = 1;
-            DeleteAllOrdersButton.Text = "Delete all orders";
+            DeleteAllOrdersButton.Text = "Delete all orders in queue";
             DeleteAllOrdersButton.UseVisualStyleBackColor = true;
             DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
             // 
             // DisableAllOrdersButton
             // 
-            DisableAllOrdersButton.Location = new Point(156, 449);
+            DisableAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            DisableAllOrdersButton.Location = new Point(214, 449);
             DisableAllOrdersButton.Name = "DisableAllOrdersButton";
             DisableAllOrdersButton.Size = new Size(139, 29);
             DisableAllOrdersButton.TabIndex = 2;
