@@ -20,14 +20,16 @@ namespace OPCUA
         // Create the endpoint
         var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
 
-            // Connect to the server, read 2 nodes and write a new value to another node
-            using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
+
+        // Connect to the server, read 2 nodes and write a new value to another node
+        using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
         {
             DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.PLCid", "PLCid");
             DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "AppType");
             ModifyNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "CarrierID");
         }
-    }
+
+
 
         private static ApplicationConfiguration CreateApplicationConfiguration()
         {
