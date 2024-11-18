@@ -23,13 +23,14 @@ namespace databaseSQL
 
             db.create_table_production();
 
-            db.insert_data_order(3, "string type_container", 3,
-                    2, 1,
-                    2, 1,
-                    1, 2, 1,
-                    1, 2, 2, "modul_used");
+            db.insert_data_production(3, "type_container", 3,
+                    2, 1, 2,
+                    DateTime.Now, DateTime.Now.AddHours(1),2,
+                    DateTime.Now, DateTime.Now.AddHours(2), 1,
+                    1, "type_container");
 
-            db.insert_data_production(3, 200, "sus", "df");
+            /*
+            db.insert_data_order(3, 200, "sus", "df");
 
             int latest_ordernummer=db.get_order_number();
 
@@ -37,7 +38,8 @@ namespace databaseSQL
 
             db.amount_left(latest_ordernummer, amount);
             
-            db.delete_order(latest_ordernummer);
+            db.delete_order(latest_ordernummer);*/
+
 
 
 

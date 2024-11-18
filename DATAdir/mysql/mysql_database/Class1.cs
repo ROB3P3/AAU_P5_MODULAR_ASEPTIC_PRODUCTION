@@ -1,10 +1,9 @@
-﻿using Google.Protobuf.Collections;
+﻿
 using MySql.Data.MySqlClient;
 using System;
-using System.Data.SqlClient;
+
 using System.Data;
-using System.Security.Cryptography;
-using Org.BouncyCastle.Asn1.X500;
+
 
 namespace databaseSQL
 {
@@ -69,86 +68,83 @@ namespace databaseSQL
         {
             // Define your CREATE TABLE SQL query
             string createTableProduction = @"
-                CREATE TABLE IF NOT EXISTS nejnej (
-                order_number INT,
-                type_container VARCHAR(255),
-                amount_in_carrier INT,
-                start_time_full_system INT,
-                end_time_full_system INT,
-                Manufacturing_Lead_Time INT,
-                start_time_modul_1 INT,
-                end_time_modul_1 INT,
-                used_time_modul_1 INT,
-                start_time_modul_2 INT,
-                end_time_modul_2 INT,
-                used_time_modul_2 INT,
-                carrier_id INT,
-                modul_used VARCHAR(255)
-                );
-            "
-            ;
+            CREATE TABLE IF NOT EXISTS nejnej (
+            order_number INT,
+            type_container VARCHAR(255),
+            amount_in_carrier INT,
+            start_time_full_system INT,
+            end_time_full_system INT,
+            Manufacturing_Lead_Time INT,
+            start_time_modul_1 DATETIME,  
+            end_time_modul_1 DATETIME,    
+            used_time_modul_1 INT,
+            start_time_modul_2 DATETIME,  
+            end_time_modul_2 DATETIME,   
+            used_time_modul_2 INT,
+            carrier_id INT,
+            modul_used VARCHAR(255)
+        );
+    ";
             connection();
 
             MySqlCommand cmd = new MySqlCommand(createTableProduction, mysql);
             cmd.ExecuteNonQuery();
-            Console.WriteLine("table production created ");
+            Console.WriteLine("Table production created");
 
             database_close();
-
-
         }
 
-        public void insert_data_order(int order_number, string type_container, int amount_in_carrier,
-                    int start_time_full_system, int end_time_full_system,
-                    int manufacturing_lead_time, int start_time_modul_1,
-                    int end_time_modul_1, int used_time_modul_1, int start_time_modul_2,
-                    int end_time_modul_2, int used_time_modul_2, int carrier_id, string modul_used)
+        public void insert_data_production(int order_number, string container_type, int amount_in_carrier,
+            int start_time_full_system, int end_time_full_system,
+            int manufacturing_lead_time, DateTime start_time_modul_1,  
+            DateTime end_time_modul_1,    
+            int used_time_modul_1, DateTime start_time_modul_2,  
+            DateTime end_time_modul_2,
+            int used_time_modul_2, int carrier_id, string modul_used)
         {
             string insertData = @"
-            INSERT INTO nejnej (
-                order_number, type_container, amount_in_carrier,
-                start_time_full_system, end_time_full_system,
-                Manufacturing_Lead_Time, start_time_modul_1, end_time_modul_1,
-                used_time_modul_1, start_time_modul_2, end_time_modul_2,
-                used_time_modul_2, carrier_id, modul_used
-            )
-            VALUES (
-                @orderNumber, @typeContainer, @amountInCarrier,
-                @startTimeFullSystem, @endTimeFullSystem,
-                @manufacturingLeadTime, @startTimeModule1, @endTimeModule1,
-                @usedTimeModule1, @startTimeModule2, @endTimeModule2,
-                @usedTimeModule2, @carrierId, @moduleUsed
-            );";
-            // Ensure the connection is open before executing the command
+    INSERT INTO nejnej (
+        order_number, container_type, amount_in_carrier,
+        start_time_full_system, end_time_full_system,
+        Manufacturing_Lead_Time, start_time_modul_1, end_time_modul_1,
+        used_time_modul_1, start_time_modul_2, end_time_modul_2,
+        used_time_modul_2, carrier_id, modul_used
+    )
+    VALUES (
+        @orderNumber, @typeContainer, @amountInCarrier,
+        @startTimeFullSystem, @endTimeFullSystem,
+        @manufacturingLeadTime, @startTimeModule1, @endTimeModule1,
+        @usedTimeModule1, @startTimeModule2, @endTimeModule2,
+        @usedTimeModule2, @carrierId, @moduleUsed
+    );";
 
             connection();
 
             MySqlCommand cmd = new MySqlCommand(insertData, mysql);
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
-            cmd.Parameters.AddWithValue("typeContainer", type_container);
+            cmd.Parameters.AddWithValue("typeContainer", container_type);
             cmd.Parameters.AddWithValue("amountInCarrier", amount_in_carrier);
             cmd.Parameters.AddWithValue("startTimeFullSystem", start_time_full_system);
             cmd.Parameters.AddWithValue("endTimeFullSystem", end_time_full_system);
             cmd.Parameters.AddWithValue("manufacturingLeadTime", manufacturing_lead_time);
-            cmd.Parameters.AddWithValue("startTimeModule1", start_time_modul_1);
-            cmd.Parameters.AddWithValue("endTimeModule1", end_time_modul_1);
+            cmd.Parameters.AddWithValue("startTimeModule1", start_time_modul_1);  // Pass DateTime
+            cmd.Parameters.AddWithValue("endTimeModule1", end_time_modul_1);    // Pass DateTime
             cmd.Parameters.AddWithValue("usedTimeModule1", used_time_modul_1);
-            cmd.Parameters.AddWithValue("startTimeModule2", start_time_modul_2);
-            cmd.Parameters.AddWithValue("endTimeModule2", end_time_modul_2);
+            cmd.Parameters.AddWithValue("startTimeModule2", start_time_modul_2);  // Pass DateTime
+            cmd.Parameters.AddWithValue("endTimeModule2", end_time_modul_2);    // Pass DateTime
             cmd.Parameters.AddWithValue("usedTimeModule2", used_time_modul_2);
             cmd.Parameters.AddWithValue("carrierId", carrier_id);
             cmd.Parameters.AddWithValue("moduleUsed", modul_used);
 
             cmd.ExecuteNonQuery();
-            Console.WriteLine("Data Inserted Into order");
+            Console.WriteLine("Data Inserted Into production");
 
             database_close();
-
         }
 
 
-        public void insert_data_production(int order_number, int amount, string company,
+        public void insert_data_order(int order_number, int amount, string company,
                     string medicine_type)
         {
             string insertDataProduction = @"
@@ -255,7 +251,7 @@ namespace databaseSQL
         {   connection();
             string delete_order = "DELETE FROM hahah WHERE order_number = @input_order_delete;";
             MySqlCommand cmd = new MySqlCommand(delete_order, mysql);
-            cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);  // Correct parameter name
+            cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);  
             cmd.ExecuteNonQuery();
             database_close();
         }
