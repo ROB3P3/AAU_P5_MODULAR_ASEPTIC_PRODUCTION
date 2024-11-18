@@ -3,6 +3,8 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data.SqlClient;
 using System.Data;
+using System.Security.Cryptography;
+using Org.BouncyCastle.Asn1.X500;
 
 namespace databaseSQL
 {
@@ -33,7 +35,7 @@ namespace databaseSQL
                 mysql.Open();
                 Console.WriteLine("open server");
             }
-                
+
         }
 
 
@@ -141,7 +143,7 @@ namespace databaseSQL
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into order");
 
-            database_close();   
+            database_close();
 
         }
 
@@ -171,23 +173,24 @@ namespace databaseSQL
 
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into production");
-            database_close();   
+            database_close();
         }
         public void database_close()
         {
             if (mysql.State == ConnectionState.Open)
 
                 mysql.Close();
-                Console.WriteLine("close server");
+            Console.WriteLine("close server");
         }
+
         public int get_order_number()
         {
             connection();
-            Console.WriteLine("virker");
-            string get_order_number = "SELECT order_number FROM nejnej ORDER BY id DESC LIMIT 1;";
+            Console.WriteLine("starter get_order_number");
+            string get_order_number = "SELECT order_number FROM nejnej ORDER BY order_number DESC LIMIT 1; ";
             MySqlCommand cmd = new MySqlCommand(get_order_number, mysql);
             MySqlDataReader rdr = cmd.ExecuteReader();
-            Console.WriteLine("virker");
+
 
             int latest_Order_number = 0;
             while (rdr.Read())
@@ -200,6 +203,61 @@ namespace databaseSQL
             database_close();
             return latest_Order_number;
 
+        }
+
+        public int amount(int latest_Order_number)
+        {
+            connection();
+            Console.WriteLine("starter getamount");
+            string get_amount = "SELECT amount FROM hahah WHERE order_number = @latest_Order_number;";
+
+
+            MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
+            cmd.Parameters.AddWithValue("@latest_Order_number", latest_Order_number);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+
+            int amountInOrder = 0;
+            if (rdr.Read()) // Move to the first row of results
+            {
+                amountInOrder = rdr.GetInt32("amount"); // Read the value
+                Console.WriteLine("Amount in Carrier: " + amountInOrder);
+            }
+            rdr.Close();
+            database_close();
+            return amountInOrder;
+        }
+
+        public int amount_left(int latest_Order_number, int amountInOrder)
+        {
+            connection();
+            Console.WriteLine("starter amount left");
+
+            string get_amount = "SELECT amount_in_carrier FROM nejnej WHERE order_number = @latest_Order_number;";
+            MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
+            cmd.Parameters.AddWithValue("@latest_Order_number", latest_Order_number);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+            int carrier_in_carrier = 0;
+            while (rdr.Read()) // Move to the first row of results
+            {
+                carrier_in_carrier = rdr.GetInt32("amount_in_carrier"); 
+                amountInOrder = amountInOrder - carrier_in_carrier;
+                Console.WriteLine("Amount in Carrier: " + carrier_in_carrier);
+            }
+            rdr.Close();
+            database_close();
+            Console.WriteLine(amountInOrder);
+            return amountInOrder;
+        }
+
+        public void delete_order(int input_order_delete)
+        {   connection();
+            string delete_order = "DELETE FROM hahah WHERE order_number = @input_order_delete;";
+            MySqlCommand cmd = new MySqlCommand(delete_order, mysql);
+            cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);  // Correct parameter name
+            cmd.ExecuteNonQuery();
+            database_close();
         }
 
 

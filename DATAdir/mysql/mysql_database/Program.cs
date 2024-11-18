@@ -23,17 +23,28 @@ namespace databaseSQL
 
             db.create_table_production();
 
-            db.insert_data_order(8, "string type_container", 3,
+            db.insert_data_order(3, "string type_container", 3,
                     2, 1,
                     2, 1,
                     1, 2, 1,
                     1, 2, 2, "modul_used");
 
-            db.insert_data_production(2, 2, "sus", "df");
+            db.insert_data_production(3, 200, "sus", "df");
 
-            db.get_order_number();
+            int latest_ordernummer=db.get_order_number();
 
-            Console.WriteLine("jeg er færdig");
+            int amount=db.amount(latest_ordernummer);
+
+            db.amount_left(latest_ordernummer, amount);
+            
+            db.delete_order(latest_ordernummer);
+
+
+
+
+
+
+
 
 
 
