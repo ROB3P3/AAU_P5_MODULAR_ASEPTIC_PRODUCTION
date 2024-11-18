@@ -128,11 +128,11 @@ namespace databaseSQL
             cmd.Parameters.AddWithValue("startTimeFullSystem", start_time_full_system);
             cmd.Parameters.AddWithValue("endTimeFullSystem", end_time_full_system);
             cmd.Parameters.AddWithValue("manufacturingLeadTime", manufacturing_lead_time);
-            cmd.Parameters.AddWithValue("startTimeModule1", start_time_modul_1);  // Pass DateTime
-            cmd.Parameters.AddWithValue("endTimeModule1", end_time_modul_1);    // Pass DateTime
+            cmd.Parameters.AddWithValue("startTimeModule1", start_time_modul_1);  
+            cmd.Parameters.AddWithValue("endTimeModule1", end_time_modul_1);    
             cmd.Parameters.AddWithValue("usedTimeModule1", used_time_modul_1);
-            cmd.Parameters.AddWithValue("startTimeModule2", start_time_modul_2);  // Pass DateTime
-            cmd.Parameters.AddWithValue("endTimeModule2", end_time_modul_2);    // Pass DateTime
+            cmd.Parameters.AddWithValue("startTimeModule2", start_time_modul_2); 
+            cmd.Parameters.AddWithValue("endTimeModule2", end_time_modul_2);    
             cmd.Parameters.AddWithValue("usedTimeModule2", used_time_modul_2);
             cmd.Parameters.AddWithValue("carrierId", carrier_id);
             cmd.Parameters.AddWithValue("moduleUsed", modul_used);

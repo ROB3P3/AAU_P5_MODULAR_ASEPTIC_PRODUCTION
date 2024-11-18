@@ -29,7 +29,7 @@ namespace databaseSQL
                     DateTime.Now, DateTime.Now.AddHours(2), 1,
                     1, "type_container");
 
-            /*
+            
             db.insert_data_order(3, 200, "sus", "df");
 
             int latest_ordernummer=db.get_order_number();
@@ -38,7 +38,7 @@ namespace databaseSQL
 
             db.amount_left(latest_ordernummer, amount);
             
-            db.delete_order(latest_ordernummer);*/
+            db.delete_order(latest_ordernummer);
 
 
 
