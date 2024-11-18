@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             dataGridView1 = new DataGridView();
+            label1 = new Label();
+            fromDateTimePicker = new DateTimePicker();
+            label2 = new Label();
+            toDateTimePicker = new DateTimePicker();
+            showAllCheckBox = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -36,27 +41,88 @@
             // 
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 12);
+            dataGridView1.Location = new Point(12, 48);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(574, 422);
-            dataGridView1.TabIndex = 0;
+            dataGridView1.Size = new Size(574, 381);
+            dataGridView1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 18);
+            label1.Name = "label1";
+            label1.Size = new Size(46, 20);
+            label1.TabIndex = 1;
+            label1.Text = "From:";
+            // 
+            // fromDateTimePicker
+            // 
+            fromDateTimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            fromDateTimePicker.Format = DateTimePickerFormat.Custom;
+            fromDateTimePicker.Location = new Point(62, 15);
+            fromDateTimePicker.Name = "fromDateTimePicker";
+            fromDateTimePicker.Size = new Size(190, 27);
+            fromDateTimePicker.TabIndex = 0;
+            fromDateTimePicker.Value = new DateTime(2024, 11, 14, 11, 23, 11, 0);
+            fromDateTimePicker.ValueChanged += fromDateTimePicker_ValueChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(295, 18);
+            label2.Name = "label2";
+            label2.Size = new Size(28, 20);
+            label2.TabIndex = 3;
+            label2.Text = "To:";
+            // 
+            // toDateTimePicker
+            // 
+            toDateTimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            toDateTimePicker.Format = DateTimePickerFormat.Custom;
+            toDateTimePicker.Location = new Point(328, 15);
+            toDateTimePicker.Name = "toDateTimePicker";
+            toDateTimePicker.Size = new Size(190, 27);
+            toDateTimePicker.TabIndex = 1;
+            toDateTimePicker.ValueChanged += toDateTimePicker_ValueChanged;
+            // 
+            // showAllCheckBox
+            // 
+            showAllCheckBox.AutoSize = true;
+            showAllCheckBox.Location = new Point(12, 442);
+            showAllCheckBox.Name = "showAllCheckBox";
+            showAllCheckBox.Size = new Size(189, 24);
+            showAllCheckBox.TabIndex = 5;
+            showAllCheckBox.Text = "Show all finished orders";
+            showAllCheckBox.UseVisualStyleBackColor = true;
+            showAllCheckBox.CheckedChanged += showAllCheckBox_CheckedChanged;
             // 
             // FinishedOrdersForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(598, 446);
+            ClientSize = new Size(598, 478);
+            Controls.Add(showAllCheckBox);
+            Controls.Add(toDateTimePicker);
+            Controls.Add(label2);
+            Controls.Add(fromDateTimePicker);
+            Controls.Add(label1);
             Controls.Add(dataGridView1);
             Name = "FinishedOrdersForm";
             Text = "Finished Orders";
             Load += FinishedOrders_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dataGridView1;
+        private Label label1;
+        private DateTimePicker fromDateTimePicker;
+        private Label label2;
+        private DateTimePicker toDateTimePicker;
+        private CheckBox showAllCheckBox;
     }
 }

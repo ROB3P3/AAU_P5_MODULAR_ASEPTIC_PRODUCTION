@@ -157,7 +157,7 @@ namespace ROB5_MES_System
         private OperationsForm operationsForm;
         private void OperationsSubMenuItem_Click(object sender, EventArgs e)
         {
-            if(operationsForm == null || operationsForm.IsDisposed)
+            if (operationsForm == null || operationsForm.IsDisposed)
             {
                 operationsForm = new OperationsForm();
                 operationsForm.MdiParent = this;
