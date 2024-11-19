@@ -2,7 +2,6 @@
 
 namespace ROB5_MES_System
 {
-    /* */
     public class Task
     {
         private string _taskName;
