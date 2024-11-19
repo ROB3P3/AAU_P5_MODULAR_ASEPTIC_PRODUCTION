@@ -9,12 +9,11 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace ROB5_MES_System.Classes
 {
-    class OPCUA
+    public class OPCUA
     {
-        static void Main(string[] args)
+        public OPCUA(string endpointUrl)
         {
-            // Setup the endpoint URL
-            var endpointUrl = "opc.tcp://172.20.13.1:4840";
+
             // Create the application configuration
             var applicationConfiguration = CreateApplicationConfiguration();
             // Create the endpoint

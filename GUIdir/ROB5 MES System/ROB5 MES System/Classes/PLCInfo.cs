@@ -54,9 +54,10 @@ namespace ROB5_MES_System.Classes
             set { _type = value; }
         }
 
-        private string GenerateNodeId(int id)
+        private string GenerateNodeId(int PLCid)
         {
-            return (id + 2).ToString();
+            // placeholder
+            return (PLCid + 2).ToString();
         }
 
         public PLCInfo(int id, int placement)
