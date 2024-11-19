@@ -27,13 +27,7 @@ namespace databaseSQL
 
             db.insert_data_order(2, 2, "start", "sus", "df");
 
-            //db.get_order_number();
-
             Console.WriteLine("jeg er færdig");
-
-
-
-
         }
     }
 }
