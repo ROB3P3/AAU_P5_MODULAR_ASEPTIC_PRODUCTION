@@ -303,6 +303,62 @@ namespace ROB5_MES_System.Classes
             return isEmpty;
         }
 
+        public int amount(int latest_Order_number)
+        {
+            connection();
+            Console.WriteLine("starter getamount");
+            string get_amount = "SELECT amount FROM hahah WHERE order_number = @latest_Order_number;";
+
+
+            MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
+            cmd.Parameters.AddWithValue("@latest_Order_number", latest_Order_number);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+
+            int amountInOrder = 0;
+            if (rdr.Read()) // Move to the first row of results
+            {
+                amountInOrder = rdr.GetInt32("amount"); // Read the value
+                Console.WriteLine("Amount in Carrier: " + amountInOrder);
+            }
+            rdr.Close();
+            database_close();
+            return amountInOrder;
+        }
+
+        public int amount_left(int latest_Order_number, int amountInOrder)
+        {
+            connection();
+            Console.WriteLine("starter amount left");
+
+            string get_amount = "SELECT amount_in_carrier FROM nejnej WHERE order_number = @latest_Order_number;";
+            MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
+            cmd.Parameters.AddWithValue("@latest_Order_number", latest_Order_number);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+
+            int carrier_in_carrier = 0;
+            while (rdr.Read()) // Move to the first row of results
+            {
+                carrier_in_carrier = rdr.GetInt32("amount_in_carrier");
+                amountInOrder = amountInOrder - carrier_in_carrier;
+                Console.WriteLine("Amount in Carrier: " + carrier_in_carrier);
+            }
+            rdr.Close();
+            database_close();
+            Console.WriteLine(amountInOrder);
+            return amountInOrder;
+        }
+
+        public void delete_order(int input_order_delete)
+        {
+            connection();
+            string delete_order = "DELETE FROM hahah WHERE order_number = @input_order_delete;";
+            MySqlCommand cmd = new MySqlCommand(delete_order, mysql);
+            cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);
+            cmd.ExecuteNonQuery();
+            database_close();
+        }
+
         public void database_close()
         {
             if (mysql.State == ConnectionState.Open)
