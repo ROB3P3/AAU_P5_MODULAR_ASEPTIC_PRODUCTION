@@ -24,7 +24,15 @@ namespace ROB5_MES_System
         {
             // load data from database here and display it in the dataGridView
             finishedOrdersDataGrid.DataSource = null;
-            finishedOrdersDataGrid.DataSource = MainWindowForm.database.get_finished_orders();
+            if (showAllCheckBox.Checked)
+            {
+                finishedOrdersDataGrid.DataSource = MainWindowForm.database.get_finished_orders();
+            }
+            else
+            {
+                finishedOrdersDataGrid.DataSource = MainWindowForm.database.get_finished_orders(fromDateTimePicker.Value, toDateTimePicker.Value);
+                finishedOrdersDataGrid.DataSource = MainWindowForm.database.get_finished_orders();
+            }
         }
 
         private void fromDateTimePicker_ValueChanged(object sender, EventArgs e)

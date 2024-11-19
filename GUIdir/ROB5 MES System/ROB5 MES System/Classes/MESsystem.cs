@@ -20,10 +20,9 @@ namespace ROB5_MES_System
         {
             _productionStatus = 1;
         }
-        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate)
+        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate, string medicineType)
         {
-            // Get current odre nr from DB and add one for the order 
-            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE);
+            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE, medicineType);
             _orders.AddLast(order);
             order.SendOrderInfoToDatabase();
         }

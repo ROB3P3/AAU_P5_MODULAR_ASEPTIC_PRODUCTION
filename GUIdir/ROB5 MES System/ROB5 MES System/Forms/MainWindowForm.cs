@@ -10,7 +10,7 @@ namespace ROB5_MES_System
         public static Database database = new Database("localhost", "root", "mysqltest", "production");
         public static MESSystem mesSystem;
         // applications/modules that are connected to the system
-        public static List<PLCInfo> plcs { get; set; } 
+        public static List<PLCInfo> plcs { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
@@ -30,6 +30,8 @@ namespace ROB5_MES_System
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
         }
 
+        // temporary function for adding modules ?
+        // maybe make a form for them ?
         public List<PLCInfo> plcList()
         {
             List<PLCInfo> plcList = new List<PLCInfo>();
@@ -207,6 +209,16 @@ namespace ROB5_MES_System
         public static Order getOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)
         {
             return mesSystem.GetOrderAtIndex(cell.RowIndex, list);
+        }
+
+        private void MainWindowForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            LinkedList<Order> allOrders = mesSystem.Orders;
+            foreach(var order in mesSystem.PlannedOrders)
+            {
+                allOrders.AddLast(order);
+            }
+            database.update_order_data(allOrders);
         }
     }
 }
