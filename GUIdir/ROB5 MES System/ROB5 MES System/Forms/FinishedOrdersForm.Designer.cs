@@ -28,24 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
+            finishedOrdersDataGrid = new DataGridView();
             label1 = new Label();
             fromDateTimePicker = new DateTimePicker();
             label2 = new Label();
             toDateTimePicker = new DateTimePicker();
             showAllCheckBox = new CheckBox();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)finishedOrdersDataGrid).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // finishedOrdersDataGrid
             // 
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 48);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(574, 381);
-            dataGridView1.TabIndex = 2;
+            finishedOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            finishedOrdersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            finishedOrdersDataGrid.Location = new Point(12, 48);
+            finishedOrdersDataGrid.Name = "finishedOrdersDataGrid";
+            finishedOrdersDataGrid.RowHeadersVisible = false;
+            finishedOrdersDataGrid.RowHeadersWidth = 51;
+            finishedOrdersDataGrid.Size = new Size(574, 381);
+            finishedOrdersDataGrid.TabIndex = 2;
             // 
             // label1
             // 
@@ -88,6 +89,7 @@
             // 
             // showAllCheckBox
             // 
+            showAllCheckBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             showAllCheckBox.AutoSize = true;
             showAllCheckBox.Location = new Point(12, 442);
             showAllCheckBox.Name = "showAllCheckBox";
@@ -107,18 +109,18 @@
             Controls.Add(label2);
             Controls.Add(fromDateTimePicker);
             Controls.Add(label1);
-            Controls.Add(dataGridView1);
+            Controls.Add(finishedOrdersDataGrid);
             Name = "FinishedOrdersForm";
             Text = "Finished Orders";
             Load += FinishedOrders_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)finishedOrdersDataGrid).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
+        private DataGridView finishedOrdersDataGrid;
         private Label label1;
         private DateTimePicker fromDateTimePicker;
         private Label label2;

@@ -60,11 +60,12 @@ namespace ROB5_MES_System
                 carrier.AddTaskToEndOfCarrier(task);
             }
         }
-        private void SendOrderInfoToDatabase()
+        public void SendOrderInfoToDatabase()
         {
+            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, "medicine type");
             // Anton shit
         }
-        private void StartOrderProduction()
+        public void StartOrderProduction()
         {
 
         }
@@ -270,7 +271,7 @@ namespace ROB5_MES_System
             }
         }
 
-        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate)
+        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState)
         {
             _containerAmount = containerAmount;
             _orderNumber = orderNumber;
@@ -278,7 +279,7 @@ namespace ROB5_MES_System
             _orderCustomer = customer;
             _orderPlannedStartTime = orderDate;
             _orderPlannedEndTime = orderDate.AddHours(1);
-            _orderState = OrderState.PEND;
+            _orderState = orderState;
             _carriersInOrder = new LinkedList<Carrier>();
             GenerateCarriers(_containerType, _containerAmount);
             AddTaskToCarriers("fill", "Fills up the containers", "action on product", 1, "Not yet started");
@@ -293,6 +294,7 @@ namespace ROB5_MES_System
     public enum OrderState
     {
         PEND,
+        QUEUE,
         BUSY,
         DONE
     }

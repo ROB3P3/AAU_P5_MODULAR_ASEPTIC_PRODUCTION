@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using ROB5_MES_System;
+using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
 {
@@ -31,8 +32,8 @@ namespace ROB5_MES_System
             CompanyNameTextBox.Text = "";
             ContainerTypeComboBox.SelectedIndex = 0;
             // replace max order number with current max order number from all lists
-            int maxOrderNumber = MainWindowForm.mesSystem.Orders.Count > 0 ? MainWindowForm.mesSystem.Orders.Max(order => order.OrderNumber) : -1;
-            OrderNumberDispLabel.Text = (maxOrderNumber + 1).ToString();
+            int maxOrderNumber = MainWindowForm.database.get_order_number();
+            OrderNumberDispLabel.Text = maxOrderNumber.ToString();
         }
 
         // event function for click on start order button
@@ -49,12 +50,12 @@ namespace ROB5_MES_System
                 // get maximum order id before adding a new order to the list incase the current orders list is empty
                 // need to replace the way to get maximum order id as it should be based on all lists and not just the current orders one
 
-                int maxOrderNumber = MainWindowForm.mesSystem.Orders.Count > 0 ? MainWindowForm.mesSystem.Orders.Max(order => order.OrderNumber) : -1;
+                int maxOrderNumber = MainWindowForm.database.get_order_number();
                 MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime);
 
                 // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
-                String caption = String.Format("Order {0} created", maxOrderNumber + 1);
+                String caption = String.Format("Order {0} created", maxOrderNumber);
                 DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
 
                 if (result == DialogResult.OK)
@@ -81,11 +82,13 @@ namespace ROB5_MES_System
             string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
             DateTime startTime = StartTimePicker.Value;
 
-            int maxOrderNumber = MainWindowForm.mesSystem.PlannedOrders.Count > 0 ? MainWindowForm.mesSystem.PlannedOrders.Max(order => order.OrderNumber) : -1;
-            MainWindowForm.mesSystem.PlannedOrders.AddLast(new Order(containerAmount, containerType, companyName, maxOrderNumber + 1, startTime));
+            int maxOrderNumber = MainWindowForm.database.get_order_number();
+            Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND);
+            MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
+            order.SendOrderInfoToDatabase();
 
             MessageBoxButtons buttons = MessageBoxButtons.OK;
-            String caption = String.Format("Order {0} created", maxOrderNumber + 1);
+            String caption = String.Format("Order {0} created", maxOrderNumber);
             DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
 
             if (result == DialogResult.OK)

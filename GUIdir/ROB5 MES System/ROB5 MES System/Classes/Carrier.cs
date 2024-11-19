@@ -15,6 +15,7 @@ namespace ROB5_MES_System
         private string _containerType;
         private DateTime _startTime; // brugt
         private DateTime _endTime; // brugt
+        
         private LinkedList<Task> _taskQueue; // brugt
         private LinkedList<Task> _completedTasks; // brugt
 
@@ -66,7 +67,8 @@ namespace ROB5_MES_System
         public void TerminateCarrier()
         {
             Console.WriteLine("Terminating carrier");
-            /* Send shit til anton*/ 
+            /* Send shit til anton*/
+            //MainWindowForm.database.insert_data_production(_orderId, _id, _containerType, _containerAmount, _startTime, _endTime, (_endTime - _startTime), );
         }
         public void PrintCarrierInfo()
         {
