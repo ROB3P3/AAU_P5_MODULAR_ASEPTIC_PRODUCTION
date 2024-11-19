@@ -14,7 +14,6 @@ namespace databaseSQL
         private string _db_name;
         private MySqlConnection mysql;
 
-
         public database(string _db_host, string _db_user, string _db_password, string _db_name)
         {
             this._db_host = _db_host;
@@ -23,7 +22,6 @@ namespace databaseSQL
             this._db_name = _db_name;
             connection();
         }
-
 
         private void connection()
         {
@@ -36,11 +34,14 @@ namespace databaseSQL
                 
         }
 
-
         public void create_table_order()
         {
             // Define your CREATE TABLE SQL query
             string createTableOrder = @"
+                    CREATE TABLE IF NOT EXISTS order_data (
+                    order_number INT,
+                    amount INT,
+                    order_state VARCHAR(255),
                     CREATE TABLE IF NOT EXISTS hahah (
                     order_number INT,
                     amount INT,
@@ -56,10 +57,6 @@ namespace databaseSQL
             Console.WriteLine("orderData table created");
 
             database_close();
-
-
-
-
         }
 
 
@@ -67,20 +64,20 @@ namespace databaseSQL
         {
             // Define your CREATE TABLE SQL query
             string createTableProduction = @"
-                CREATE TABLE IF NOT EXISTS nejnej (
+                CREATE TABLE IF NOT EXISTS production_data (
                 order_number INT,
+                carrier_id INT,
                 type_container VARCHAR(255),
                 amount_in_carrier INT,
-                start_time_full_system INT,
-                end_time_full_system INT,
-                Manufacturing_Lead_Time INT,
-                start_time_modul_1 INT,
-                end_time_modul_1 INT,
-                used_time_modul_1 INT,
-                start_time_modul_2 INT,
-                end_time_modul_2 INT,
-                used_time_modul_2 INT,
-                carrier_id INT,
+                start_time_full_system DATETIME,
+                end_time_full_system DATETIME,
+                Manufacturing_Lead_Time DATETIME,
+                start_time_modul_1 DATETIME,
+                end_time_modul_1 DATETIME,
+                used_time_modul_1 DATETIME,
+                start_time_modul_2 DATETIME,
+                end_time_modul_2 DATETIME,
+                used_time_modul_2 DATETIME,
                 modul_used VARCHAR(255)
                 );
             "
@@ -92,30 +89,28 @@ namespace databaseSQL
             Console.WriteLine("table production created ");
 
             database_close();
-
-
         }
 
-        public void insert_data_order(int order_number, string type_container, int amount_in_carrier,
-                    int start_time_full_system, int end_time_full_system,
-                    int manufacturing_lead_time, int start_time_modul_1,
-                    int end_time_modul_1, int used_time_modul_1, int start_time_modul_2,
-                    int end_time_modul_2, int used_time_modul_2, int carrier_id, string modul_used)
+        public void insert_data_production(int order_number, int carrier_id, string type_container, int amount_in_carrier,
+                    DateTime start_time_full_system, DateTime end_time_full_system,
+                    DateTime manufacturing_lead_time, DateTime start_time_modul_1,
+                    DateTime end_time_modul_1, DateTime used_time_modul_1, DateTime start_time_modul_2,
+                    DateTime end_time_modul_2, DateTime used_time_modul_2, string modul_used)
         {
             string insertData = @"
-            INSERT INTO nejnej (
-                order_number, type_container, amount_in_carrier,
+            INSERT INTO production_data (
+                order_number, carrier_id, type_container, amount_in_carrier,
                 start_time_full_system, end_time_full_system,
                 Manufacturing_Lead_Time, start_time_modul_1, end_time_modul_1,
                 used_time_modul_1, start_time_modul_2, end_time_modul_2,
-                used_time_modul_2, carrier_id, modul_used
+                used_time_modul_2, modul_used
             )
             VALUES (
-                @orderNumber, @typeContainer, @amountInCarrier,
+                @orderNumber, @carrierId, @typeContainer, @amountInCarrier,
                 @startTimeFullSystem, @endTimeFullSystem,
                 @manufacturingLeadTime, @startTimeModule1, @endTimeModule1,
                 @usedTimeModule1, @startTimeModule2, @endTimeModule2,
-                @usedTimeModule2, @carrierId, @moduleUsed
+                @usedTimeModule2, @moduleUsed
             );";
             // Ensure the connection is open before executing the command
 
@@ -124,6 +119,7 @@ namespace databaseSQL
             MySqlCommand cmd = new MySqlCommand(insertData, mysql);
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
+            cmd.Parameters.AddWithValue("carrierId", carrier_id);
             cmd.Parameters.AddWithValue("typeContainer", type_container);
             cmd.Parameters.AddWithValue("amountInCarrier", amount_in_carrier);
             cmd.Parameters.AddWithValue("startTimeFullSystem", start_time_full_system);
@@ -142,20 +138,19 @@ namespace databaseSQL
             Console.WriteLine("Data Inserted Into order");
 
             database_close();   
-
         }
 
 
-        public void insert_data_production(int order_number, int amount, string company,
+        public void insert_data_order(int order_number, int amount, string order_state, string company,
                     string medicine_type)
         {
             string insertDataProduction = @"
-            INSERT INTO hahah (
-                order_number, amount, company,
+            INSERT INTO order_data (
+                order_number, amount, order_state, company,
                 medicine_type
             )
             VALUES (
-                @orderNumber, @amount, @company,
+                @orderNumber, @amount, @orderState, @company,
                 @medicineType
             );"
             ;
@@ -166,6 +161,7 @@ namespace databaseSQL
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
             cmd.Parameters.AddWithValue("amount", amount);
+            cmd.Parameters.AddWithValue("orderState", order_state);
             cmd.Parameters.AddWithValue("company", company);
             cmd.Parameters.AddWithValue("medicineType", medicine_type);
 
@@ -176,26 +172,8 @@ namespace databaseSQL
         public void database_close()
         {
             if (mysql.State == ConnectionState.Open)
-
                 mysql.Close();
                 Console.WriteLine("close server");
         }
-
-        
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-    
 }

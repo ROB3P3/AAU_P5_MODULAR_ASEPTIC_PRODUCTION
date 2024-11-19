@@ -28,39 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            systemStatusDataGrid = new DataGridView();
+            startProductionButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)systemStatusDataGrid).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // systemStatusDataGrid
             // 
-            dataGridView1.AllowUserToResizeColumns = false;
-            dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(0, 0);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(526, 356);
-            dataGridView1.TabIndex = 0;
+            systemStatusDataGrid.AllowUserToResizeColumns = false;
+            systemStatusDataGrid.AllowUserToResizeRows = false;
+            systemStatusDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            systemStatusDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            systemStatusDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            systemStatusDataGrid.Location = new Point(12, 12);
+            systemStatusDataGrid.Name = "systemStatusDataGrid";
+            systemStatusDataGrid.ReadOnly = true;
+            systemStatusDataGrid.RowHeadersVisible = false;
+            systemStatusDataGrid.RowHeadersWidth = 51;
+            systemStatusDataGrid.Size = new Size(679, 216);
+            systemStatusDataGrid.TabIndex = 0;
+            // 
+            // startProductionButton
+            // 
+            startProductionButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            startProductionButton.Location = new Point(12, 245);
+            startProductionButton.Name = "startProductionButton";
+            startProductionButton.Size = new Size(190, 58);
+            startProductionButton.TabIndex = 1;
+            startProductionButton.Text = "Start production";
+            startProductionButton.UseVisualStyleBackColor = true;
+            startProductionButton.MouseClick += startProductionButton_MouseClick;
             // 
             // SystemStatusForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(526, 356);
-            Controls.Add(dataGridView1);
+            ClientSize = new Size(703, 315);
+            Controls.Add(startProductionButton);
+            Controls.Add(systemStatusDataGrid);
             Name = "SystemStatusForm";
             Text = "System Status";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)systemStatusDataGrid).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
+        private DataGridView systemStatusDataGrid;
+        private Button startProductionButton;
     }
 }
