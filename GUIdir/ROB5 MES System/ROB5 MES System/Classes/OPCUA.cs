@@ -12,7 +12,7 @@ namespace ROB5_MES_System.Classes
     public class OPCUA
     {
         private string _appType;
-        public string AppType
+        public string AppTypeTest
         {
             get { return _appType; }
             set { _appType = value; }
@@ -30,7 +30,7 @@ namespace ROB5_MES_System.Classes
             // Connect to the server, read 2 nodes and write a new value to another node
             using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
             {
-                string _appType = (string)DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "appType");
+                this.AppTypeTest = (string)DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN.AppType", "appType");
                 //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppState", "appState");
                 //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "carrierID");
 
@@ -75,7 +75,7 @@ namespace ROB5_MES_System.Classes
             return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
         }
 
-        private static object DisplayNodeValue(Session client, string nodeId, string variableName)
+        private static string DisplayNodeValue(Session client, string nodeId, string variableName)
         {
             // Create a NodeId object from the string nodeId
             NodeId node = new NodeId(nodeId);
@@ -84,10 +84,10 @@ namespace ROB5_MES_System.Classes
             DataValue value = client.ReadValue(node);
 
             // Display the value
-            Console.WriteLine("{0} is: {1}", variableName, value.Value);
+            //Console.WriteLine("{0} is: {1}", variableName, value.Value);
 
             // Return the value
-            return value.Value;
+            return (string)value.Value;
         }
 
         private static void SubscribeNodeValue(Session client, string nodeId, string variableName)
@@ -148,7 +148,7 @@ namespace ROB5_MES_System.Classes
 
         private static void CarrierHandler(Session client, string nodeId, string variableName, ushort value)
         {
-            Console.WriteLine("Carrier handler, carrier ID is {0}", value);
+            //Console.WriteLine("Carrier handler, carrier ID is {0}", value);
 
             string serverCommand = "begin";
             ModifyNodeValue(client, nodeId, variableName, serverCommand);
@@ -169,11 +169,11 @@ namespace ROB5_MES_System.Classes
             WriteValueCollection nodesToWrite = new WriteValueCollection();
 
             // write which node we are going to modify
-            Console.WriteLine("Modifying {0}", variableName);
+            //Console.WriteLine("Modifying {0}", variableName);
 
             // write the current value of the node
             DataValue value = client.ReadValue(node);
-            Console.WriteLine("Current value is: {0}", value.Value);
+            //Console.WriteLine("Current value is: {0}", value.Value);
 
             // Create a WriteValue object
             WriteValue writeValue = new WriteValue
@@ -191,6 +191,7 @@ namespace ROB5_MES_System.Classes
             client.Write(null, nodesToWrite, out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos);
 
             // Check if the write was successful
+            /*
             if (StatusCode.IsGood(results[0]))
             {
                 Console.WriteLine("Write succeeded");
@@ -205,7 +206,7 @@ namespace ROB5_MES_System.Classes
                 // Display the diagnostic information
                 Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
-            }
+            }*/
         }
     }
 }

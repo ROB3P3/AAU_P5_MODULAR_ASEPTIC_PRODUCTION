@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using ROB5_MES_System.Classes;
 
-namespace ROB5_MES_System.Classes
+namespace ROB5_MES_System
 {
     public class PLCInfo
     {
@@ -63,12 +64,15 @@ namespace ROB5_MES_System.Classes
             return (PLCid + 2).ToString();
         }
 
-        public PLCInfo(int id, int placement, string nodeId, string appType)
+        public PLCInfo(int id, int placement, string nodeId, string appType, string endpointURL)
         {
+
+            OPCUA opcua = new OPCUA("opc.tcp://172.20.13.1:4840");
+
             Id = id;
             Placement = placement;
             NodeId = nodeId;
-            Type = appType;
+            Type = opcua.AppTypeTest;
             AppState = "Waiting";
 
             ConnectionStatus = 0;
