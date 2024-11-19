@@ -23,6 +23,8 @@ namespace ROB5_MES_System
         private void FinishedOrders_Load(object sender, EventArgs e)
         {
             // load data from database here and display it in the dataGridView
+            finishedOrdersDataGrid.DataSource = null;
+            finishedOrdersDataGrid.DataSource = MainWindowForm.database.get_finished_orders();
         }
 
         private void fromDateTimePicker_ValueChanged(object sender, EventArgs e)

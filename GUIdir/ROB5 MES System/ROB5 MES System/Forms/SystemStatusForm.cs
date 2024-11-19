@@ -20,8 +20,17 @@ namespace ROB5_MES_System
 
         public void LoadApplications()
         {
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = MainWindowForm.applications;
+            systemStatusDataGrid.DataSource = null;
+            MainWindowForm.plcs.Sort((x, y) => x.Placement.CompareTo(y.Placement));
+            systemStatusDataGrid.DataSource = MainWindowForm.plcs;
+        }
+
+        private void startProductionButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(MainWindowForm.mesSystem.Orders.Count > 0)
+            {
+                MainWindowForm.mesSystem.Orders.First.Value.StartOrderProduction();
+            }
         }
     }
 }

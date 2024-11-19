@@ -23,7 +23,9 @@ namespace ROB5_MES_System
         public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate)
         {
             // Get current odre nr from DB and add one for the order 
-            _orders.AddLast(new Order(numberOfContainers, containerType, customer, 1, orderDate));
+            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE);
+            _orders.AddLast(order);
+            order.SendOrderInfoToDatabase();
         }
 
         public Order GetOrderAtIndex(int index, LinkedList<Order> list)

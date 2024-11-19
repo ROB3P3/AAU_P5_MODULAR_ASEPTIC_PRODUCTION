@@ -7,15 +7,19 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
+        public static Database database = new Database("localhost", "root", "mysqltest", "production");
         public static MESSystem mesSystem;
         // applications/modules that are connected to the system
-        public static List<ApplicationClass> applications { get; set; }
+        public static List<PLCInfo> plcs { get; set; } 
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
+            plcs = plcList();
 
-            applications = GetApplications();
             InitializeComponent();
+
+            database.get_production_queue();
+            database.get_planned_orders();
 
             // test timer for every second to update the date label
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -26,17 +30,15 @@ namespace ROB5_MES_System
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
         }
 
-        // function to test application list by manually adding applications
-        // can change function to pull applications from database upon initialization
-        private List<ApplicationClass>? GetApplications()
+        public List<PLCInfo> plcList()
         {
-            var applicationList = new List<ApplicationClass>();
+            List<PLCInfo> plcList = new List<PLCInfo>();
+            plcList.Add(new PLCInfo(2, 2));
+            plcList.Add(new PLCInfo(1, 1));
 
-            applicationList.Add(new ApplicationClass() { ID = 0, Name = "Filling", Connected = true });
-            applicationList.Add(new ApplicationClass() { ID = 1, Name = "Stoppering", Connected = false });
-
-            return applicationList;
+            return plcList;
         }
+
 
         /// <summary>
         /// timer tick event to update the date label every second
