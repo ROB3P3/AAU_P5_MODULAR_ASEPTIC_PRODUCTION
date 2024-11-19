@@ -42,6 +42,9 @@ namespace databaseSQL
                     order_number INT,
                     amount INT,
                     order_state VARCHAR(255),
+                    CREATE TABLE IF NOT EXISTS hahah (
+                    order_number INT,
+                    amount INT,
                     company VARCHAR(255),
                     medicine_type VARCHAR(255)
                 );
@@ -128,6 +131,7 @@ namespace databaseSQL
             cmd.Parameters.AddWithValue("startTimeModule2", start_time_modul_2);
             cmd.Parameters.AddWithValue("endTimeModule2", end_time_modul_2);
             cmd.Parameters.AddWithValue("usedTimeModule2", used_time_modul_2);
+            cmd.Parameters.AddWithValue("carrierId", carrier_id);
             cmd.Parameters.AddWithValue("moduleUsed", modul_used);
 
             cmd.ExecuteNonQuery();
