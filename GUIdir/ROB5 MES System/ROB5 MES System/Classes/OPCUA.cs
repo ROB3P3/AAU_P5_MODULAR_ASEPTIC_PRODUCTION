@@ -11,6 +11,13 @@ namespace ROB5_MES_System.Classes
 {
     public class OPCUA
     {
+        private string _appType;
+        public string AppType
+        {
+            get { return _appType; }
+            set { _appType = value; }
+        }
+
         public OPCUA(string endpointUrl)
         {
 
@@ -23,13 +30,13 @@ namespace ROB5_MES_System.Classes
             // Connect to the server, read 2 nodes and write a new value to another node
             using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
             {
-                DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "appType");
-                SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppState", "appState");
-                SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "carrierID");
+                string _appType = (string)DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "appType");
+                //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppState", "appState");
+                //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "carrierID");
 
                 // wait for the user to press a key
-                Console.WriteLine("Press any key to exit");
-                Console.ReadKey();
+                //Console.WriteLine("Press any key to exit");
+                //Console.ReadKey();
             }
         }
 
@@ -68,7 +75,7 @@ namespace ROB5_MES_System.Classes
             return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
         }
 
-        private static void DisplayNodeValue(Session client, string nodeId, string variableName)
+        private static object DisplayNodeValue(Session client, string nodeId, string variableName)
         {
             // Create a NodeId object from the string nodeId
             NodeId node = new NodeId(nodeId);
@@ -78,6 +85,9 @@ namespace ROB5_MES_System.Classes
 
             // Display the value
             Console.WriteLine("{0} is: {1}", variableName, value.Value);
+
+            // Return the value
+            return value.Value;
         }
 
         private static void SubscribeNodeValue(Session client, string nodeId, string variableName)

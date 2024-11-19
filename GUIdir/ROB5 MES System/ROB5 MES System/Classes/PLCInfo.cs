@@ -37,6 +37,14 @@ namespace ROB5_MES_System.Classes
             set { _placement = value; }
         }
 
+
+
+        public string Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
         public string AppState
         {
             get { return _appState; }
@@ -49,24 +57,19 @@ namespace ROB5_MES_System.Classes
             set { _nodeId = value; }
         }
 
-        public string Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
-
         private string GenerateNodeId(int PLCid)
         {
             // placeholder
             return (PLCid + 2).ToString();
         }
 
-        public PLCInfo(int id, int placement)
+        public PLCInfo(int id, int placement, string nodeId, string appType)
         {
             Id = id;
             Placement = placement;
-            NodeId = GenerateNodeId(_id);
-            Type = "Not yet registered";
+            NodeId = nodeId;
+            Type = appType;
+            AppState = "Waiting";
 
             ConnectionStatus = 0;
         }

@@ -7,7 +7,7 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        public static Database database = new Database("localhost", "root", "mysqltest", "production");
+        public static Database database = new Database("localhost", "volle", "volle", "production");
         public static MESSystem mesSystem;
         // applications/modules that are connected to the system
         public static List<PLCInfo> plcs { get; set; } 
@@ -33,8 +33,8 @@ namespace ROB5_MES_System
         public List<PLCInfo> plcList()
         {
             List<PLCInfo> plcList = new List<PLCInfo>();
-            plcList.Add(new PLCInfo(2, 2));
-            plcList.Add(new PLCInfo(1, 1));
+            plcList.Add(new PLCInfo(9, 1, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", "N/A"));
+            plcList.Add(new PLCInfo(8, 2, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", "N/A"));
 
             return plcList;
         }
