@@ -6,27 +6,27 @@ namespace ROB5_MES_System
 {
     public class Order
     {
-        private int _orderNumber; // brugt
+        private int _orderNumber; // brugt | odrenummer som er gemt i DB
         private string _orderName;
         private string _orderDescription;
         private string _orderType; 
-        private DateTime _orderPlannedStartTime; // brugt
-        private DateTime _orderPlannedEndTime; // brugt
-        private DateTime _orderStartTime; // brugt
-        private DateTime _orderEndTime; // brugt
-        private string _orderCustomer; // brugt
-        private OrderState _orderState; // brugt
+        private DateTime _orderPlannedStartTime; // brugt | planlagt start af odre
+        private DateTime _orderPlannedEndTime; // brugt | planlagt slutid af odre
+        private DateTime _orderStartTime; // brugt | faktiske odre startid
+        private DateTime _orderEndTime; // brugt | faktisk odre slutid
+        private string _orderCustomer; // brugt | hvem har bestil odren
+        private OrderState _orderState; // brugt | hvilket state er odren I lige nu
 
-        private string _containerType; // brugt
-        private int _containerAmount; // brugt
+        private string _containerType; // brugt | hvilken type af container er denn odre 
+        private int _containerAmount; // brugt | hvor mange containere har kunden bestilt
         private int _containersInProduction;
         private int _containersProduced;
 
-        private int _carriersTotal; // brugt
-        private int _carriersInProduction; // brugt 
-        private int _carriersProduced; // brugt
+        private int _carriersTotal; // brugt | hvor mange carrieres er gennerert til denne odre
+        private int _carriersInProduction; // brugt | hvor mange carrieres er i produktion lige nu
+        private int _carriersProduced; // brugt | hvor mange carrieres er færdigproduceret 
 
-        private LinkedList<Carrier> _carriersInOrder; // brugt
+        private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
 
         private void GenerateCarriers(string containerType, int containerAmount)
         {
@@ -52,6 +52,7 @@ namespace ROB5_MES_System
             Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} containers, making for {2} containers", fullCarriers, containerRemainder, containerAmount));
 
         }
+        // tilfæjer et task objekt til køen af tasks på denne carriere
         private void AddTaskToCarriers(string taskName, string taskDescription, string taskType, int taskId, string statusDescription)
         {
             foreach (var carrier in _carriersInOrder)
@@ -270,7 +271,7 @@ namespace ROB5_MES_System
                 _carriersInOrder = value;
             }
         }
-
+        // oder constructer
         public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState)
         {
             _containerAmount = containerAmount;

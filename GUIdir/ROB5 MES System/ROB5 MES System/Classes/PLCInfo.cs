@@ -6,12 +6,13 @@ namespace ROB5_MES_System.Classes
 {
     public class PLCInfo
     {
-        private int _connectionStatus;
-        private int _id;
-        private int _placement;
-        private string _appState;
-        private string _nodeId;
-        private string _type;
+        private int _connectionStatus; // weather we are connected or not
+        private int _id; // the id of the plc "hard coded"
+        private int _placement; // The physical placement in the production system, given by an int to define the position
+        private string _appState; // What the application is doing right now
+
+        private string _nodeId; // the path to find the opcua information on the node
+        private string _type; // what type of application moduel is currently mounted [filling stubbering]
 
         public int ConnectionStatus
         {
