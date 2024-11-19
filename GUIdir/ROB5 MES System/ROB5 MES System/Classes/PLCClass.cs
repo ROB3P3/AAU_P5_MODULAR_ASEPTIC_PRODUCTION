@@ -56,7 +56,7 @@ namespace ROB5_MES_System
 
         private string GenerateNodeId(int id)
         {
-            return (string)id + 2;
+            return (id + 2).ToString();
         }
 
         public PLCInfo(int id, int placement)

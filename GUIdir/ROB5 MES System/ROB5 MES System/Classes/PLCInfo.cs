@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 
-namespace ROB5_MES_System
+namespace ROB5_MES_System.Classes
 {
     public class PLCInfo
     {
