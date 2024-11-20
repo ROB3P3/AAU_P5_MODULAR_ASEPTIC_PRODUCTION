@@ -39,10 +39,12 @@
             // 
             // finishedOrdersDataGrid
             // 
+            finishedOrdersDataGrid.AllowUserToResizeRows = false;
             finishedOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             finishedOrdersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             finishedOrdersDataGrid.Location = new Point(12, 48);
             finishedOrdersDataGrid.Name = "finishedOrdersDataGrid";
+            finishedOrdersDataGrid.ReadOnly = true;
             finishedOrdersDataGrid.RowHeadersVisible = false;
             finishedOrdersDataGrid.RowHeadersWidth = 51;
             finishedOrdersDataGrid.Size = new Size(574, 381);

@@ -63,7 +63,7 @@ namespace ROB5_MES_System
         }
         public void SendOrderInfoToDatabase()
         {
-            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType);
+            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _orderStartTime, _orderEndTime);
             // Anton shit
         }
         public void StartOrderProduction()

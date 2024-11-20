@@ -251,6 +251,12 @@ namespace ROB5_MES_System.Classes
             connection();
             List<Order> finishedOrders = new List<Order>();
             string sqlCommand = "SELECT * FROM production.order_data WHERE order_state = 'DONE'";
+
+            if(startDate.HasValue && endDate.HasValue)
+            {
+                sqlCommand += " AND start_time BETWEEN '" + startDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + endDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sqlCommand, mysql);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -263,7 +269,9 @@ namespace ROB5_MES_System.Classes
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND, medicineType);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType);
+                order.OrderStartTime = reader.GetDateTime("start_time");
+                order.OrderEndTime = reader.GetDateTime("end_time");
                 finishedOrders.Add(order);
             }
 
@@ -366,7 +374,7 @@ namespace ROB5_MES_System.Classes
         public void update_order_data(LinkedList<Order> orders)
         {
             connection();
-            string deleteData = "DELETE FROM production.order_data;";
+            string deleteData = "DELETE FROM production.order_data where order_state != 'DONE';";
             MySqlCommand cmd = new MySqlCommand(deleteData, mysql);
             cmd.ExecuteNonQuery();
 
