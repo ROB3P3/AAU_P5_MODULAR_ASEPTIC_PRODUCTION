@@ -14,6 +14,9 @@ namespace ROB5_MES_System.Classes
         private string _appType;
         private string _appState;
         private ushort _carrierID;
+        private Session _clientSession;
+        private Subscription _subscription;
+
         public string AppType
         {
             get { return _appType; }
@@ -32,28 +35,19 @@ namespace ROB5_MES_System.Classes
 
         public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
         {
-
             // Create the application configuration
             var applicationConfiguration = CreateApplicationConfiguration();
             // Create the endpoint
             var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
 
-
-            // Connect to the server, read 2 nodes and write a new value to another node
-            using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
-            {
-                this.AppType = (string)DisplayNodeValue(client, String.Format("{0}.AppType", nodeId), "AppType");
-                plcinfo.UpdatePLCInfo(this.AppState, this.AppType);
-                SubscribeNodeValue(client, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
-                //SubscribeNodeValue(client, String.Format("{0}.CarrierID", nodeId), "CarrierID");
-
-                // wait for the user to press a key
-                //Console.WriteLine("Press any key to exit");
-                //Console.ReadKey();
-            }
+            // Connect to the server
+            _clientSession = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result;
+            // read application type
+            this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
+            plcinfo.Type = this.AppType;
+            // subscribe to application state
+            SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
         }
-
-
 
         private static Opc.Ua.ApplicationConfiguration CreateApplicationConfiguration()
         {
@@ -112,17 +106,17 @@ namespace ROB5_MES_System.Classes
             NodeId node = new NodeId(nodeId);
 
             // create a subscription to the ApplicationState node
-            var subscription = new Subscription(client.DefaultSubscription);
+            _subscription = new Subscription(client.DefaultSubscription);
 
             // create a monitored item for the ApplicationState node
-            var monitoredItem = new MonitoredItem(subscription.DefaultItem)
+            var monitoredItem = new MonitoredItem(_subscription.DefaultItem)
             {
                 StartNodeId = node,
                 AttributeId = Attributes.Value
             };
 
             // add the monitored item to the subscription
-            subscription.AddItem(monitoredItem);
+            _subscription.AddItem(monitoredItem);
 
             // create a callback for the DataChanged event
             monitoredItem.Notification += (item, eventArgs) =>
@@ -131,55 +125,22 @@ namespace ROB5_MES_System.Classes
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // display the value
                 Console.WriteLine("{0} is: {1}", variableName, value);
-                plcinfo.UpdatePLCInfo((string)value, "N/A");
-                /*switch (variableName)
-                {
-                    case "CarrierID":
-                        // assign the value to the CarrierIdentifier property
-                        CarrierID = (ushort)value;
-
-                        if ((ushort)value != 0)
-                        {
-                            //Console.WriteLine("Carrier found, {0} is: {1}", variableName, value);
-                            CarrierHandler(client, String.Format("{0}.ServerCommand", nodeId), "ServerCommand", (ushort)value);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Carrier not found");
-                        }
-                        break;
-                    case "AppState":
-                        // assign the value to the AppState property
-                        AppState = (string)value;
-
-                        Console.WriteLine("Application state is: {0}", value);
-                        break;
-            }*/
+                //plcinfo.UpdatePLCInfo((string)value, "N/A");
+                plcinfo.AppState = (string)value;
             };
 
             // add the subscription to the session
-            client.AddSubscription(subscription);
+            client.AddSubscription(_subscription);
             // start the subscription
-            subscription.Create();
-
+            _subscription.Create();
         }
 
-
-        private void CarrierHandler(Session client, string nodeId, string variableName, ushort value)
+        public void Dispose()
         {
-            //Console.WriteLine("Carrier handler, carrier ID is {0}", value);
-
-            string serverCommand = "begin";
-            ModifyNodeValue(client, nodeId, variableName, serverCommand);
-
+            _subscription?.Delete(true);
+            _clientSession?.Close();
+            _clientSession?.Dispose();
         }
-
-        private void ApplicationStateHandler(Session client, string nodeId, string variableName, string value)
-        {
-            string serverCommand = "begin";
-        }
-
-
 
         private static void ModifyNodeValue(Session client, string nodeId, string variableName, string newValue)
         {
