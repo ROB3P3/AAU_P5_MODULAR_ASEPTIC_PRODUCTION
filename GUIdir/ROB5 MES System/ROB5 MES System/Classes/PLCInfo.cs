@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Security.AccessControl;
 using System.Web;
 using ROB5_MES_System.Classes;
 
@@ -12,7 +14,7 @@ namespace ROB5_MES_System
         private int _placement; // The physical placement in the production system, given by an int to define the position
         private string _appState; // What the application is doing right now
 
-        private string _nodeId; // the path to find the opcua information on the node
+        //private string _nodeId; // the path to find the opcua information on the node
         private string _type; // what type of application moduel is currently mounted [filling stubbering]
 
         public int ConnectionStatus
@@ -52,11 +54,11 @@ namespace ROB5_MES_System
             set { _appState = value; }
         }
 
-        public string NodeId
+        /*public string NodeId
         {
             get { return _nodeId; }
             set { _nodeId = value; }
-        }
+        }*/
 
         private string GenerateNodeId(int PLCid)
         {
@@ -64,18 +66,24 @@ namespace ROB5_MES_System
             return (PLCid + 2).ToString();
         }
 
-        public PLCInfo(int id, int placement, string nodeId, string endpointURL)
+        public PLCInfo(int id, int placement)
         {
-
-            OPCUA opcua = new OPCUA(endpointURL);
 
             Id = id;
             Placement = placement;
-            NodeId = nodeId;
-            Type = opcua.AppTypeTest;
-            AppState = "Waiting";
+            //NodeId = nodeId;
+            Type = "N/A";
+            AppState = "N/A";
+
+        }
+
+        public void UpdatePLCInfo(string state, string type)
+        {
+            AppState = state;
+            Type = type;
 
             ConnectionStatus = 0;
         }
+
     }
 }

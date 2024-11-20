@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Opc.Ua;
 using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
@@ -9,17 +10,24 @@ namespace ROB5_MES_System
     {
         public static Database database = new Database("localhost", "volle", "volle", "production");
         public static MESSystem mesSystem;
+        public static OPCUA opcuaPLC09;
+        public static OPCUA opcuaPLC08;
         // applications/modules that are connected to the system
         public static List<PLCInfo> plcs { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
+
             plcs = plcList();
 
             InitializeComponent();
 
             database.get_production_queue();
             database.get_planned_orders();
+
+
+            opcuaPLC09 = new OPCUA("opc.tcp://172.20.13.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", plcs[0]);
+            opcuaPLC08 = new OPCUA("opc.tcp://172.20.1.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", plcs[1]);
 
             // test timer for every second to update the date label
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -37,9 +45,9 @@ namespace ROB5_MES_System
             List<PLCInfo> plcList = new List<PLCInfo>();
             // add the plc modules to the list
             // PLC 09
-            plcList.Add(new PLCInfo(9, 1, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", "opc.tcp://172.20.13.1:4840"));
+            plcList.Add(new PLCInfo(9, 1));
             // PLC 08
-            plcList.Add(new PLCInfo(8, 2, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", "opc.tcp://172.20.1.1:4840"));
+            plcList.Add(new PLCInfo(8, 2));
 
             return plcList;
         }

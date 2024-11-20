@@ -12,13 +12,25 @@ namespace ROB5_MES_System.Classes
     public class OPCUA
     {
         private string _appType;
-        public string AppTypeTest
+        private string _appState;
+        private ushort _carrierID;
+        public string AppType
         {
             get { return _appType; }
             set { _appType = value; }
         }
+        public string AppState
+        {
+            get { return _appState; }
+            set { _appState = value; }
+        }
+        public ushort CarrierID
+        {
+            get { return _carrierID; }
+            set { _carrierID = value; }
+        }
 
-        public OPCUA(string endpointUrl)
+        public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
         {
 
             // Create the application configuration
@@ -30,9 +42,10 @@ namespace ROB5_MES_System.Classes
             // Connect to the server, read 2 nodes and write a new value to another node
             using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
             {
-                this.AppTypeTest = (string)DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN.AppType", "appType");
-                //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppState", "appState");
-                //SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "carrierID");
+                this.AppType = (string)DisplayNodeValue(client, String.Format("{0}.AppType", nodeId), "AppType");
+                plcinfo.UpdatePLCInfo(this.AppState, this.AppType);
+                SubscribeNodeValue(client, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
+                //SubscribeNodeValue(client, String.Format("{0}.CarrierID", nodeId), "CarrierID");
 
                 // wait for the user to press a key
                 //Console.WriteLine("Press any key to exit");
@@ -90,10 +103,10 @@ namespace ROB5_MES_System.Classes
             return (string)value.Value;
         }
 
-        private static void SubscribeNodeValue(Session client, string nodeId, string variableName)
+        private void SubscribeNodeValue(Session client, string nodeId, string variableName, PLCInfo plcinfo)
         {
             // write which node we are subscribing to and if connection is successful
-            Console.WriteLine("Subscribing to {0}", variableName);
+            Console.WriteLine("Subscribing to {0}", nodeId);
 
             // Create a NodeId object from the string nodeId
             NodeId node = new NodeId(nodeId);
@@ -117,24 +130,31 @@ namespace ROB5_MES_System.Classes
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // display the value
-                //Console.WriteLine("{0} is: {1}", variableName, value);
-                switch (variableName)
+                Console.WriteLine("{0} is: {1}", variableName, value);
+                plcinfo.UpdatePLCInfo((string)value, "N/A");
+                /*switch (variableName)
                 {
-                    case "carrierID":
+                    case "CarrierID":
+                        // assign the value to the CarrierIdentifier property
+                        CarrierID = (ushort)value;
+
                         if ((ushort)value != 0)
                         {
-                            Console.WriteLine("Carrier found, {0} is: {1}", variableName, value);
-                            CarrierHandler(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.ServerCommand", "ServerCommand", (ushort)value);
+                            //Console.WriteLine("Carrier found, {0} is: {1}", variableName, value);
+                            CarrierHandler(client, String.Format("{0}.ServerCommand", nodeId), "ServerCommand", (ushort)value);
                         }
                         else
                         {
                             Console.WriteLine("Carrier not found");
                         }
                         break;
-                    case "appState":
+                    case "AppState":
+                        // assign the value to the AppState property
+                        AppState = (string)value;
+
                         Console.WriteLine("Application state is: {0}", value);
                         break;
-                }
+            }*/
             };
 
             // add the subscription to the session
@@ -142,11 +162,10 @@ namespace ROB5_MES_System.Classes
             // start the subscription
             subscription.Create();
 
-
         }
 
 
-        private static void CarrierHandler(Session client, string nodeId, string variableName, ushort value)
+        private void CarrierHandler(Session client, string nodeId, string variableName, ushort value)
         {
             //Console.WriteLine("Carrier handler, carrier ID is {0}", value);
 
@@ -155,9 +174,9 @@ namespace ROB5_MES_System.Classes
 
         }
 
-        private static void ApplicationStateHandler(Session client, string nodeId, string variableName, string value)
+        private void ApplicationStateHandler(Session client, string nodeId, string variableName, string value)
         {
-            return;
+            string serverCommand = "begin";
         }
 
 
