@@ -30,6 +30,7 @@ namespace ROB5_MES_System
             StartTimePicker.MinDate = DateTime.Now;
             ContainerAmountNumeric.Value = 1;
             CompanyNameTextBox.Text = "";
+            MedicineTypeBox.Text = "";
             ContainerTypeComboBox.SelectedIndex = 0;
             // replace max order number with current max order number from all lists
             int maxOrderNumber = MainWindowForm.database.get_order_number();
@@ -45,13 +46,11 @@ namespace ROB5_MES_System
                 string containerType = ContainerTypeComboBox.Text;
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
+                string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
                 DateTime startTime = StartTimePicker.Value;
 
-                // get maximum order id before adding a new order to the list incase the current orders list is empty
-                // need to replace the way to get maximum order id as it should be based on all lists and not just the current orders one
-
                 int maxOrderNumber = MainWindowForm.database.get_order_number();
-                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime);
+                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime, medicineType);
 
                 // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
@@ -80,10 +79,11 @@ namespace ROB5_MES_System
             string containerType = ContainerTypeComboBox.Text;
             int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
             string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
+            string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
             DateTime startTime = StartTimePicker.Value;
 
             int maxOrderNumber = MainWindowForm.database.get_order_number();
-            Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND);
+            Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND, medicineType);
             MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
             order.SendOrderInfoToDatabase();
 

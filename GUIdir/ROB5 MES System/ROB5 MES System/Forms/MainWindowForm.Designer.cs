@@ -269,6 +269,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainWindowForm";
             Text = "MES System";
+            FormClosing += MainWindowForm_FormClosing;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             menuStrip2.ResumeLayout(false);

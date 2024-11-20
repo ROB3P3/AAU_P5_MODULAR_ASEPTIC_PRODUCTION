@@ -1,25 +1,35 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Opc.Ua;
 using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        public static Database database = new Database("localhost", "root", "mysqltest", "production");
+        public static Database database = new Database("localhost", "volle", "volle", "production");
         public static MESSystem mesSystem;
+        public static OPCUA opcuaPLC09;
+        public static OPCUA opcuaPLC08;
         // applications/modules that are connected to the system
-        public static List<PLCInfo> plcs { get; set; } 
+        public static List<PLCInfo> plcs { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
+
             plcs = plcList();
 
             InitializeComponent();
 
             database.get_production_queue();
             database.get_planned_orders();
+
+            // setup the opcua connections to the plc modules
+            // plc 09
+            opcuaPLC09 = new OPCUA("opc.tcp://172.20.13.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", plcs[0]);
+            // plc 08
+            opcuaPLC08 = new OPCUA("opc.tcp://172.20.1.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", plcs[1]);
 
             // test timer for every second to update the date label
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -28,13 +38,19 @@ namespace ROB5_MES_System
             timer.Start();
 
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+
         }
 
+        // temporary function for adding modules ?
+        // maybe make a form for them ?
         public List<PLCInfo> plcList()
         {
             List<PLCInfo> plcList = new List<PLCInfo>();
-            plcList.Add(new PLCInfo(2, 2));
-            plcList.Add(new PLCInfo(1, 1));
+            // add the plc modules to the list
+            // PLC 09
+            plcList.Add(new PLCInfo(9, 1));
+            // PLC 08
+            plcList.Add(new PLCInfo(8, 2));
 
             return plcList;
         }
@@ -207,6 +223,16 @@ namespace ROB5_MES_System
         public static Order getOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)
         {
             return mesSystem.GetOrderAtIndex(cell.RowIndex, list);
+        }
+
+        private void MainWindowForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            LinkedList<Order> allOrders = mesSystem.Orders;
+            foreach(var order in mesSystem.PlannedOrders)
+            {
+                allOrders.AddLast(order);
+            }
+            database.update_order_data(allOrders);
         }
     }
 }

@@ -43,7 +43,6 @@
             // 
             // currentOrdersDataGrid
             // 
-            currentOrdersDataGrid.AllowUserToResizeColumns = false;
             currentOrdersDataGrid.AllowUserToResizeRows = false;
             currentOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             currentOrdersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
