@@ -38,6 +38,7 @@ namespace ROB5_MES_System
             timer.Start();
 
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
+
         }
 
         // temporary function for adding modules ?

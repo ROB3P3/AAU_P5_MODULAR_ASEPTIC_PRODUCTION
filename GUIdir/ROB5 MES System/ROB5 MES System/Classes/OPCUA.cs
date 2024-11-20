@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Opc.Ua;
+﻿using Opc.Ua;
 using Opc.Ua.Client;
-using static System.Collections.Specialized.BitVector32;
 
 namespace ROB5_MES_System.Classes
 {
@@ -91,7 +85,7 @@ namespace ROB5_MES_System.Classes
             DataValue value = client.ReadValue(node);
 
             // Display the value
-            //Console.WriteLine("{0} is: {1}", variableName, value.Value);
+            Console.WriteLine("{0} is: {1}", variableName, value.Value);
 
             // Return the value
             return (string)value.Value;

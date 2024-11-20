@@ -40,20 +40,22 @@
             systemStatusDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             systemStatusDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             systemStatusDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            systemStatusDataGrid.Location = new Point(12, 12);
+            systemStatusDataGrid.Location = new Point(10, 9);
+            systemStatusDataGrid.Margin = new Padding(3, 2, 3, 2);
             systemStatusDataGrid.Name = "systemStatusDataGrid";
             systemStatusDataGrid.ReadOnly = true;
             systemStatusDataGrid.RowHeadersVisible = false;
             systemStatusDataGrid.RowHeadersWidth = 51;
-            systemStatusDataGrid.Size = new Size(679, 216);
+            systemStatusDataGrid.Size = new Size(594, 162);
             systemStatusDataGrid.TabIndex = 0;
             // 
             // startProductionButton
             // 
             startProductionButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            startProductionButton.Location = new Point(12, 245);
+            startProductionButton.Location = new Point(10, 184);
+            startProductionButton.Margin = new Padding(3, 2, 3, 2);
             startProductionButton.Name = "startProductionButton";
-            startProductionButton.Size = new Size(190, 58);
+            startProductionButton.Size = new Size(166, 44);
             startProductionButton.TabIndex = 1;
             startProductionButton.Text = "Start production";
             startProductionButton.UseVisualStyleBackColor = true;
@@ -61,13 +63,15 @@
             // 
             // SystemStatusForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(703, 315);
+            ClientSize = new Size(615, 236);
             Controls.Add(startProductionButton);
             Controls.Add(systemStatusDataGrid);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "SystemStatusForm";
             Text = "System Status";
+            Load += SystemStatusForm_Load;
             ((System.ComponentModel.ISupportInitialize)systemStatusDataGrid).EndInit();
             ResumeLayout(false);
         }

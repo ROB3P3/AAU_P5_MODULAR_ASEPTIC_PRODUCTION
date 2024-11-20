@@ -77,13 +77,5 @@ namespace ROB5_MES_System
 
         }
 
-        public void UpdatePLCInfo(string state, string type)
-        {
-            AppState = state;
-            Type = type;
-
-            ConnectionStatus = 0;
-        }
-
     }
 }
