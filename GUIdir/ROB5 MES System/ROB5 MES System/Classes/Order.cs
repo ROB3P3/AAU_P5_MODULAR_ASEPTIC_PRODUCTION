@@ -10,12 +10,13 @@ namespace ROB5_MES_System
         private string _orderName;
         private string _orderDescription;
         private string _orderType; 
-        private DateTime _orderPlannedStartTime; // brugt | planlagt start af odre
-        private DateTime _orderPlannedEndTime; // brugt | planlagt slutid af odre
-        private DateTime _orderStartTime; // brugt | faktiske odre startid
-        private DateTime _orderEndTime; // brugt | faktisk odre slutid
-        private string _orderCustomer; // brugt | hvem har bestil odren
-        private OrderState _orderState; // brugt | hvilket state er odren I lige nu
+        private DateTime _orderPlannedStartTime; // brugt
+        private DateTime _orderPlannedEndTime; // brugt
+        private DateTime _orderStartTime; // brugt
+        private DateTime _orderEndTime; // brugt
+        private string _orderCustomer; // brugt
+        private string _medicineType; // brugt
+        private OrderState _orderState; // brugt
 
         private string _containerType; // brugt | hvilken type af container er denn odre 
         private int _containerAmount; // brugt | hvor mange containere har kunden bestilt
@@ -63,7 +64,7 @@ namespace ROB5_MES_System
         }
         public void SendOrderInfoToDatabase()
         {
-            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, "medicine type");
+            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _orderStartTime, _orderEndTime);
             // Anton shit
         }
         public void StartOrderProduction()
@@ -186,6 +187,17 @@ namespace ROB5_MES_System
             }
         }
 
+        public string MedicineType
+        {
+            get { return _medicineType; }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentNullException("Medicine type cannot be empty.");
+                _medicineType = value;
+            }
+        }
+
         public OrderState OrderState
         {
             get { return _orderState; }
@@ -279,8 +291,8 @@ namespace ROB5_MES_System
                 _carriersInOrder = value;
             }
         }
-        // oder constructer
-        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState)
+
+        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState, string medicineType)
         {
             _containerAmount = containerAmount;
             _orderNumber = orderNumber;
@@ -289,6 +301,7 @@ namespace ROB5_MES_System
             _orderPlannedStartTime = orderDate;
             _orderPlannedEndTime = orderDate.AddHours(1); // lav en mere sofistikeret funktion som ser på amount og type af container
             _orderState = orderState;
+            _medicineType = medicineType;
             _carriersInOrder = new LinkedList<Carrier>();
             _carriersInProductionList = new LinkedList<Carrier>();
             GenerateCarriers(_containerType, _containerAmount);

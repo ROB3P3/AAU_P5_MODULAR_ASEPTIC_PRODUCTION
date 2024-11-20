@@ -33,6 +33,7 @@ namespace ROB5_MES_System
             currentOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
             currentOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
             currentOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
+            currentOrdersDataGrid.Columns["MedicineType"].HeaderText = "Medicine";
             currentOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
             currentOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
             currentOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
@@ -94,6 +95,7 @@ namespace ROB5_MES_System
                 if (clickedOrder.OrderState != OrderState.BUSY)
                 {
                     MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
+                    clickedOrder.OrderState = OrderState.PEND;
                     MainWindowForm.mesSystem.PlannedOrders.AddLast(clickedOrder);
 
                     RefreshOrders();
@@ -115,6 +117,7 @@ namespace ROB5_MES_System
                 Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
 
                 MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
+                MainWindowForm.database.delete_order(clickedOrder.OrderNumber);
 
                 RefreshOrders();
             }
@@ -132,7 +135,16 @@ namespace ROB5_MES_System
 
                     if (result == DialogResult.Yes)
                     {
-                        MainWindowForm.mesSystem.Orders.Clear();
+                        for(LinkedListNode<Order> node = MainWindowForm.mesSystem.Orders.First; node != null;)
+                        {
+                            LinkedListNode<Order> nextNode = node.Next;
+                            if(node.Value.OrderState != OrderState.BUSY)
+                            {
+                                MainWindowForm.mesSystem.Orders.Remove(node.Value);
+                                MainWindowForm.database.delete_order(node.Value.OrderNumber);
+                            }
+                            node = nextNode;
+                        }
                         RefreshOrders();
                     }
                 }
@@ -159,6 +171,7 @@ namespace ROB5_MES_System
                             if (currentNode.Value.OrderState != OrderState.BUSY)
                             {
                                 MainWindowForm.mesSystem.Orders.Remove(currentNode);
+                                currentNode.Value.OrderState = OrderState.PEND;
                                 MainWindowForm.mesSystem.PlannedOrders.AddLast(currentNode.Value);
                             }
                             currentNode = nextNode;

@@ -28,6 +28,7 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
             plannedOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
             plannedOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
+            plannedOrdersDataGrid.Columns["MedicineType"].HeaderText = "Medicine";
             plannedOrdersDataGrid.Columns["OrderState"].HeaderText = "State";
             plannedOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
             plannedOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
@@ -61,7 +62,13 @@ namespace ROB5_MES_System
 
                     if (result == DialogResult.Yes)
                     {
-                        MainWindowForm.mesSystem.PlannedOrders.Clear();
+                        for (LinkedListNode<Order> node = MainWindowForm.mesSystem.PlannedOrders.First; node != null;)
+                        {
+                            LinkedListNode<Order> nextNode = node.Next;
+                            MainWindowForm.mesSystem.PlannedOrders.Remove(node.Value);
+                            MainWindowForm.database.delete_order(node.Value.OrderNumber);
+                            node = nextNode;
+                        }
                         RefreshOrders();
                     }
                 }
@@ -82,6 +89,7 @@ namespace ROB5_MES_System
                     {
                         foreach (var order in MainWindowForm.mesSystem.PlannedOrders)
                         {
+                            order.OrderState = OrderState.QUEUE;
                             MainWindowForm.mesSystem.Orders.AddLast(order);
                         }
                         MainWindowForm.mesSystem.PlannedOrders.Clear();
@@ -137,6 +145,7 @@ namespace ROB5_MES_System
                 Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders);
 
                 MainWindowForm.mesSystem.PlannedOrders.Remove(clickedOrder);
+                clickedOrder.OrderState = OrderState.QUEUE;
                 MainWindowForm.mesSystem.Orders.AddLast(clickedOrder);
 
                 RefreshOrders();
@@ -156,6 +165,7 @@ namespace ROB5_MES_System
                 Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.PlannedOrders);
 
                 MainWindowForm.mesSystem.PlannedOrders.Remove(clickedOrder);
+                MainWindowForm.database.delete_order(clickedOrder.OrderNumber);
 
                 RefreshOrders();
             }

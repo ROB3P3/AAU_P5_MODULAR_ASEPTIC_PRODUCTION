@@ -47,6 +47,8 @@ namespace ROB5_MES_System.Classes
                     order_number INT NOT NULL,
                     order_state VARCHAR(255),
                     amount INT,
+                    start_time DATETIME,
+                    end_time DATETIME,
                     container_type VARCHAR(255),
                     company VARCHAR(255),
                     medicine_type VARCHAR(255),
@@ -143,15 +145,15 @@ namespace ROB5_MES_System.Classes
         }
 
         public void insert_data_order(int order_number, string order_state, int amount, string container_type, string company,
-                    string medicine_type)
+                    string medicine_type, DateTime? startTime = null, DateTime? endTime = null)
         {
             string insertDataProduction = @"
             INSERT INTO order_data (
-                order_number, order_state, amount, container_type, company,
+                order_number, order_state, amount, start_time, end_time, container_type, company,
                 medicine_type
             )
             VALUES (
-                @orderNumber, @orderState, @amount, @containerType, @company,
+                @orderNumber, @orderState, @amount, @startTime, @endTime, @containerType, @company,
                 @medicineType
             );"
             ;
@@ -166,6 +168,8 @@ namespace ROB5_MES_System.Classes
             cmd.Parameters.AddWithValue("containerType", container_type);
             cmd.Parameters.AddWithValue("company", company);
             cmd.Parameters.AddWithValue("medicineType", medicine_type);
+            cmd.Parameters.AddWithValue("startTime", startTime);
+            cmd.Parameters.AddWithValue("endTime", endTime);
 
             cmd.ExecuteNonQuery();
             Console.WriteLine("Data Inserted Into production");
@@ -213,7 +217,7 @@ namespace ROB5_MES_System.Classes
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.QUEUE);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.QUEUE, medicineType);
                 MainWindowForm.mesSystem.Orders.AddLast(order);
             }
 
@@ -236,18 +240,24 @@ namespace ROB5_MES_System.Classes
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND, medicineType);
                 MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
             }
 
             database_close();
         }
 
-        public List<Order> get_finished_orders()
+        public List<Order> get_finished_orders(DateTime? startDate = null, DateTime? endDate = null)
         {
             connection();
             List<Order> finishedOrders = new List<Order>();
             string sqlCommand = "SELECT * FROM production.order_data WHERE order_state = 'DONE'";
+
+            if(startDate.HasValue && endDate.HasValue)
+            {
+                sqlCommand += " AND start_time BETWEEN '" + startDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + endDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sqlCommand, mysql);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -260,7 +270,9 @@ namespace ROB5_MES_System.Classes
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType);
+                order.OrderStartTime = reader.GetDateTime("start_time");
+                order.OrderEndTime = reader.GetDateTime("end_time");
                 finishedOrders.Add(order);
             }
 
@@ -308,7 +320,7 @@ namespace ROB5_MES_System.Classes
         {
             connection();
             Console.WriteLine("starter getamount");
-            string get_amount = "SELECT amount FROM hahah WHERE order_number = @latest_Order_number;";
+            string get_amount = "SELECT amount FROM production.order_data WHERE order_number = @latest_Order_number;";
 
 
             MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
@@ -332,7 +344,7 @@ namespace ROB5_MES_System.Classes
             connection();
             Console.WriteLine("starter amount left");
 
-            string get_amount = "SELECT amount_in_carrier FROM nejnej WHERE order_number = @latest_Order_number;";
+            string get_amount = "SELECT amount_in_carrier FROM production.production_data WHERE order_number = @latest_Order_number;";
             MySqlCommand cmd = new MySqlCommand(get_amount, mysql);
             cmd.Parameters.AddWithValue("@latest_Order_number", latest_Order_number);
             MySqlDataReader rdr = cmd.ExecuteReader();
@@ -353,10 +365,25 @@ namespace ROB5_MES_System.Classes
         public void delete_order(int input_order_delete)
         {
             connection();
-            string delete_order = "DELETE FROM hahah WHERE order_number = @input_order_delete;";
+            string delete_order = "DELETE FROM production.order_data WHERE order_number = @input_order_delete;";
             MySqlCommand cmd = new MySqlCommand(delete_order, mysql);
             cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);
             cmd.ExecuteNonQuery();
+            database_close();
+        }
+
+        public void update_order_data(LinkedList<Order> orders)
+        {
+            connection();
+            string deleteData = "DELETE FROM production.order_data where order_state != 'DONE';";
+            MySqlCommand cmd = new MySqlCommand(deleteData, mysql);
+            cmd.ExecuteNonQuery();
+
+            create_table_order();
+            foreach(var order in orders)
+            {
+                insert_data_order(order.OrderNumber, order.OrderState.ToString(), order.ContainerAmount, order.ContainerType, order.OrderCustomer, order.MedicineType);
+            }
             database_close();
         }
 

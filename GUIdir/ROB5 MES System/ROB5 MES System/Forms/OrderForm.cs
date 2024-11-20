@@ -24,6 +24,7 @@ namespace ROB5_MES_System
             this.Text = "Order " + order.OrderNumber;
             OrderNumberDispLabel.Text = order.OrderNumber.ToString();
             CustomerDispLabel.Text = order.OrderCustomer;
+            MedicineDispLabel.Text = order.MedicineType;
             OrderStateDispLabel.Text = order.OrderState.ToString();
             PlannedStartTimeDispLabel.Text = order.OrderPlannedStartTime.ToString("yyyy/MM/dd hh:mm:ss");
             PlannedEndTimeDispLabel.Text = order.OrderPlannedStartTime.AddHours(1).ToString("yyyy/MM/dd hh:mm:ss");
