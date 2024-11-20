@@ -27,7 +27,7 @@ namespace ROB5_MES_System
         private int _carriersProduced; // brugt | hvor mange carrieres er færdigproduceret 
 
         private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
-
+        private LinkedList<Carrier> _carriersInProductionList;
         private void GenerateCarriers(string containerType, int containerAmount)
         {
             int fullCarriers = containerAmount / 5;
@@ -69,6 +69,14 @@ namespace ROB5_MES_System
         public void StartOrderProduction()
         {
             // start production shit
+
+            // send start bånd komando
+            // afvent første carriere informatiopn fra filling station. 
+            // tag første carriere far carrieres in order og send den til carrieres in production list
+            // tjek om denne carrier skal fyldes
+            // send svar til filling station "start" eller "pass it on"
+            // Slet filling opgave fra carriern
+
         }
         private void ProductionHandeler()
         {
@@ -279,9 +287,10 @@ namespace ROB5_MES_System
             _containerType = containerType;
             _orderCustomer = customer;
             _orderPlannedStartTime = orderDate;
-            _orderPlannedEndTime = orderDate.AddHours(1);
+            _orderPlannedEndTime = orderDate.AddHours(1); // lav en mere sofistikeret funktion som ser på amount og type af container
             _orderState = orderState;
             _carriersInOrder = new LinkedList<Carrier>();
+            _carriersInProductionList = new LinkedList<Carrier>();
             GenerateCarriers(_containerType, _containerAmount);
             AddTaskToCarriers("fill", "Fills up the containers", "action on product", 1, "Not yet started");
             AddTaskToCarriers("stopper", "Seals the containers", "action on product", 2, "Not yet started");
