@@ -64,10 +64,10 @@ namespace ROB5_MES_System
             return (PLCid + 2).ToString();
         }
 
-        public PLCInfo(int id, int placement, string nodeId, string appType, string endpointURL)
+        public PLCInfo(int id, int placement, string nodeId, string endpointURL)
         {
 
-            OPCUA opcua = new OPCUA("opc.tcp://172.20.13.1:4840");
+            OPCUA opcua = new OPCUA(endpointURL);
 
             Id = id;
             Placement = placement;

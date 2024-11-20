@@ -33,8 +33,11 @@ namespace ROB5_MES_System
         public List<PLCInfo> plcList()
         {
             List<PLCInfo> plcList = new List<PLCInfo>();
-            plcList.Add(new PLCInfo(9, 1, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", "N/A"));
-            plcList.Add(new PLCInfo(8, 2, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", "N/A"));
+            // add the plc modules to the list
+            // PLC 09
+            plcList.Add(new PLCInfo(9, 1, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", "opc.tcp://172.20.13.1:4840"));
+            // PLC 08
+            plcList.Add(new PLCInfo(8, 2, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", "opc.tcp://172.20.1.1:4840"));
 
             return plcList;
         }
