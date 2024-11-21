@@ -84,9 +84,6 @@ namespace ROB5_MES_System
             return (PLCid + 2).ToString();
         }
 
-        public PLCInfo(int id, int placement)
-        {
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -101,8 +98,6 @@ namespace ROB5_MES_System
             //NodeId = nodeId;
             Type = "N/A";
             AppState = "N/A";
-
         }
-
     }
 }
