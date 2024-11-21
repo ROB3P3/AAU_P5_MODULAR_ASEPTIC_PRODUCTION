@@ -11,6 +11,7 @@ namespace ROB5_MES_System
         [STAThread]
         static void Main()
         {
+            // MySQL database setup
             Database database = new Database("localhost", "root", "mysqltest", "production");
             database.create_table_order();
             database.create_table_production();
