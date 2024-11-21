@@ -11,6 +11,7 @@ namespace ROB5_MES_System.Classes
 {
     public class Database
     {
+        // Få anton til at lave kommentare - Frederik 
         private string _db_host;
         private string _db_user;
         private string _db_password;

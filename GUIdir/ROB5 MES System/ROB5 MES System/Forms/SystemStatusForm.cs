@@ -31,10 +31,17 @@ namespace ROB5_MES_System
 
         private void startProductionButton_MouseClick(object sender, MouseEventArgs e)
         {
-            if(MainWindowForm.mesSystem.Orders.Count > 0)
+            if (MainWindowForm.mesSystem.Orders.Count > 0)
             {
                 MainWindowForm.mesSystem.Orders.First.Value.StartOrderProduction();
             }
         }
+
+        private void SystemStatusForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

@@ -6,30 +6,32 @@ namespace ROB5_MES_System
 {
     public class Carrier
     {
-        private int _id; // brugt
+        private int _id; // brugt | Hvilket id der er på den fysiske carrier med disse atributter. 0 = ikke allokeret
         private int _orderId; 
         private OrderState _state;
         private int _quantityOfTasks;
         private int _quantityOfCompletedTasks;
-        private int _containerAmount; // brugt
+        private int _containerAmount; // brugt | Hvor mange containere der er på denne carrier 
         private string _containerType;
-        private DateTime _startTime; // brugt
-        private DateTime _endTime; // brugt
+        private DateTime _startTime; // brugt | Start for produktion
+        private DateTime _endTime; // brugt | slut for produktion
         
-        private LinkedList<Task> _taskQueue; // brugt
-        private LinkedList<Task> _completedTasks; // brugt
+        private LinkedList<Task> _taskQueue; // brugt | Hvilke opgaver der endnu ikke er udført på denne carrier 
+        private LinkedList<Task> _completedTasks; // brugt | Opgaver som er blevet udført på denne carrier
 
-        // Her skal gerne være en dubble linked list af tasks så der kan laves en dynamisk version af køen
+        // Tilføjer et tak objekt til starten af carrierens produktionskø
         public void AddTaskToStartOfCarrier(Task taskToBeAdded)
         {
             _taskQueue.AddFirst(taskToBeAdded);
             _quantityOfTasks++;
         }
+        // Tilføjer et task objekt til slutningen af carrierens produktionskø
         public void AddTaskToEndOfCarrier(Task taskToBeAdded)
         {
             _taskQueue.AddLast(taskToBeAdded);
             _quantityOfTasks++;
         }
+        // Tilføjer et task objekt efter et givet index i produktionskøen
         public void AddTaskToCarrierAfterTask(int IdOfTaskToInsertAfter, Task taskToBeAdded)
         {
             if (_quantityOfTasks == 0) throw new ArgumentException("You can't insert task in the queue after the given task, queu is empty. Use Add task to start or end method");
@@ -43,6 +45,7 @@ namespace ROB5_MES_System
                 }
             }
         }
+        // Sletter et taks objekt fra carrierens produktionskø
         public void DeleteTaskFromCarrier(int taskId)
         {
             if (_quantityOfTasks == 0) throw new ArgumentException("You can't delete a task when the task queu is empty");
@@ -55,6 +58,7 @@ namespace ROB5_MES_System
                 }
             }
         }
+        // Færdiggøre den første task i carrierens produktionskø og flytter den til udførte opgave
         public void CompleteFirstTaskInCarrierQueue()
         {
             if (_quantityOfTasks <= 0) throw new ArgumentException("You can't remove a task from an empty carrier queu");
@@ -64,12 +68,14 @@ namespace ROB5_MES_System
             _quantityOfTasks --;
             _quantityOfCompletedTasks ++;
         }
+        // sletter carrier "endnu ikke implementeret"
         public void TerminateCarrier()
         {
             Console.WriteLine("Terminating carrier");
             /* Send shit til anton*/
             //MainWindowForm.database.insert_data_production(_orderId, _id, _containerType, _containerAmount, _startTime, _endTime, (_endTime - _startTime), );
         }
+        // Printer information om carrieren i konsollen
         public void PrintCarrierInfo()
         {
             Console.WriteLine(string.Format("Order ID: {0} \n" +
@@ -207,7 +213,7 @@ namespace ROB5_MES_System
                 _completedTasks = value;
             }
         }
-
+        // constructer tol Carrier klasse
         public Carrier(int id, int containerAmount, string containerType, int orderId)
         {
             _taskQueue = new LinkedList<Task>();

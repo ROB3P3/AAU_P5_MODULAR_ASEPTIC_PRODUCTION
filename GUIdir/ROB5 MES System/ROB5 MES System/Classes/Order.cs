@@ -6,7 +6,7 @@ namespace ROB5_MES_System
 {
     public class Order
     {
-        private int _orderNumber; // brugt
+        private int _orderNumber; // brugt | odrenummer som er gemt i DB
         private string _orderName;
         private string _orderDescription;
         private string _orderType; 
@@ -18,17 +18,17 @@ namespace ROB5_MES_System
         private string _medicineType; // brugt
         private OrderState _orderState; // brugt
 
-        private string _containerType; // brugt
-        private int _containerAmount; // brugt
+        private string _containerType; // brugt | hvilken type af container er denn odre 
+        private int _containerAmount; // brugt | hvor mange containere har kunden bestilt
         private int _containersInProduction;
         private int _containersProduced;
 
-        private int _carriersTotal; // brugt
-        private int _carriersInProduction; // brugt 
-        private int _carriersProduced; // brugt
+        private int _carriersTotal; // brugt | hvor mange carrieres er gennerert til denne odre
+        private int _carriersInProduction; // brugt | hvor mange carrieres er i produktion lige nu
+        private int _carriersProduced; // brugt | hvor mange carrieres er færdigproduceret 
 
-        private LinkedList<Carrier> _carriersInOrder; // brugt
-
+        private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
+        private LinkedList<Carrier> _carriersInProductionList;
         private void GenerateCarriers(string containerType, int containerAmount)
         {
             int fullCarriers = containerAmount / 5;
@@ -53,6 +53,7 @@ namespace ROB5_MES_System
             Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} containers, making for {2} containers", fullCarriers, containerRemainder, containerAmount));
 
         }
+        // tilfæjer et task objekt til køen af tasks på denne carriere
         private void AddTaskToCarriers(string taskName, string taskDescription, string taskType, int taskId, string statusDescription)
         {
             foreach (var carrier in _carriersInOrder)
@@ -69,8 +70,16 @@ namespace ROB5_MES_System
         public void StartOrderProduction()
         {
             // start production shit
+
+            // send start bånd komando
+            // afvent første carriere informatiopn fra filling station. 
+            // tag første carriere far carrieres in order og send den til carrieres in production list
+            // tjek om denne carrier skal fyldes
+            // send svar til filling station "start" eller "pass it on"
+            // Slet filling opgave fra carriern
+
         }
-        private void ProductionHandeler()
+        private void ProductionHandler()
         {
 
         }
@@ -290,10 +299,11 @@ namespace ROB5_MES_System
             _containerType = containerType;
             _orderCustomer = customer;
             _orderPlannedStartTime = orderDate;
-            _orderPlannedEndTime = orderDate.AddHours(1);
+            _orderPlannedEndTime = orderDate.AddHours(1); // lav en mere sofistikeret funktion som ser på amount og type af container
             _orderState = orderState;
             _medicineType = medicineType;
             _carriersInOrder = new LinkedList<Carrier>();
+            _carriersInProductionList = new LinkedList<Carrier>();
             GenerateCarriers(_containerType, _containerAmount);
             AddTaskToCarriers("fill", "Fills up the containers", "action on product", 1, "Not yet started");
             AddTaskToCarriers("stopper", "Seals the containers", "action on product", 2, "Not yet started");

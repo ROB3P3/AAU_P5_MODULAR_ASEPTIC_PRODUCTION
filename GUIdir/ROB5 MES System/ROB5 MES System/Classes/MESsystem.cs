@@ -5,9 +5,9 @@ namespace ROB5_MES_System
 {
     public class MESSystem
     {
-        private LinkedList<Order> _orders;
-        private LinkedList<Order> _plannedOrders;
-        private LinkedList<Order> _finishedOrders;
+        private LinkedList<Order> _orders; // liste af odre som er i queu
+        private LinkedList<Order> _plannedOrders; // liste af de odre som er planlagt
+        private LinkedList<Order> _finishedOrders; // liste af odre som er færdigproduceret
         private int _productionStatus;
         public MESSystem()
         {
@@ -26,7 +26,7 @@ namespace ROB5_MES_System
             _orders.AddLast(order);
             order.SendOrderInfoToDatabase();
         }
-
+        // find en odre på et i en givet liste på det givende index
         public Order GetOrderAtIndex(int index, LinkedList<Order> list)
         {
             if (index < 0 || index >= list.Count)

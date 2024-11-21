@@ -4,17 +4,17 @@ namespace ROB5_MES_System
 {
     public class Task
     {
-        private string _taskName;
-        private string _taskDescription;
-        private string _taskType;
-        private int _taskId;
-        private string _status;
-        private string _statusDescription;
-        private DateTime _startTime;
-        private DateTime _endTime;
-        private int _itemsInCarrier;
-        private string _itemType;
-        private int _carrierId;
+        private string _taskName; // hvad hedder denne task
+        private string _taskDescription; // hvordan kan den beskrives
+        private string _taskType; // hvordan bliver det udført [processing, flytning med mere]
+        private int _taskId; // ID på denne task 
+        private string _status; // hvad er status på denne task 
+        private string _statusDescription; // hvad betyder denne status
+        private DateTime _startTime; // start tid for denne task
+        private DateTime _endTime; // slut tid for denne task
+        private int _itemsInCarrier; // hvor mange containers der er i carriere
+        private string _itemType; // hvilken type af container det er
+        private int _carrierId; // Hvilken carriere denne opgave er på
 
         public string TaskName
         {
@@ -136,7 +136,7 @@ namespace ROB5_MES_System
             Status = status;
             StatusDescription = statusDescription;
         }
-
+        // printer information omkring denne task
         public string GetTaskInfo()
         {
             return (string.Format(

@@ -1,46 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Opc.Ua;
+﻿using Opc.Ua;
 using Opc.Ua.Client;
-using static System.Collections.Specialized.BitVector32;
 
-namespace OPCUA
+namespace ROB5_MES_System.Classes
 {
-    class Program
+    public class OPCUA
     {
-        static void Main(string[] args)
+        private string _appType;
+        private string _appState;
+        private ushort _carrierID;
+        private Session _clientSession;
+        private Subscription _subscription;
+
+        public string AppType
         {
-            // Setup the endpoint URL
-            var endpointUrl = "opc.tcp://172.20.13.1:4840";
+            get { return _appType; }
+            set { _appType = value; }
+        }
+        public string AppState
+        {
+            get { return _appState; }
+            set { _appState = value; }
+        }
+        public ushort CarrierID
+        {
+            get { return _carrierID; }
+            set { _carrierID = value; }
+        }
+
+        public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
+        {
             // Create the application configuration
             var applicationConfiguration = CreateApplicationConfiguration();
             // Create the endpoint
             var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
 
-
-            // Connect to the server, read 2 nodes and write a new value to another node
-            using (var client = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result)
-            {
-                DisplayNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppType", "appType");
-                SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.AppState", "appState");
-                SubscribeNodeValue(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.CarrierID", "carrierID");
-
-                // wait for the user to press a key
-                Console.WriteLine("Press any key to exit");
-                Console.ReadKey();
-
-            }
+            // Connect to the server
+            _clientSession = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result;
+            // read application type
+            this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
+            plcinfo.Type = this.AppType;
+            // subscribe to application state
+            SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
         }
 
-
-
-        private static ApplicationConfiguration CreateApplicationConfiguration()
+        private static Opc.Ua.ApplicationConfiguration CreateApplicationConfiguration()
         {
             // Create a ApplicationConfiguration object
-            return new ApplicationConfiguration()
+            return new Opc.Ua.ApplicationConfiguration()
             {
                 // Set the application name
                 ApplicationName = "OPCUAClient",
@@ -58,7 +64,7 @@ namespace OPCUA
             };
         }
 
-        private static ConfiguredEndpoint CreateEndpoint(ApplicationConfiguration applicationConfiguration, string endpointUrl)
+        private static ConfiguredEndpoint CreateEndpoint(Opc.Ua.ApplicationConfiguration applicationConfiguration, string endpointUrl)
         {
             // Create an endpoint configuration using the application configuration, said so online!
             var endpointConfiguration = EndpointConfiguration.Create(applicationConfiguration);
@@ -70,7 +76,7 @@ namespace OPCUA
             return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
         }
 
-        private static void DisplayNodeValue(Session client, string nodeId, string variableName)
+        private static string DisplayNodeValue(Session client, string nodeId, string variableName)
         {
             // Create a NodeId object from the string nodeId
             NodeId node = new NodeId(nodeId);
@@ -80,28 +86,31 @@ namespace OPCUA
 
             // Display the value
             Console.WriteLine("{0} is: {1}", variableName, value.Value);
+
+            // Return the value
+            return (string)value.Value;
         }
 
-        private static void SubscribeNodeValue(Session client, string nodeId, string variableName)
+        private void SubscribeNodeValue(Session client, string nodeId, string variableName, PLCInfo plcinfo)
         {
             // write which node we are subscribing to and if connection is successful
-            Console.WriteLine("Subscribing to {0}", variableName);
+            Console.WriteLine("Subscribing to {0}", nodeId);
 
             // Create a NodeId object from the string nodeId
             NodeId node = new NodeId(nodeId);
 
             // create a subscription to the ApplicationState node
-            var subscription = new Subscription(client.DefaultSubscription);
+            _subscription = new Subscription(client.DefaultSubscription);
 
             // create a monitored item for the ApplicationState node
-            var monitoredItem = new MonitoredItem(subscription.DefaultItem)
+            var monitoredItem = new MonitoredItem(_subscription.DefaultItem)
             {
                 StartNodeId = node,
                 AttributeId = Attributes.Value
             };
 
             // add the monitored item to the subscription
-            subscription.AddItem(monitoredItem);
+            _subscription.AddItem(monitoredItem);
 
             // create a callback for the DataChanged event
             monitoredItem.Notification += (item, eventArgs) =>
@@ -109,50 +118,23 @@ namespace OPCUA
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // display the value
-                //Console.WriteLine("{0} is: {1}", variableName, value);
-                switch (variableName)
-                {
-                    case "carrierID":
-                        if ((ushort)value != 0)
-                        {
-                            Console.WriteLine("Carrier found, {0} is: {1}", variableName, value);
-                            CarrierHandler(client, "ns=2;s=|var|CECC-LK.Application.MODULE_PLC13_MAIN.ServerCommand", "ServerCommand", (ushort)value);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Carrier not found");
-                        }
-                        break;
-                    case "appState":
-                        Console.WriteLine("Application state is: {0}", value);
-                        break;
-                }
+                Console.WriteLine("{0} is: {1}", variableName, value);
+                //plcinfo.UpdatePLCInfo((string)value, "N/A");
+                plcinfo.AppState = (string)value;
             };
 
             // add the subscription to the session
-            client.AddSubscription(subscription);
+            client.AddSubscription(_subscription);
             // start the subscription
-            subscription.Create();
-
-            
+            _subscription.Create();
         }
 
-
-        private static void CarrierHandler(Session client, string nodeId, string variableName, ushort value)
+        public void Dispose()
         {
-            Console.WriteLine("Carrier handler, carrier ID is {0}", value);
-
-            string serverCommand = "begin";
-            ModifyNodeValue(client, nodeId, variableName, serverCommand);
-
+            _subscription?.Delete(true);
+            _clientSession?.Close();
+            _clientSession?.Dispose();
         }
-
-        private static void ApplicationStateHandler(Session client, string nodeId, string variableName, string value)
-        {
-            return;
-        }
-
-
 
         private static void ModifyNodeValue(Session client, string nodeId, string variableName, string newValue)
         {
@@ -161,11 +143,11 @@ namespace OPCUA
             WriteValueCollection nodesToWrite = new WriteValueCollection();
 
             // write which node we are going to modify
-            Console.WriteLine("Modifying {0}", variableName);
+            //Console.WriteLine("Modifying {0}", variableName);
 
             // write the current value of the node
             DataValue value = client.ReadValue(node);
-            Console.WriteLine("Current value is: {0}", value.Value);
+            //Console.WriteLine("Current value is: {0}", value.Value);
 
             // Create a WriteValue object
             WriteValue writeValue = new WriteValue
@@ -183,6 +165,7 @@ namespace OPCUA
             client.Write(null, nodesToWrite, out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos);
 
             // Check if the write was successful
+            /*
             if (StatusCode.IsGood(results[0]))
             {
                 Console.WriteLine("Write succeeded");
@@ -197,7 +180,7 @@ namespace OPCUA
                 // Display the diagnostic information
                 Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
-            }
+            }*/
         }
     }
 }
