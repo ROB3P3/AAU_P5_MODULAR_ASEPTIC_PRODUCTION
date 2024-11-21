@@ -13,9 +13,9 @@ namespace ROB5_MES_System
         static void Main()
         {
             // MySQL database setup
-            Database database = new Database("localhost", "root", "mysqltest", "production");
-            database.create_table_order();
-            database.create_table_production();
+            //Database database = new Database("localhost", "MES", "MES", "production");
+            //database.create_table_order();
+            //database.create_table_production();
 
             // OPC UA setup
             // Setup the endpoint URL for plc09
@@ -33,7 +33,7 @@ namespace ROB5_MES_System
 
 
 
-            database.database_close();
+            //database.database_close();
 
 
         }
