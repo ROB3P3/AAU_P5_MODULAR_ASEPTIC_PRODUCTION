@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ROB5_MES_System.Classes;
+using System;
 using System.Collections.Generic;
 using System.Web;
 
@@ -72,6 +73,8 @@ namespace ROB5_MES_System
             // start production shit
 
             // send start bånd komando
+            string _command = "begin";
+            ProductionHandler(_command);
             // afvent første carriere informatiopn fra filling station. 
             // tag første carriere far carrieres in order og send den til carrieres in production list
             // tjek om denne carrier skal fyldes
@@ -79,9 +82,9 @@ namespace ROB5_MES_System
             // Slet filling opgave fra carriern
 
         }
-        private void ProductionHandler()
+        private void ProductionHandler(string serverCommand)
         {
-
+            MainWindowForm.opcuaPLC09.ModifyNodeValue("ServerCommand", serverCommand);
         }
 
         public int OrderNumber
