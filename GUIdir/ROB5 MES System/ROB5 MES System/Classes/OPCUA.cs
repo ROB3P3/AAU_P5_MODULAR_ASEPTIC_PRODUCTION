@@ -10,6 +10,8 @@ namespace ROB5_MES_System.Classes
         private ushort _carrierID;
         private Session _clientSession;
         private Subscription _subscription;
+        private string _nodeId;
+        private PLCInfo _plcinfo;
 
         public string AppType
         {
@@ -21,26 +23,56 @@ namespace ROB5_MES_System.Classes
             get { return _appState; }
             set { _appState = value; }
         }
-        public ushort CarrierID
+        public ushort CarrierIdentifier
         {
             get { return _carrierID; }
             set { _carrierID = value; }
         }
 
+        public string NodeIdentifier
+        {
+            get { return _nodeId; }
+            set { _nodeId = value; }
+        }
+        public PLCInfo PlcInfo
+        {
+            get { return _plcinfo; }
+            set { _plcinfo = value; }
+        }
+
+
         public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
         {
-            // Create the application configuration
-            var applicationConfiguration = CreateApplicationConfiguration();
-            // Create the endpoint
-            var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
+            // try to create a connection to the server
+            Console.WriteLine("Connecting to {0}", endpointUrl);
+            NodeIdentifier = nodeId;
+            PlcInfo = plcinfo;
+            try
+            {
+                // Create the application configuration
+                var applicationConfiguration = CreateApplicationConfiguration();
+                // Create the endpoint
+                var endpoint = CreateEndpoint(applicationConfiguration, endpointUrl);
 
-            // Connect to the server
-            _clientSession = Session.Create(applicationConfiguration, endpoint, false, "OPCUAClient", 60000, null, null).Result;
-            // read application type
-            this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
-            plcinfo.Type = this.AppType;
-            // subscribe to application state
-            SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
+                // Connect to the server
+                _clientSession = Session.Create(applicationConfiguration, endpoint, true, "OPCUAClient", 60000, null, null).Result;
+                // read application type
+                this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
+                plcinfo.Type = this.AppType;
+                // subscribe to application state and carrier id
+                SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
+                SubscribeNodeValue(_clientSession, String.Format("{0}.CarrierID", nodeId), "CarrierID", plcinfo);
+                plcinfo.ConnectionStatus = true;
+            }
+            catch (Exception e)
+            {
+                // write the error message
+                Console.WriteLine("Failed to connect to {0}, error: {1}", nodeId, e.Message);
+                plcinfo.AppState = "N/A";
+                plcinfo.Type = "N/A";
+                plcinfo.ConnectionStatus = false;
+            }
+
         }
 
         private static Opc.Ua.ApplicationConfiguration CreateApplicationConfiguration()
@@ -118,9 +150,19 @@ namespace ROB5_MES_System.Classes
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // display the value
-                Console.WriteLine("{0} is: {1}", variableName, value);
+                //Console.WriteLine("{0} is: {1}", variableName, value);
                 //plcinfo.UpdatePLCInfo((string)value, "N/A");
-                plcinfo.AppState = (string)value;
+                switch (variableName)
+                {
+                    case "AppState":
+                        plcinfo.AppState = (string)value;
+                        Console.WriteLine("{0} is: {1}", variableName, value);
+                        break;
+                    case "CarrierID":
+                        plcinfo.CarrierID = (ushort)value;
+                        Console.WriteLine("{0} is: {1}", variableName, value);
+                        break;
+                }
             };
 
             // add the subscription to the session
@@ -136,18 +178,15 @@ namespace ROB5_MES_System.Classes
             _clientSession?.Dispose();
         }
 
-        private static void ModifyNodeValue(Session client, string nodeId, string variableName, string newValue)
+        public void ModifyNodeValue(string variableName, string newValue)
         {
             // Create a NodeId object from the string nodeId
-            NodeId node = new NodeId(nodeId);
+            NodeId node = new NodeId(String.Format("{0}.ServerCommand",_nodeId));
             WriteValueCollection nodesToWrite = new WriteValueCollection();
 
-            // write which node we are going to modify
-            //Console.WriteLine("Modifying {0}", variableName);
-
             // write the current value of the node
-            DataValue value = client.ReadValue(node);
-            //Console.WriteLine("Current value is: {0}", value.Value);
+            DataValue value = _clientSession.ReadValue(node);
+            Console.WriteLine("Modifying {0} in {1}, Current value is: {2}", variableName, node, value.Value);
 
             // Create a WriteValue object
             WriteValue writeValue = new WriteValue
@@ -162,10 +201,10 @@ namespace ROB5_MES_System.Classes
 
 
             // Write the new value to the node
-            client.Write(null, nodesToWrite, out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos);
+            _clientSession.Write(null, nodesToWrite, out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos);
 
             // Check if the write was successful
-            /*
+            
             if (StatusCode.IsGood(results[0]))
             {
                 Console.WriteLine("Write succeeded");
@@ -180,7 +219,7 @@ namespace ROB5_MES_System.Classes
                 // Display the diagnostic information
                 Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
-            }*/
+            }
         }
     }
 }
