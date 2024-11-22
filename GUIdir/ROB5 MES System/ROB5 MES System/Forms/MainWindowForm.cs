@@ -8,7 +8,7 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        public static Database database = new Database("localhost", "volle", "volle", "production");
+        public static Database database = new Database("localhost", "MES", "MES", "production");
         public static MESSystem mesSystem;
         public static OPCUA opcuaPLC09;
         public static OPCUA opcuaPLC08;
@@ -21,6 +21,9 @@ namespace ROB5_MES_System
             plcs = plcList();
 
             InitializeComponent();
+
+            database.create_table_order();
+            database.create_table_production();
 
             database.get_production_queue();
             database.get_planned_orders();

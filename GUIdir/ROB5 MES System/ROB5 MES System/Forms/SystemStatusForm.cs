@@ -22,7 +22,11 @@ namespace ROB5_MES_System
         {
             systemStatusDataGrid.DataSource = null;
             MainWindowForm.plcs.Sort((x, y) => x.Placement.CompareTo(y.Placement));
-            systemStatusDataGrid.DataSource = MainWindowForm.plcs;
+
+            BindingSource plcBindingSource = new BindingSource();
+            plcBindingSource.DataSource = MainWindowForm.plcs;
+
+            systemStatusDataGrid.DataSource = plcBindingSource;
         }
 
         private void startProductionButton_MouseClick(object sender, MouseEventArgs e)
