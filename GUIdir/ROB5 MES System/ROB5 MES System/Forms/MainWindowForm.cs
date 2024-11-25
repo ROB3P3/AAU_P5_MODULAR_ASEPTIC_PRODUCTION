@@ -8,7 +8,7 @@ namespace ROB5_MES_System
 {
     public partial class MainWindowForm : Form
     {
-        public static Database database = new Database("localhost", "volle", "volle", "production");
+        public static Database database = new Database("localhost", "MES", "MES", "production");
         public static MESSystem mesSystem;
         public static OPCUA opcuaPLC09;
         public static OPCUA opcuaPLC08;
@@ -25,6 +25,7 @@ namespace ROB5_MES_System
             database.get_production_queue();
             database.get_planned_orders();
 
+            // comment out to run mes without being connected to plcs
             // setup the opcua connections to the plc modules
             // plc 09
             opcuaPLC09 = new OPCUA("opc.tcp://172.20.13.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", plcs[0]);
@@ -38,7 +39,6 @@ namespace ROB5_MES_System
             timer.Start();
 
             DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
-
         }
 
         // temporary function for adding modules ?
