@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using System.Threading;
 
 namespace ROB5_MES_System
 {
@@ -30,23 +31,26 @@ namespace ROB5_MES_System
 
         private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
         private LinkedList<Carrier> _carriersInProductionList;
+
+        private Thread _productionThread;
         private void GenerateCarriers(string containerType, int containerAmount)
         {
-            int fullCarriers = containerAmount / 5;
-            int containerRemainder = containerAmount % 5;
+            //generates carriers based on the amount of containers in the order
+            int fullCarriers = containerAmount / 5; // 5 containers per carrier
+            int containerRemainder = containerAmount % 5; // remainder of containers that do not fit in a full carrier
 
             for (int i = 0; i < fullCarriers; i++)
             {
-                Carrier carrier = new Carrier(i + 1, 5, containerType, _orderNumber);
+                Carrier carrier = new Carrier(-1, 5, containerType, _orderNumber); // her bliver carriersne genereret med 5 containere og et id
                 _carriersInOrder.AddLast(carrier);
                 Console.WriteLine("Full carrier added");
             }
 
             _carriersTotal = fullCarriers;
 
-            if (containerRemainder != 0)
+            if (containerRemainder != 0) // if there is a remainder of containers that do not fit in a full carrier
             {
-                _carriersInOrder.AddLast(new Carrier(fullCarriers + 1, containerRemainder, containerType, _orderNumber));
+                _carriersInOrder.AddLast(new Carrier(-1, containerRemainder, containerType, _orderNumber)); // add a carrier with the remainder of containers
                 _carriersTotal += 1;
                 Console.WriteLine(string.Format("Remainder carrier added with {0} containers added", containerRemainder));
             }
@@ -68,24 +72,38 @@ namespace ROB5_MES_System
             MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _orderStartTime, _orderEndTime);
             // Anton shit
         }
+
+
         public void StartOrderProduction()
         {
-            // start production shit
+            // create new thread for productionhandler if no thread for it exists
+            if (_productionThread == null || !_productionThread.IsAlive)
+            {
+                _productionThread = new Thread(ProductionHandler);
+                _productionThread.Start();
+            }
+        }
 
+
+        private void ProductionHandler()
+        {
             // send start bånd komando
             string _command = "begin";
-            ProductionHandler(_command);
+            OpcuaHandler(_command);
             // afvent første carriere informatiopn fra filling station. 
             // tag første carriere far carrieres in order og send den til carrieres in production list
             // tjek om denne carrier skal fyldes
             // send svar til filling station "start" eller "pass it on"
             // Slet filling opgave fra carriern
 
+            
         }
-        private void ProductionHandler(string serverCommand)
+
+        private void OpcuaHandler(string serverCommand)
         {
             MainWindowForm.opcuaPLC09.ModifyNodeValue("ServerCommand", serverCommand);
         }
+
 
         public int OrderNumber
         {
