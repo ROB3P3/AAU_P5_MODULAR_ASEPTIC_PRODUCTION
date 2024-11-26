@@ -171,12 +171,7 @@ namespace ROB5_MES_System.Classes
             _subscription.Create();
         }
 
-        public void Dispose()
-        {
-            _subscription?.Delete(true);
-            _clientSession?.Close();
-            _clientSession?.Dispose();
-        }
+
 
         public void ModifyNodeValue(string variableName, string newValue)
         {
