@@ -15,6 +15,7 @@
         <Node name="AppState" type="T_STRING" access="ReadWrite" />
         <Node name="AppType" type="T_STRING" access="ReadWrite" />
         <Node name="CarrierID" type="T_UINT" access="ReadWrite" />
+        <Node name="CarrierIdString" type="T_STRING" access="ReadWrite" />
         <Node name="ServerCommand" type="T_STRING" access="ReadWrite" />
       </Node>
     </Node>

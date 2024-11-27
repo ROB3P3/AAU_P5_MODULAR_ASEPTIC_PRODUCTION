@@ -12,6 +12,8 @@ namespace ROB5_MES_System.Classes
         private Subscription _subscription;
         private string _nodeId;
         private PLCInfo _plcinfo;
+        private Order _currentOrder;
+        private Carrier _carrierInOrder;
 
         public string AppType
         {
@@ -40,6 +42,17 @@ namespace ROB5_MES_System.Classes
             set { _plcinfo = value; }
         }
 
+        public Order currentOrder
+        {
+            get { return _currentOrder; }
+            set { _currentOrder = value; }
+        }
+        public Carrier carrierInOrder
+        {
+            get { return _carrierInOrder; }
+            set { _carrierInOrder = value; }
+        }
+
 
         public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
         {
@@ -47,6 +60,8 @@ namespace ROB5_MES_System.Classes
             Console.WriteLine("Connecting to {0}", endpointUrl);
             NodeIdentifier = nodeId;
             PlcInfo = plcinfo;
+
+
             try
             {
                 // Create the application configuration
@@ -56,13 +71,19 @@ namespace ROB5_MES_System.Classes
 
                 // Connect to the server
                 _clientSession = Session.Create(applicationConfiguration, endpoint, true, "OPCUAClient", 60000, null, null).Result;
+                plcinfo.ConnectionStatus = _clientSession.Connected;
+                //Console.WriteLine("PLC0{0} Connection state: {1}", plcinfo.Id, _clientSession.Connected);
+
+                // set command to default
+                ModifyNodeValue("ServerCommand", "wait");
+
                 // read application type
                 this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
                 plcinfo.Type = this.AppType;
                 // subscribe to application state and carrier id
                 SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
                 SubscribeNodeValue(_clientSession, String.Format("{0}.CarrierID", nodeId), "CarrierID", plcinfo);
-                plcinfo.ConnectionStatus = true;
+
             }
             catch (Exception e)
             {
@@ -74,6 +95,8 @@ namespace ROB5_MES_System.Classes
             }
 
         }
+
+
 
         private static Opc.Ua.ApplicationConfiguration CreateApplicationConfiguration()
         {
@@ -149,18 +172,19 @@ namespace ROB5_MES_System.Classes
             {
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
-                // display the value
-                //Console.WriteLine("{0} is: {1}", variableName, value);
-                //plcinfo.UpdatePLCInfo((string)value, "N/A");
+                // react differently depending on the variable name
                 switch (variableName)
                 {
                     case "AppState":
                         plcinfo.AppState = (string)value;
                         Console.WriteLine("{0} is: {1}", variableName, value);
+                        if (MainWindowForm.isProductionRunning) { ApplicationHandlerFilling(client, (string)value); }
                         break;
                     case "CarrierID":
                         plcinfo.CarrierID = (ushort)value;
                         Console.WriteLine("{0} is: {1}", variableName, value);
+                        // only do something if carrierID is not 0 and production is running
+                        if (plcinfo.CarrierID != 0 && MainWindowForm.isProductionRunning) { CarrierHandlerFilling((ushort)value); }
                         break;
                 }
             };
@@ -171,12 +195,121 @@ namespace ROB5_MES_System.Classes
             _subscription.Create();
         }
 
+        // filling is first so it wants a new carrier
+        private void CarrierHandlerFilling(ushort carrierID)
+        {
+            Console.WriteLine("Carrier {0} found, checking if assigned to order.", carrierID);
+            // goes through all orders to see if carrierID is in production, then adds it to the list if it isn't
+
+            bool _carrierExists = false;
+            foreach (Order order in MainWindowForm.mesSystem.Orders)
+            {
+                Console.WriteLine("Order: {0}", order);
+                foreach (Carrier carrier in order.CarriersInProductionList)
+                {
+                    // if the carrier is already assigned to the order, tell PLC to pass it on
+                    if (carrier.CarrierID == carrierID)
+                    {
+                        Console.WriteLine("Carrier {0} is already assigned to order {1}", carrierID, order);
+                        OpcuaHandler("pass");
+                        _carrierExists = true;
+                        return;
+                    }
+                }
+            }
+
+            // if the carrier is not assigned to any order, add it to the list
+            if (!_carrierExists)
+            {
+                Console.WriteLine("Carrier {0} is not assigned to any order, adding to list.", carrierID);
+
+                // console write all orders
+                Console.WriteLine("Orders: ");
+                foreach (Order order in MainWindowForm.mesSystem.Orders)
+                {
+                    Console.WriteLine("Order number {0} by customer {1}", order.OrderNumber, order.OrderCustomer);
+                }
+
+                // get first order in queue and set as current order
+                _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
+
+                // get the first carrier in CarriersInOrder list and set as new carrier
+                _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
+
+
+                // assign the carrier to the order
+                _carrierInOrder.CarrierID = carrierID;
+                Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderName);
+
+                // add the carrier to the list of carriers in production
+                currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
+                Console.WriteLine("Carrier {0} added to production list", _carrierInOrder.CarrierID);
+
+                // remove the carrier from the list of carriers in order
+                currentOrder.CarriersInOrder.Remove(carrierInOrder);
+                Console.WriteLine("Carrier {0} removed from order list", _carrierInOrder.CarrierID);
+
+                // create filling Task(string taskName, string taskDescription, string taskType, int taskId, string status, string statusDescription) for the carrier
+                //Task task = new Task("Fill", "Filling the carrier with medicine", "Fill", 1, "In progress", "Filling the carrier with medicine");
+
+                // add the task to the carrier
+                //carrierInOrder.AddTaskToEndOfCarrier(task);
+
+                // print carrier info
+                carrierInOrder.PrintCarrierInfo();
+
+                // send the carrier to the PLC
+                OpcuaHandler("fill");
+                Console.WriteLine("Carrier {0} sent to PLC with command 'fill'", carrierInOrder.CarrierID);
+
+                // console write the production list and order list
+                Console.WriteLine("Production list: ");
+                Console.WriteLine(
+                    string.Join(", ", currentOrder.CarriersInProductionList.Select(x => x.CarrierID).ToArray()));
+                Console.WriteLine("Order list: ");
+                Console.WriteLine(string.Join(", ", currentOrder.CarriersInOrder.Select(x => x.CarrierID).ToArray()));
+
+
+            }
+
+        }
+
+        private void ApplicationHandlerFilling(Session client, string state)
+        {
+            // set up switch cases to handle when application is starting, is ready, is running, and is finished
+            switch (state)
+            {
+                case "starting":
+                    Console.WriteLine("Application is starting");
+                    break;
+                case "ready":
+                    Console.WriteLine("Application is ready");
+                    break;
+                case "running":
+                    Console.WriteLine("Application is running");
+                    break;
+                case "done":
+                    Console.WriteLine("Application is done");
+                    // remove the filling task from the carrier
+                    carrierInOrder.CompleteFirstTaskInCarrierQueue();
+                    carrierInOrder.PrintCarrierInfo();
+                    OpcuaHandler("transfer");
+                    break;
+            }
+        }
+
+        // function to handle the commands sent to the PLC
+        public void OpcuaHandler(string serverCommand)
+        {
+            ModifyNodeValue("ServerCommand", serverCommand);
+        }
+
 
 
         public void ModifyNodeValue(string variableName, string newValue)
         {
             // Create a NodeId object from the string nodeId
-            NodeId node = new NodeId(String.Format("{0}.ServerCommand",_nodeId));
+            NodeId node = new NodeId(String.Format("{0}.{1}", _nodeId, variableName));
             WriteValueCollection nodesToWrite = new WriteValueCollection();
 
             // write the current value of the node
@@ -199,7 +332,7 @@ namespace ROB5_MES_System.Classes
             _clientSession.Write(null, nodesToWrite, out StatusCodeCollection results, out DiagnosticInfoCollection diagnosticInfos);
 
             // Check if the write was successful
-            
+
             if (StatusCode.IsGood(results[0]))
             {
                 Console.WriteLine("Write succeeded");
@@ -212,7 +345,7 @@ namespace ROB5_MES_System.Classes
                 Console.WriteLine("Error message: {0}", results[0]);
 
                 // Display the diagnostic information
-                Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
+                //Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
             }
         }
