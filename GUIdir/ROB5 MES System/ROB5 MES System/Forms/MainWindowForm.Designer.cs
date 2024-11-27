@@ -61,7 +61,7 @@
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(6, 3, 0, 3);
-            menuStrip1.Size = new Size(1182, 30);
+            menuStrip1.Size = new Size(1190, 27);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -69,13 +69,13 @@
             // 
             dataToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
             dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            dataToolStripMenuItem.Size = new Size(55, 24);
+            dataToolStripMenuItem.Size = new Size(49, 21);
             dataToolStripMenuItem.Text = "Data";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(116, 26);
+            exitToolStripMenuItem.Size = new Size(110, 26);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.MouseUp += exitToolStripMenuItem_MouseUp;
             // 
@@ -83,26 +83,26 @@
             // 
             toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exportToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            toolsToolStripMenuItem.Size = new Size(58, 24);
+            toolsToolStripMenuItem.Size = new Size(53, 21);
             toolsToolStripMenuItem.Text = "Tools";
             // 
             // exportToolStripMenuItem
             // 
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new Size(183, 26);
+            exportToolStripMenuItem.Size = new Size(171, 26);
             exportToolStripMenuItem.Text = "Export to CSV";
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { configurationToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new Size(55, 24);
+            helpToolStripMenuItem.Size = new Size(49, 21);
             helpToolStripMenuItem.Text = "Help";
             // 
             // configurationToolStripMenuItem
             // 
             configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
-            configurationToolStripMenuItem.Size = new Size(183, 26);
+            configurationToolStripMenuItem.Size = new Size(169, 26);
             configurationToolStripMenuItem.Text = "Configuration";
             // 
             // button1
@@ -145,7 +145,7 @@
             // 
             DateLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             DateLabel.AutoSize = true;
-            DateLabel.Location = new Point(20, 700);
+            DateLabel.Location = new Point(21, 724);
             DateLabel.Name = "DateLabel";
             DateLabel.Size = new Size(39, 20);
             DateLabel.TabIndex = 6;
@@ -246,10 +246,10 @@
             menuStrip2.Dock = DockStyle.Left;
             menuStrip2.ImageScalingSize = new Size(20, 20);
             menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, SystemStatusSubMenuItem, OperationsSubMenuItem, WorkPlansSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem });
-            menuStrip2.Location = new Point(0, 30);
+            menuStrip2.Location = new Point(0, 27);
             menuStrip2.Name = "menuStrip2";
             menuStrip2.Padding = new Padding(6, 3, 0, 3);
-            menuStrip2.Size = new Size(180, 723);
+            menuStrip2.Size = new Size(181, 758);
             menuStrip2.TabIndex = 5;
             menuStrip2.Text = "menuStrip2";
             // 
@@ -257,7 +257,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1182, 753);
+            ClientSize = new Size(1190, 785);
             Controls.Add(DateLabel);
             Controls.Add(menuStrip2);
             Controls.Add(button4);

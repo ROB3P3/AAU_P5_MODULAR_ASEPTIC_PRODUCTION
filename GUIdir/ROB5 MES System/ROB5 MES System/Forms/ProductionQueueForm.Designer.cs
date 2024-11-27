@@ -53,7 +53,7 @@
             currentOrdersDataGrid.ReadOnly = true;
             currentOrdersDataGrid.RowHeadersVisible = false;
             currentOrdersDataGrid.RowHeadersWidth = 51;
-            currentOrdersDataGrid.Size = new Size(805, 429);
+            currentOrdersDataGrid.Size = new Size(809, 445);
             currentOrdersDataGrid.TabIndex = 0;
             currentOrdersDataGrid.CellDoubleClick += currentOrdersDataGrid_CellDoubleClick;
             currentOrdersDataGrid.CellMouseClick += currentOrdersDataGrid_CellMouseClick;
@@ -94,7 +94,7 @@
             // DeleteAllOrdersButton
             // 
             DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DeleteAllOrdersButton.Location = new Point(14, 449);
+            DeleteAllOrdersButton.Location = new Point(14, 465);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(194, 29);
             DeleteAllOrdersButton.TabIndex = 1;
@@ -105,7 +105,7 @@
             // DisableAllOrdersButton
             // 
             DisableAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DisableAllOrdersButton.Location = new Point(214, 449);
+            DisableAllOrdersButton.Location = new Point(214, 465);
             DisableAllOrdersButton.Name = "DisableAllOrdersButton";
             DisableAllOrdersButton.Size = new Size(139, 29);
             DisableAllOrdersButton.TabIndex = 2;
@@ -117,7 +117,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(832, 488);
+            ClientSize = new Size(836, 504);
             Controls.Add(DisableAllOrdersButton);
             Controls.Add(DeleteAllOrdersButton);
             Controls.Add(currentOrdersDataGrid);

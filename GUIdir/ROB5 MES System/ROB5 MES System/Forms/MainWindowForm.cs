@@ -14,11 +14,13 @@ namespace ROB5_MES_System
         public static OPCUA opcuaPLC08;
         // applications/modules that are connected to the system
         public static List<PLCInfo> plcs { get; set; }
+        public static List<Operation> operations { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
 
             plcs = plcList();
+            operations = new List<Operation>();
 
             InitializeComponent();
 

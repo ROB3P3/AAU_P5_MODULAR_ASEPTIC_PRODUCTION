@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            MedicineDispLabel = new Label();
+            MedicineLabel = new Label();
             ActualEndDispLabel = new Label();
             ActualEndLabel = new Label();
             ActualStartDispLabel = new Label();
@@ -53,8 +55,6 @@
             OrderNumberLabel = new Label();
             groupBox2 = new GroupBox();
             CarrierTreeView = new TreeView();
-            MedicineLabel = new Label();
-            MedicineDispLabel = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             SuspendLayout();
@@ -85,19 +85,40 @@
             groupBox1.Controls.Add(OrderNumberDispLabel);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(OrderNumberLabel);
-            groupBox1.Location = new Point(12, 12);
+            groupBox1.Location = new Point(8, 6);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(317, 486);
+            groupBox1.Size = new Size(631, 258);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Order Info";
+            // 
+            // MedicineDispLabel
+            // 
+            MedicineDispLabel.AutoSize = true;
+            MedicineDispLabel.BackColor = SystemColors.Window;
+            MedicineDispLabel.BorderStyle = BorderStyle.Fixed3D;
+            MedicineDispLabel.Location = new Point(153, 100);
+            MedicineDispLabel.MinimumSize = new Size(150, 25);
+            MedicineDispLabel.Name = "MedicineDispLabel";
+            MedicineDispLabel.Size = new Size(150, 25);
+            MedicineDispLabel.TabIndex = 21;
+            MedicineDispLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // MedicineLabel
+            // 
+            MedicineLabel.AutoSize = true;
+            MedicineLabel.Location = new Point(6, 105);
+            MedicineLabel.Name = "MedicineLabel";
+            MedicineLabel.Size = new Size(73, 20);
+            MedicineLabel.TabIndex = 20;
+            MedicineLabel.Text = "Medicine:";
             // 
             // ActualEndDispLabel
             // 
             ActualEndDispLabel.AutoSize = true;
             ActualEndDispLabel.BackColor = SystemColors.Window;
             ActualEndDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            ActualEndDispLabel.Location = new Point(153, 305);
+            ActualEndDispLabel.Location = new Point(463, 180);
             ActualEndDispLabel.MinimumSize = new Size(150, 25);
             ActualEndDispLabel.Name = "ActualEndDispLabel";
             ActualEndDispLabel.Size = new Size(150, 25);
@@ -107,7 +128,7 @@
             // ActualEndLabel
             // 
             ActualEndLabel.AutoSize = true;
-            ActualEndLabel.Location = new Point(7, 310);
+            ActualEndLabel.Location = new Point(316, 185);
             ActualEndLabel.Name = "ActualEndLabel";
             ActualEndLabel.Size = new Size(37, 20);
             ActualEndLabel.TabIndex = 18;
@@ -118,7 +139,7 @@
             ActualStartDispLabel.AutoSize = true;
             ActualStartDispLabel.BackColor = SystemColors.Window;
             ActualStartDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            ActualStartDispLabel.Location = new Point(153, 268);
+            ActualStartDispLabel.Location = new Point(463, 140);
             ActualStartDispLabel.MinimumSize = new Size(150, 25);
             ActualStartDispLabel.Name = "ActualStartDispLabel";
             ActualStartDispLabel.Size = new Size(150, 25);
@@ -128,7 +149,7 @@
             // ActualStartLabel
             // 
             ActualStartLabel.AutoSize = true;
-            ActualStartLabel.Location = new Point(7, 273);
+            ActualStartLabel.Location = new Point(316, 145);
             ActualStartLabel.Name = "ActualStartLabel";
             ActualStartLabel.Size = new Size(43, 20);
             ActualStartLabel.TabIndex = 16;
@@ -139,7 +160,7 @@
             CustomerDispLabel.AutoSize = true;
             CustomerDispLabel.BackColor = SystemColors.Window;
             CustomerDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            CustomerDispLabel.Location = new Point(152, 57);
+            CustomerDispLabel.Location = new Point(152, 60);
             CustomerDispLabel.MinimumSize = new Size(150, 25);
             CustomerDispLabel.Name = "CustomerDispLabel";
             CustomerDispLabel.Size = new Size(150, 25);
@@ -149,7 +170,7 @@
             // CustomerLabel
             // 
             CustomerLabel.AutoSize = true;
-            CustomerLabel.Location = new Point(6, 58);
+            CustomerLabel.Location = new Point(6, 65);
             CustomerLabel.Name = "CustomerLabel";
             CustomerLabel.Size = new Size(75, 20);
             CustomerLabel.TabIndex = 14;
@@ -160,7 +181,7 @@
             OrderStateDispLabel.AutoSize = true;
             OrderStateDispLabel.BackColor = SystemColors.Window;
             OrderStateDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            OrderStateDispLabel.Location = new Point(153, 141);
+            OrderStateDispLabel.Location = new Point(152, 220);
             OrderStateDispLabel.MinimumSize = new Size(150, 25);
             OrderStateDispLabel.Name = "OrderStateDispLabel";
             OrderStateDispLabel.Size = new Size(150, 25);
@@ -170,7 +191,7 @@
             // OrderStateLabel
             // 
             OrderStateLabel.AutoSize = true;
-            OrderStateLabel.Location = new Point(7, 142);
+            OrderStateLabel.Location = new Point(6, 225);
             OrderStateLabel.Name = "OrderStateLabel";
             OrderStateLabel.Size = new Size(86, 20);
             OrderStateLabel.TabIndex = 12;
@@ -181,7 +202,7 @@
             CarrierAmountDispLabel.AutoSize = true;
             CarrierAmountDispLabel.BackColor = SystemColors.Window;
             CarrierAmountDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            CarrierAmountDispLabel.Location = new Point(153, 438);
+            CarrierAmountDispLabel.Location = new Point(464, 100);
             CarrierAmountDispLabel.MinimumSize = new Size(150, 25);
             CarrierAmountDispLabel.Name = "CarrierAmountDispLabel";
             CarrierAmountDispLabel.Size = new Size(150, 25);
@@ -191,7 +212,7 @@
             // CarrierAmountLabel
             // 
             CarrierAmountLabel.AutoSize = true;
-            CarrierAmountLabel.Location = new Point(5, 444);
+            CarrierAmountLabel.Location = new Point(316, 105);
             CarrierAmountLabel.Name = "CarrierAmountLabel";
             CarrierAmountLabel.Size = new Size(111, 20);
             CarrierAmountLabel.TabIndex = 10;
@@ -202,7 +223,7 @@
             ContainerTypeDispLabel.AutoSize = true;
             ContainerTypeDispLabel.BackColor = SystemColors.Window;
             ContainerTypeDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            ContainerTypeDispLabel.Location = new Point(153, 348);
+            ContainerTypeDispLabel.Location = new Point(463, 20);
             ContainerTypeDispLabel.MinimumSize = new Size(150, 25);
             ContainerTypeDispLabel.Name = "ContainerTypeDispLabel";
             ContainerTypeDispLabel.Size = new Size(150, 25);
@@ -212,7 +233,7 @@
             // ContainerTypeLabel
             // 
             ContainerTypeLabel.AutoSize = true;
-            ContainerTypeLabel.Location = new Point(7, 354);
+            ContainerTypeLabel.Location = new Point(316, 25);
             ContainerTypeLabel.Name = "ContainerTypeLabel";
             ContainerTypeLabel.Size = new Size(109, 20);
             ContainerTypeLabel.TabIndex = 8;
@@ -223,7 +244,7 @@
             ContainerAmountDispLabel.AutoSize = true;
             ContainerAmountDispLabel.BackColor = SystemColors.Window;
             ContainerAmountDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            ContainerAmountDispLabel.Location = new Point(153, 397);
+            ContainerAmountDispLabel.Location = new Point(464, 60);
             ContainerAmountDispLabel.MinimumSize = new Size(150, 25);
             ContainerAmountDispLabel.Name = "ContainerAmountDispLabel";
             ContainerAmountDispLabel.Size = new Size(150, 25);
@@ -233,7 +254,7 @@
             // ContainerAmountLabel
             // 
             ContainerAmountLabel.AutoSize = true;
-            ContainerAmountLabel.Location = new Point(7, 398);
+            ContainerAmountLabel.Location = new Point(316, 65);
             ContainerAmountLabel.Name = "ContainerAmountLabel";
             ContainerAmountLabel.Size = new Size(131, 20);
             ContainerAmountLabel.TabIndex = 6;
@@ -244,7 +265,7 @@
             PlannedEndTimeDispLabel.AutoSize = true;
             PlannedEndTimeDispLabel.BackColor = SystemColors.Window;
             PlannedEndTimeDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            PlannedEndTimeDispLabel.Location = new Point(153, 227);
+            PlannedEndTimeDispLabel.Location = new Point(152, 180);
             PlannedEndTimeDispLabel.MinimumSize = new Size(150, 25);
             PlannedEndTimeDispLabel.Name = "PlannedEndTimeDispLabel";
             PlannedEndTimeDispLabel.Size = new Size(150, 25);
@@ -254,7 +275,7 @@
             // PlannedEndTimeLabel
             // 
             PlannedEndTimeLabel.AutoSize = true;
-            PlannedEndTimeLabel.Location = new Point(7, 228);
+            PlannedEndTimeLabel.Location = new Point(6, 185);
             PlannedEndTimeLabel.Name = "PlannedEndTimeLabel";
             PlannedEndTimeLabel.Size = new Size(94, 20);
             PlannedEndTimeLabel.TabIndex = 4;
@@ -263,7 +284,7 @@
             // PlannedStartTimeLabel
             // 
             PlannedStartTimeLabel.AutoSize = true;
-            PlannedStartTimeLabel.Location = new Point(7, 186);
+            PlannedStartTimeLabel.Location = new Point(6, 145);
             PlannedStartTimeLabel.Name = "PlannedStartTimeLabel";
             PlannedStartTimeLabel.Size = new Size(98, 20);
             PlannedStartTimeLabel.TabIndex = 3;
@@ -274,7 +295,7 @@
             PlannedStartTimeDispLabel.AutoSize = true;
             PlannedStartTimeDispLabel.BackColor = SystemColors.Window;
             PlannedStartTimeDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            PlannedStartTimeDispLabel.Location = new Point(153, 184);
+            PlannedStartTimeDispLabel.Location = new Point(152, 140);
             PlannedStartTimeDispLabel.MinimumSize = new Size(150, 25);
             PlannedStartTimeDispLabel.Name = "PlannedStartTimeDispLabel";
             PlannedStartTimeDispLabel.Size = new Size(150, 25);
@@ -286,7 +307,7 @@
             label2.AutoSize = true;
             label2.BackColor = SystemColors.Window;
             label2.BorderStyle = BorderStyle.Fixed3D;
-            label2.Location = new Point(153, 21);
+            label2.Location = new Point(153, 20);
             label2.MinimumSize = new Size(150, 25);
             label2.Name = "label2";
             label2.Size = new Size(150, 25);
@@ -308,7 +329,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(7, 22);
+            label1.Location = new Point(6, 25);
             label1.Name = "label1";
             label1.Size = new Size(108, 20);
             label1.TabIndex = 0;
@@ -325,11 +346,11 @@
             // 
             // groupBox2
             // 
-            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox2.Controls.Add(CarrierTreeView);
-            groupBox2.Location = new Point(12, 504);
+            groupBox2.Location = new Point(8, 271);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(745, 206);
+            groupBox2.Size = new Size(633, 222);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Carrier Queue";
@@ -339,35 +360,14 @@
             CarrierTreeView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CarrierTreeView.Location = new Point(6, 26);
             CarrierTreeView.Name = "CarrierTreeView";
-            CarrierTreeView.Size = new Size(733, 172);
+            CarrierTreeView.Size = new Size(621, 188);
             CarrierTreeView.TabIndex = 0;
-            // 
-            // MedicineLabel
-            // 
-            MedicineLabel.AutoSize = true;
-            MedicineLabel.Location = new Point(7, 100);
-            MedicineLabel.Name = "MedicineLabel";
-            MedicineLabel.Size = new Size(73, 20);
-            MedicineLabel.TabIndex = 20;
-            MedicineLabel.Text = "Medicine:";
-            // 
-            // MedicineDispLabel
-            // 
-            MedicineDispLabel.AutoSize = true;
-            MedicineDispLabel.BackColor = SystemColors.Window;
-            MedicineDispLabel.BorderStyle = BorderStyle.Fixed3D;
-            MedicineDispLabel.Location = new Point(153, 99);
-            MedicineDispLabel.MinimumSize = new Size(150, 25);
-            MedicineDispLabel.Name = "MedicineDispLabel";
-            MedicineDispLabel.Size = new Size(150, 25);
-            MedicineDispLabel.TabIndex = 21;
-            MedicineDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(769, 715);
+            ClientSize = new Size(651, 501);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "OrderForm";
