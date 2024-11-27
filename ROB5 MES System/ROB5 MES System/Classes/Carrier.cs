@@ -78,11 +78,12 @@ namespace ROB5_MES_System
         // Printer information om carrieren i konsollen
         public void PrintCarrierInfo()
         {
-            Console.WriteLine(string.Format("Order ID: {0} \n" +
-                "Carrier ID {1}\n"+
+
+            Console.WriteLine(string.Format("\nInformation on Carrier {1}:\n" + 
+                "Order ID: {0} \n" +
                 "number of tasks: {2}",_orderId, _id, _quantityOfTasks));
 
-            Console.Write("Task in queu: [ ");
+            Console.Write("Task in queue: [ ");
             for (var node = _taskQueue.First; node != null; node = node.Next)
             {
                 Console.Write(node.Value.TaskName + " ");

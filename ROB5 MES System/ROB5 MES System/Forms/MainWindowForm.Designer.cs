@@ -40,7 +40,6 @@
             button3 = new Button();
             button4 = new Button();
             DateLabel = new Label();
-            ProductionControlMenuItem = new ToolStripMenuItem();
             SystemStatusSubMenuItem = new ToolStripMenuItem();
             OrderManagementMenuItem = new ToolStripMenuItem();
             CurrentOrdersSubMenuItem = new ToolStripMenuItem();
@@ -50,6 +49,7 @@
             WorkPlansSubMenuItem = new ToolStripMenuItem();
             OperationsSubMenuItem = new ToolStripMenuItem();
             menuStrip2 = new MenuStrip();
+            ProductionControlMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             menuStrip2.SuspendLayout();
             SuspendLayout();
@@ -155,21 +155,12 @@
             DateLabel.TabIndex = 6;
             DateLabel.Text = "date";
             // 
-            // ProductionControlMenuItem
-            // 
-            ProductionControlMenuItem.AutoSize = false;
-            ProductionControlMenuItem.Name = "ProductionControlMenuItem";
-            ProductionControlMenuItem.Size = new Size(165, 60);
-            ProductionControlMenuItem.Text = "Production Control";
-            ProductionControlMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            ProductionControlMenuItem.TextDirection = ToolStripTextDirection.Horizontal;
-            ProductionControlMenuItem.Click += ProductionControlMenuItem_Click;
-            // 
             // SystemStatusSubMenuItem
             // 
-            SystemStatusSubMenuItem.AutoSize = false;
+            SystemStatusSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             SystemStatusSubMenuItem.Name = "SystemStatusSubMenuItem";
-            SystemStatusSubMenuItem.Size = new Size(130, 30);
+            SystemStatusSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            SystemStatusSubMenuItem.Size = new Size(113, 23);
             SystemStatusSubMenuItem.Text = "System Status";
             SystemStatusSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             SystemStatusSubMenuItem.Visible = false;
@@ -177,18 +168,21 @@
             // 
             // OrderManagementMenuItem
             // 
-            OrderManagementMenuItem.AutoSize = false;
+            OrderManagementMenuItem.Font = new Font("Segoe UI", 10F);
+            OrderManagementMenuItem.Margin = new Padding(0, 10, 0, 0);
             OrderManagementMenuItem.Name = "OrderManagementMenuItem";
-            OrderManagementMenuItem.Size = new Size(165, 60);
+            OrderManagementMenuItem.Padding = new Padding(6, 10, 6, 10);
+            OrderManagementMenuItem.Size = new Size(148, 43);
             OrderManagementMenuItem.Text = "Order Management";
             OrderManagementMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             OrderManagementMenuItem.Click += OrderManagementMenuItem_Click;
             // 
             // CurrentOrdersSubMenuItem
             // 
-            CurrentOrdersSubMenuItem.AutoSize = false;
+            CurrentOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             CurrentOrdersSubMenuItem.Name = "CurrentOrdersSubMenuItem";
-            CurrentOrdersSubMenuItem.Size = new Size(130, 28);
+            CurrentOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            CurrentOrdersSubMenuItem.Size = new Size(113, 23);
             CurrentOrdersSubMenuItem.Text = "Production Queue";
             CurrentOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             CurrentOrdersSubMenuItem.Visible = false;
@@ -196,9 +190,10 @@
             // 
             // PlannedOrdersSubMenuItem
             // 
-            PlannedOrdersSubMenuItem.AutoSize = false;
+            PlannedOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             PlannedOrdersSubMenuItem.Name = "PlannedOrdersSubMenuItem";
-            PlannedOrdersSubMenuItem.Size = new Size(130, 30);
+            PlannedOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            PlannedOrdersSubMenuItem.Size = new Size(113, 23);
             PlannedOrdersSubMenuItem.Text = "Orders";
             PlannedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             PlannedOrdersSubMenuItem.Visible = false;
@@ -206,9 +201,10 @@
             // 
             // NewOrderSubMenuItem
             // 
-            NewOrderSubMenuItem.AutoSize = false;
+            NewOrderSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             NewOrderSubMenuItem.Name = "NewOrderSubMenuItem";
-            NewOrderSubMenuItem.Size = new Size(130, 30);
+            NewOrderSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            NewOrderSubMenuItem.Size = new Size(113, 23);
             NewOrderSubMenuItem.Text = "New Order";
             NewOrderSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             NewOrderSubMenuItem.Visible = false;
@@ -216,9 +212,10 @@
             // 
             // FinishedOrdersSubMenuItem
             // 
-            FinishedOrdersSubMenuItem.AutoSize = false;
+            FinishedOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             FinishedOrdersSubMenuItem.Name = "FinishedOrdersSubMenuItem";
-            FinishedOrdersSubMenuItem.Size = new Size(130, 30);
+            FinishedOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            FinishedOrdersSubMenuItem.Size = new Size(113, 23);
             FinishedOrdersSubMenuItem.Text = "Finished Orders";
             FinishedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             FinishedOrdersSubMenuItem.Visible = false;
@@ -226,9 +223,10 @@
             // 
             // WorkPlansSubMenuItem
             // 
-            WorkPlansSubMenuItem.AutoSize = false;
+            WorkPlansSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             WorkPlansSubMenuItem.Name = "WorkPlansSubMenuItem";
-            WorkPlansSubMenuItem.Size = new Size(130, 30);
+            WorkPlansSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            WorkPlansSubMenuItem.Size = new Size(113, 23);
             WorkPlansSubMenuItem.Text = "Work Plans";
             WorkPlansSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             WorkPlansSubMenuItem.Visible = false;
@@ -236,9 +234,10 @@
             // 
             // OperationsSubMenuItem
             // 
-            OperationsSubMenuItem.AutoSize = false;
+            OperationsSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             OperationsSubMenuItem.Name = "OperationsSubMenuItem";
-            OperationsSubMenuItem.Size = new Size(130, 30);
+            OperationsSubMenuItem.Padding = new Padding(6, 2, 6, 2);
+            OperationsSubMenuItem.Size = new Size(113, 23);
             OperationsSubMenuItem.Text = "Operations";
             OperationsSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             OperationsSubMenuItem.Visible = false;
@@ -253,9 +252,19 @@
             menuStrip2.Location = new Point(0, 24);
             menuStrip2.Name = "menuStrip2";
             menuStrip2.Padding = new Padding(5, 2, 0, 2);
-            menuStrip2.Size = new Size(158, 541);
+            menuStrip2.Size = new Size(154, 541);
             menuStrip2.TabIndex = 5;
             menuStrip2.Text = "menuStrip2";
+            // 
+            // ProductionControlMenuItem
+            // 
+            ProductionControlMenuItem.Font = new Font("Segoe UI", 10F);
+            ProductionControlMenuItem.Name = "ProductionControlMenuItem";
+            ProductionControlMenuItem.Padding = new Padding(6, 10, 6, 10);
+            ProductionControlMenuItem.Size = new Size(148, 43);
+            ProductionControlMenuItem.Text = "Production Control";
+            ProductionControlMenuItem.TextAlign = ContentAlignment.MiddleLeft;
+            ProductionControlMenuItem.Click += ProductionControlMenuItem_Click;
             // 
             // MainWindowForm
             // 
@@ -295,7 +304,6 @@
         private Button button3;
         private Button button4;
         private Label DateLabel;
-        private ToolStripMenuItem ProductionControlMenuItem;
         private ToolStripMenuItem SystemStatusSubMenuItem;
         private ToolStripMenuItem OrderManagementMenuItem;
         private ToolStripMenuItem CurrentOrdersSubMenuItem;
@@ -307,5 +315,6 @@
         private MenuStrip menuStrip2;
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripMenuItem configurationToolStripMenuItem;
+        private ToolStripMenuItem ProductionControlMenuItem;
     }
 }

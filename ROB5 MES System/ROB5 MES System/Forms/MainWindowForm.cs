@@ -10,14 +10,16 @@ namespace ROB5_MES_System
     public partial class MainWindowForm : Form
     {
         public static Database database = new Database("localhost", "MES", "MES", "production");
-        public static MESSystem mesSystem;
+        public static MESSystem mesSystem { get; set; }
         public static OPCUA opcuaPLC09;
         public static OPCUA opcuaPLC08;
         // applications/modules that are connected to the system
         public static List<PLCInfo> plcs { get; set; }
+        public static bool isProductionRunning { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
+            isProductionRunning = false;
 
             plcs = plcList();
 

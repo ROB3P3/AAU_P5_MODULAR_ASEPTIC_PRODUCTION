@@ -87,6 +87,8 @@ namespace ROB5_MES_System
 
         private void ProductionHandler()
         {
+            MainWindowForm.isProductionRunning = true;
+
             // send start bånd komando
             string _command = "begin";
             OpcuaHandler(_command);
@@ -96,7 +98,6 @@ namespace ROB5_MES_System
             // send svar til filling station "start" eller "pass it on"
             // Slet filling opgave fra carriern
 
-            
         }
 
         private void OpcuaHandler(string serverCommand)
@@ -310,6 +311,17 @@ namespace ROB5_MES_System
                 if (value == null)
                     throw new ArgumentNullException("Carriers in order cannot be null.");
                 _carriersInOrder = value;
+            }
+        }
+
+        public LinkedList<Carrier> CarriersInProductionList
+        {
+            get { return _carriersInProductionList; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("Carriers in production list cannot be null.");
+                _carriersInProductionList = value;
             }
         }
 
