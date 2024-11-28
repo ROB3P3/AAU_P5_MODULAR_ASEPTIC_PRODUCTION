@@ -221,7 +221,7 @@ namespace ROB5_MES_System.Classes
                         {
                             Console.WriteLine("Carrier {0} has filling as its first task, performing the task", carrierID);
                             // send the carrier to the PLC
-                            OpcuaHandler("fill");
+                            OpcuaHandler("valid");
                             return;
                         }
                         else
@@ -280,8 +280,8 @@ namespace ROB5_MES_System.Classes
             if (_carrierInOrder.TaskQueue.ElementAt(0).TaskName == task)
             {
                 // send the carrier to the PLC
-                OpcuaHandler(task);
-                Console.WriteLine("Carrier {0} sent to PLC with command {1}", carrierInOrder.CarrierID, task);
+                OpcuaHandler("valid");
+                Console.WriteLine("Carrier {0} sent to PLC with command {1}", carrierInOrder.CarrierID, "valid");
 
                 // console write the production list and order list
                 //Console.WriteLine("Production list: ");
