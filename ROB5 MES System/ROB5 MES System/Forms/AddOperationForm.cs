@@ -16,11 +16,13 @@ namespace ROB5_MES_System.Forms
         public AddOperationForm()
         {
             InitializeComponent();
+            int maxOperationNumber = MainWindowForm.operations.Max(operation => operation.OperationID);
+            OperationNumberNumeric.Value = maxOperationNumber < 999 ? maxOperationNumber + 1 : 1;
         }
 
         private void AddOperationButton_Click(object sender, EventArgs e)
         {
-            if (OperationNameTextBox.Text.Length >= 1 && OperationDescriptionTextBox.Text.Length >= 1)
+            if (OperationNameTextBox.Text.Length > 0 && OperationDescriptionTextBox.Text.Length > 0)
             {
                 if (!MainWindowForm.operations.Any(operation => operation.OperationID == Convert.ToInt32(OperationNumberNumeric.Value)))
                 {

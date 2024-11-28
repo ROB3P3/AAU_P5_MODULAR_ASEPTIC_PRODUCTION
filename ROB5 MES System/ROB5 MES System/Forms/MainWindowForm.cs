@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Opc.Ua;
 using ROB5_MES_System.Classes;
+using System.ComponentModel;
 
 namespace ROB5_MES_System
 {
@@ -15,19 +16,21 @@ namespace ROB5_MES_System
         public static OPCUA opcuaPLC08;
         // applications/modules that are connected to the system
         public static List<PLCInfo> plcs { get; set; }
-        public static List<Operation> operations { get; set; }
+        public static BindingList<Operation> operations { get; set; }
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
 
             plcs = plcList();
-            operations = new List<Operation>();
+            operations = new BindingList<Operation>();
 
             InitializeComponent();
 
             database.create_table_order();
             database.create_table_production();
+            database.create_table_operations();
 
+            database.get_operations();
             database.get_production_queue();
             database.get_planned_orders();
 
@@ -84,7 +87,6 @@ namespace ROB5_MES_System
         {
             SystemStatusSubMenuItem.Visible = !SystemStatusSubMenuItem.Visible;
             OperationsSubMenuItem.Visible = !OperationsSubMenuItem.Visible;
-            WorkPlansSubMenuItem.Visible = !WorkPlansSubMenuItem.Visible;
         }
 
         // event function to show submenu items under order management of left menubar
@@ -200,22 +202,6 @@ namespace ROB5_MES_System
             }
         }
 
-        // event function to show work plans form
-        private WorkPlansForm workPlansForm;
-        private void WorkPlansSubMenuItem_Click(object sender, EventArgs e)
-        {
-            if (workPlansForm == null || workPlansForm.IsDisposed)
-            {
-                workPlansForm = new WorkPlansForm();
-                workPlansForm.MdiParent = this;
-                workPlansForm.Show();
-            }
-            else
-            {
-                workPlansForm.Activate();
-            }
-        }
-
         // function to show the order details form
         private static OrderForm orderForm;
         public static void ShowOrderForm(Order clickedOrder, Form mdiParent)
@@ -240,12 +226,14 @@ namespace ROB5_MES_System
 
         private void MainWindowForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Console.WriteLine("system closed");
             LinkedList<Order> allOrders = mesSystem.Orders;
             foreach(var order in mesSystem.PlannedOrders)
             {
                 allOrders.AddLast(order);
             }
             database.update_order_data(allOrders);
+            database.update_operations_data(operations);
         }
     }
 }

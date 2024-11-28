@@ -52,7 +52,7 @@ namespace ROB5_MES_System
 
                 foreach(var task in carrier.CompletedTasks)
                 {
-                    String taskNodeString = "Task: " + task.TaskName + " | State: " + task.Status + " | Start: " + task.StartTime + " | End: " + task.EndTime;
+                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status + " | Start: " + task.StartTime + " | End: " + task.EndTime;
 
                     TreeNode taskNode = new TreeNode(taskNodeString);
 
@@ -63,7 +63,7 @@ namespace ROB5_MES_System
 
                 foreach (var task in carrier.TaskQueue)
                 {
-                    String taskNodeString = "Task: " + task.TaskName + " | State: " + task.Status;
+                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status;
 
                     TreeNode taskNode = new TreeNode(taskNodeString);
 

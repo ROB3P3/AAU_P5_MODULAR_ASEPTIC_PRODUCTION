@@ -38,6 +38,7 @@
             AddOperationButton = new Button();
             DeleteOperationButton = new Button();
             groupBox1 = new GroupBox();
+            SaveOperationButton = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -47,7 +48,7 @@
             OperationsTreeView.Name = "OperationsTreeView";
             OperationsTreeView.Size = new Size(286, 229);
             OperationsTreeView.TabIndex = 0;
-            OperationsTreeView.AfterSelect += treeView1_AfterSelect;
+            OperationsTreeView.AfterSelect += OperationsTreeView_AfterSelect;
             // 
             // label1
             // 
@@ -67,7 +68,7 @@
             OperationNumberDispLabel.MinimumSize = new Size(60, 25);
             OperationNumberDispLabel.Name = "OperationNumberDispLabel";
             OperationNumberDispLabel.Size = new Size(60, 25);
-            OperationNumberDispLabel.TabIndex = 2;
+            OperationNumberDispLabel.TabIndex = 3;
             OperationNumberDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label3
@@ -99,17 +100,18 @@
             // OperationDescriptionTextBox
             // 
             OperationDescriptionTextBox.Location = new Point(149, 102);
+            OperationDescriptionTextBox.MaxLength = 100;
             OperationDescriptionTextBox.Multiline = true;
             OperationDescriptionTextBox.Name = "OperationDescriptionTextBox";
             OperationDescriptionTextBox.Size = new Size(125, 66);
-            OperationDescriptionTextBox.TabIndex = 6;
+            OperationDescriptionTextBox.TabIndex = 5;
             // 
             // AddOperationButton
             // 
             AddOperationButton.Location = new Point(12, 247);
             AddOperationButton.Name = "AddOperationButton";
             AddOperationButton.Size = new Size(140, 29);
-            AddOperationButton.TabIndex = 7;
+            AddOperationButton.TabIndex = 1;
             AddOperationButton.Text = "Add Operation";
             AddOperationButton.UseVisualStyleBackColor = true;
             AddOperationButton.Click += AddOperationButton_Click;
@@ -119,9 +121,10 @@
             DeleteOperationButton.Location = new Point(158, 247);
             DeleteOperationButton.Name = "DeleteOperationButton";
             DeleteOperationButton.Size = new Size(140, 29);
-            DeleteOperationButton.TabIndex = 8;
+            DeleteOperationButton.TabIndex = 2;
             DeleteOperationButton.Text = "Delete Operation";
             DeleteOperationButton.UseVisualStyleBackColor = true;
+            DeleteOperationButton.Click += DeleteOperationButton_Click;
             // 
             // groupBox1
             // 
@@ -138,11 +141,22 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Operation Info";
             // 
+            // SaveOperationButton
+            // 
+            SaveOperationButton.Location = new Point(539, 247);
+            SaveOperationButton.Name = "SaveOperationButton";
+            SaveOperationButton.Size = new Size(52, 29);
+            SaveOperationButton.TabIndex = 6;
+            SaveOperationButton.Text = "Save";
+            SaveOperationButton.UseVisualStyleBackColor = true;
+            SaveOperationButton.Click += SaveOperationButton_Click;
+            // 
             // OperationsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(611, 298);
+            ClientSize = new Size(619, 330);
+            Controls.Add(SaveOperationButton);
             Controls.Add(groupBox1);
             Controls.Add(DeleteOperationButton);
             Controls.Add(AddOperationButton);
@@ -167,5 +181,6 @@
         private Button AddOperationButton;
         private Button DeleteOperationButton;
         private GroupBox groupBox1;
+        private Button SaveOperationButton;
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 
 namespace ROB5_MES_System.Classes
 {
@@ -34,7 +36,7 @@ namespace ROB5_MES_System.Classes
             if (mysql.State != ConnectionState.Open)
             {
                 mysql.Open();
-                Console.WriteLine("open server");
+                Console.WriteLine("Database server opened");
             }
 
         }
@@ -52,6 +54,7 @@ namespace ROB5_MES_System.Classes
                     container_type VARCHAR(255),
                     company VARCHAR(255),
                     medicine_type VARCHAR(255),
+                    operation_list JSON,
                     PRIMARY KEY (order_number)
                 );
             ";
@@ -60,7 +63,7 @@ namespace ROB5_MES_System.Classes
 
             MySqlCommand cmd = new MySqlCommand(createTableOrder, mysql);
             cmd.ExecuteNonQuery();
-            Console.WriteLine("orderData table created");
+            Console.WriteLine("order_data table created");
 
             database_close();
         }
@@ -91,7 +94,26 @@ namespace ROB5_MES_System.Classes
 
             MySqlCommand cmd = new MySqlCommand(createTableProduction, mysql);
             cmd.ExecuteNonQuery();
-            Console.WriteLine("table production created");
+            Console.WriteLine("production_data table created");
+
+            database_close();
+        }
+
+        public void create_table_operations()
+        {
+            // Define your CREATE TABLE SQL query
+            string createTableOperation = @"
+                CREATE TABLE IF NOT EXISTS operations (
+                operation_id INT,
+                operation_name VARCHAR(255),
+                operation_description VARCHAR(255),
+                PRIMARY KEY (operation_id)
+                );";
+            connection();
+
+            MySqlCommand cmd = new MySqlCommand(createTableOperation, mysql);
+            cmd.ExecuteNonQuery();
+            Console.WriteLine("operations table created");
 
             database_close();
         }
@@ -117,7 +139,6 @@ namespace ROB5_MES_System.Classes
                 @usedTimeModule1, @startTimeModule2, @endTimeModule2,
                 @usedTimeModule2, @moduleUsed
             );";
-            // Ensure the connection is open before executing the command
 
             connection();
 
@@ -139,28 +160,30 @@ namespace ROB5_MES_System.Classes
             cmd.Parameters.AddWithValue("moduleUsed", modul_used);
 
             cmd.ExecuteNonQuery();
-            Console.WriteLine("Data Inserted Into order");
+            Console.WriteLine("Data inserted into order_data table");
 
             database_close();
         }
 
         public void insert_data_order(int order_number, string order_state, int amount, string container_type, string company,
-                    string medicine_type, DateTime? startTime = null, DateTime? endTime = null)
+                    string medicine_type, List<Operation> operation_list, DateTime? startTime = null, DateTime? endTime = null)
         {
             string insertDataProduction = @"
             INSERT INTO order_data (
                 order_number, order_state, amount, start_time, end_time, container_type, company,
-                medicine_type
+                medicine_type, operation_list
             )
             VALUES (
                 @orderNumber, @orderState, @amount, @startTime, @endTime, @containerType, @company,
-                @medicineType
+                @medicineType, @operationList
             );"
             ;
 
             connection();
 
             MySqlCommand cmd = new MySqlCommand(insertDataProduction, mysql);
+            var operationIds = operation_list.Select(operation => operation.OperationID).ToList();
+            string jsonArray = JsonConvert.SerializeObject(operationIds);
 
             cmd.Parameters.AddWithValue("orderNumber", order_number);
             cmd.Parameters.AddWithValue("orderState", order_state);
@@ -168,11 +191,35 @@ namespace ROB5_MES_System.Classes
             cmd.Parameters.AddWithValue("containerType", container_type);
             cmd.Parameters.AddWithValue("company", company);
             cmd.Parameters.AddWithValue("medicineType", medicine_type);
+            cmd.Parameters.AddWithValue("operationList", jsonArray);
             cmd.Parameters.AddWithValue("startTime", startTime);
             cmd.Parameters.AddWithValue("endTime", endTime);
 
             cmd.ExecuteNonQuery();
-            Console.WriteLine("Data Inserted Into production");
+            Console.WriteLine("Data inserted into production_data table");
+            database_close();
+        }
+
+        public void insert_data_operations(int operation_id, string operation_name, string operaton_description) { 
+            string insertDataOperations = @"
+            INSERT INTO operations (
+                operation_id, operation_name, operation_description
+            )
+            VALUES (
+                @operationId, @operationName, @operationDescription
+            );"
+            ;
+
+            connection();
+
+            MySqlCommand cmd = new MySqlCommand(insertDataOperations, mysql);
+
+            cmd.Parameters.AddWithValue("operationId", operation_id);
+            cmd.Parameters.AddWithValue("operationName", operation_name);
+            cmd.Parameters.AddWithValue("operationDescription", operaton_description);
+
+            cmd.ExecuteNonQuery();
+            Console.WriteLine("Data inserted into operations table");
             database_close();
         }
 
@@ -188,6 +235,7 @@ namespace ROB5_MES_System.Classes
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, mysql);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
+
 
                 while (reader.Read())
                 {
@@ -216,10 +264,15 @@ namespace ROB5_MES_System.Classes
                 string containerType = reader.GetString("container_type");
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
+                string jsonArray = reader.GetString("operation_list");
+                List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
+                List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.QUEUE, medicineType);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.QUEUE, medicineType, operationList);
                 MainWindowForm.mesSystem.Orders.AddLast(order);
             }
+
+            Console.WriteLine("Production queue loaded from database");
 
             database_close();
         }
@@ -239,10 +292,15 @@ namespace ROB5_MES_System.Classes
                 string containerType = reader.GetString("container_type");
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
+                string jsonArray = reader.GetString("operation_list");
+                List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
+                List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND, medicineType);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND, medicineType, operationList);
                 MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
             }
+
+            Console.WriteLine("Planned orders loaded from database");
 
             database_close();
         }
@@ -269,15 +327,43 @@ namespace ROB5_MES_System.Classes
                 string containerType = reader.GetString("container_type");
                 string company = reader.GetString("company");
                 string medicineType = reader.GetString("medicine_type");
+                string jsonArray = reader.GetString("operation_list");
+                List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
+                List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType, operationList);
                 order.OrderStartTime = reader.GetDateTime("start_time");
                 order.OrderEndTime = reader.GetDateTime("end_time");
                 finishedOrders.Add(order);
             }
 
+            Console.WriteLine("Finished orders loaded from database");
+
             database_close();
             return finishedOrders;
+        }
+
+        public void get_operations()
+        {
+            connection();
+            string sqlCommand = "SELECT * FROM production.operations";
+            MySqlCommand cmd = new MySqlCommand(sqlCommand, mysql);
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                int operationID = reader.GetInt32("operation_id");
+                string operationName = reader.GetString("operation_name");
+                string operationDescription = reader.GetString("operation_description");
+
+                Operation operation = new Operation(operationID, operationName, operationDescription);
+                MainWindowForm.operations.Add(operation);
+            }
+
+            Console.WriteLine("Operations loaded from database");
+
+            database_close();
         }
 
         public bool order_data_not_empty()
@@ -369,6 +455,9 @@ namespace ROB5_MES_System.Classes
             MySqlCommand cmd = new MySqlCommand(delete_order, mysql);
             cmd.Parameters.AddWithValue("@input_order_delete", input_order_delete);
             cmd.ExecuteNonQuery();
+
+            Console.WriteLine("Order deleted from database");
+
             database_close();
         }
 
@@ -382,8 +471,29 @@ namespace ROB5_MES_System.Classes
             create_table_order();
             foreach(var order in orders)
             {
-                insert_data_order(order.OrderNumber, order.OrderState.ToString(), order.ContainerAmount, order.ContainerType, order.OrderCustomer, order.MedicineType);
+                insert_data_order(order.OrderNumber, order.OrderState.ToString(), order.ContainerAmount, order.ContainerType, order.OrderCustomer, order.MedicineType, order.OperationList);
             }
+
+            Console.WriteLine("Order data updated in database");
+
+            database_close();
+        }
+        
+        public void update_operations_data(BindingList<Operation> operations)
+        {
+            connection();
+            string deleteData = "DELETE FROM production.operations;";
+            MySqlCommand cmd = new MySqlCommand(deleteData, mysql);
+            cmd.ExecuteNonQuery();
+
+            create_table_operations();
+            foreach(var operation in operations)
+            {
+                insert_data_operations(operation.OperationID, operation.OperationName, operation.OperationDescription);
+            }
+
+            Console.WriteLine("Operations data updated in database");
+
             database_close();
         }
 
@@ -391,7 +501,7 @@ namespace ROB5_MES_System.Classes
         {
             if (mysql.State == ConnectionState.Open)
                 mysql.Close();
-            Console.WriteLine("close server");
+            Console.WriteLine("Database server closed");
         }
     }
 }

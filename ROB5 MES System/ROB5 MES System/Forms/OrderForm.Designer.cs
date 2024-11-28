@@ -101,7 +101,7 @@
             MedicineDispLabel.MinimumSize = new Size(150, 25);
             MedicineDispLabel.Name = "MedicineDispLabel";
             MedicineDispLabel.Size = new Size(150, 25);
-            MedicineDispLabel.TabIndex = 21;
+            MedicineDispLabel.TabIndex = 2;
             MedicineDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // MedicineLabel
@@ -122,7 +122,7 @@
             ActualEndDispLabel.MinimumSize = new Size(150, 25);
             ActualEndDispLabel.Name = "ActualEndDispLabel";
             ActualEndDispLabel.Size = new Size(150, 25);
-            ActualEndDispLabel.TabIndex = 19;
+            ActualEndDispLabel.TabIndex = 10;
             ActualEndDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // ActualEndLabel
@@ -143,7 +143,7 @@
             ActualStartDispLabel.MinimumSize = new Size(150, 25);
             ActualStartDispLabel.Name = "ActualStartDispLabel";
             ActualStartDispLabel.Size = new Size(150, 25);
-            ActualStartDispLabel.TabIndex = 17;
+            ActualStartDispLabel.TabIndex = 9;
             ActualStartDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // ActualStartLabel
@@ -164,7 +164,7 @@
             CustomerDispLabel.MinimumSize = new Size(150, 25);
             CustomerDispLabel.Name = "CustomerDispLabel";
             CustomerDispLabel.Size = new Size(150, 25);
-            CustomerDispLabel.TabIndex = 15;
+            CustomerDispLabel.TabIndex = 1;
             CustomerDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // CustomerLabel
@@ -185,7 +185,7 @@
             OrderStateDispLabel.MinimumSize = new Size(150, 25);
             OrderStateDispLabel.Name = "OrderStateDispLabel";
             OrderStateDispLabel.Size = new Size(150, 25);
-            OrderStateDispLabel.TabIndex = 13;
+            OrderStateDispLabel.TabIndex = 5;
             OrderStateDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // OrderStateLabel
@@ -206,7 +206,7 @@
             CarrierAmountDispLabel.MinimumSize = new Size(150, 25);
             CarrierAmountDispLabel.Name = "CarrierAmountDispLabel";
             CarrierAmountDispLabel.Size = new Size(150, 25);
-            CarrierAmountDispLabel.TabIndex = 11;
+            CarrierAmountDispLabel.TabIndex = 8;
             CarrierAmountDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // CarrierAmountLabel
@@ -227,7 +227,7 @@
             ContainerTypeDispLabel.MinimumSize = new Size(150, 25);
             ContainerTypeDispLabel.Name = "ContainerTypeDispLabel";
             ContainerTypeDispLabel.Size = new Size(150, 25);
-            ContainerTypeDispLabel.TabIndex = 9;
+            ContainerTypeDispLabel.TabIndex = 6;
             ContainerTypeDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // ContainerTypeLabel
@@ -269,7 +269,7 @@
             PlannedEndTimeDispLabel.MinimumSize = new Size(150, 25);
             PlannedEndTimeDispLabel.Name = "PlannedEndTimeDispLabel";
             PlannedEndTimeDispLabel.Size = new Size(150, 25);
-            PlannedEndTimeDispLabel.TabIndex = 5;
+            PlannedEndTimeDispLabel.TabIndex = 4;
             PlannedEndTimeDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // PlannedEndTimeLabel
@@ -299,7 +299,7 @@
             PlannedStartTimeDispLabel.MinimumSize = new Size(150, 25);
             PlannedStartTimeDispLabel.Name = "PlannedStartTimeDispLabel";
             PlannedStartTimeDispLabel.Size = new Size(150, 25);
-            PlannedStartTimeDispLabel.TabIndex = 2;
+            PlannedStartTimeDispLabel.TabIndex = 3;
             PlannedStartTimeDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label2
@@ -311,7 +311,7 @@
             label2.MinimumSize = new Size(150, 25);
             label2.Name = "label2";
             label2.Size = new Size(150, 25);
-            label2.TabIndex = 1;
+            label2.TabIndex = 0;
             label2.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // OrderNumberDispLabel
@@ -350,7 +350,7 @@
             groupBox2.Controls.Add(CarrierTreeView);
             groupBox2.Location = new Point(8, 271);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(633, 222);
+            groupBox2.Size = new Size(635, 222);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Carrier Queue";
@@ -360,14 +360,14 @@
             CarrierTreeView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CarrierTreeView.Location = new Point(6, 26);
             CarrierTreeView.Name = "CarrierTreeView";
-            CarrierTreeView.Size = new Size(621, 188);
-            CarrierTreeView.TabIndex = 0;
+            CarrierTreeView.Size = new Size(623, 188);
+            CarrierTreeView.TabIndex = 11;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(651, 501);
+            ClientSize = new Size(653, 509);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "OrderForm";

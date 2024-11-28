@@ -78,6 +78,7 @@
             // OperationDescriptionTextBox
             // 
             OperationDescriptionTextBox.Location = new Point(176, 86);
+            OperationDescriptionTextBox.MaxLength = 100;
             OperationDescriptionTextBox.Multiline = true;
             OperationDescriptionTextBox.Name = "OperationDescriptionTextBox";
             OperationDescriptionTextBox.Size = new Size(125, 66);
@@ -105,7 +106,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(336, 190);
+            ClientSize = new Size(338, 198);
             Controls.Add(AddOperationButton);
             Controls.Add(OperationDescriptionTextBox);
             Controls.Add(OperationNameTextBox);

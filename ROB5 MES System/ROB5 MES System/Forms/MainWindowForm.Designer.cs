@@ -47,7 +47,6 @@
             PlannedOrdersSubMenuItem = new ToolStripMenuItem();
             NewOrderSubMenuItem = new ToolStripMenuItem();
             FinishedOrdersSubMenuItem = new ToolStripMenuItem();
-            WorkPlansSubMenuItem = new ToolStripMenuItem();
             OperationsSubMenuItem = new ToolStripMenuItem();
             menuStrip2 = new MenuStrip();
             menuStrip1.SuspendLayout();
@@ -60,8 +59,8 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { dataToolStripMenuItem, toolsToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(5, 2, 0, 2);
-            menuStrip1.Size = new Size(1034, 24);
+            menuStrip1.Padding = new Padding(6, 3, 0, 3);
+            menuStrip1.Size = new Size(1210, 30);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -69,13 +68,13 @@
             // 
             dataToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
             dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            dataToolStripMenuItem.Size = new Size(43, 20);
+            dataToolStripMenuItem.Size = new Size(55, 24);
             dataToolStripMenuItem.Text = "Data";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(92, 22);
+            exitToolStripMenuItem.Size = new Size(116, 26);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.MouseUp += exitToolStripMenuItem_MouseUp;
             // 
@@ -83,64 +82,60 @@
             // 
             toolsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exportToolStripMenuItem });
             toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            toolsToolStripMenuItem.Size = new Size(47, 20);
+            toolsToolStripMenuItem.Size = new Size(58, 24);
             toolsToolStripMenuItem.Text = "Tools";
             // 
             // exportToolStripMenuItem
             // 
             exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            exportToolStripMenuItem.Size = new Size(145, 22);
+            exportToolStripMenuItem.Size = new Size(183, 26);
             exportToolStripMenuItem.Text = "Export to CSV";
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { configurationToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new Size(44, 20);
+            helpToolStripMenuItem.Size = new Size(55, 24);
             helpToolStripMenuItem.Text = "Help";
             // 
             // configurationToolStripMenuItem
             // 
             configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
-            configurationToolStripMenuItem.Size = new Size(148, 22);
+            configurationToolStripMenuItem.Size = new Size(183, 26);
             configurationToolStripMenuItem.Text = "Configuration";
             // 
             // button1
             // 
-            button1.Location = new Point(10, 175);
-            button1.Margin = new Padding(3, 2, 3, 2);
+            button1.Location = new Point(11, 233);
             button1.Name = "button1";
-            button1.Size = new Size(82, 22);
+            button1.Size = new Size(94, 29);
             button1.TabIndex = 1;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            button2.Location = new Point(10, 58);
-            button2.Margin = new Padding(3, 2, 3, 2);
+            button2.Location = new Point(11, 77);
             button2.Name = "button2";
-            button2.Size = new Size(82, 22);
+            button2.Size = new Size(94, 29);
             button2.TabIndex = 2;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            button3.Location = new Point(10, 92);
-            button3.Margin = new Padding(3, 2, 3, 2);
+            button3.Location = new Point(11, 123);
             button3.Name = "button3";
-            button3.Size = new Size(82, 22);
+            button3.Size = new Size(94, 29);
             button3.TabIndex = 3;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            button4.Location = new Point(10, 127);
-            button4.Margin = new Padding(3, 2, 3, 2);
+            button4.Location = new Point(11, 169);
             button4.Name = "button4";
-            button4.Size = new Size(82, 22);
+            button4.Size = new Size(94, 29);
             button4.TabIndex = 4;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
@@ -149,9 +144,9 @@
             // 
             DateLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             DateLabel.AutoSize = true;
-            DateLabel.Location = new Point(18, 525);
+            DateLabel.Location = new Point(21, 784);
             DateLabel.Name = "DateLabel";
-            DateLabel.Size = new Size(30, 15);
+            DateLabel.Size = new Size(39, 20);
             DateLabel.TabIndex = 6;
             DateLabel.Text = "date";
             // 
@@ -224,16 +219,6 @@
             FinishedOrdersSubMenuItem.Visible = false;
             FinishedOrdersSubMenuItem.Click += FinishedOrdersSubMenuItem_Click;
             // 
-            // WorkPlansSubMenuItem
-            // 
-            WorkPlansSubMenuItem.AutoSize = false;
-            WorkPlansSubMenuItem.Name = "WorkPlansSubMenuItem";
-            WorkPlansSubMenuItem.Size = new Size(130, 30);
-            WorkPlansSubMenuItem.Text = "Work Plans";
-            WorkPlansSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            WorkPlansSubMenuItem.Visible = false;
-            WorkPlansSubMenuItem.Click += WorkPlansSubMenuItem_Click;
-            // 
             // OperationsSubMenuItem
             // 
             OperationsSubMenuItem.AutoSize = false;
@@ -249,19 +234,19 @@
             menuStrip2.AutoSize = false;
             menuStrip2.Dock = DockStyle.Left;
             menuStrip2.ImageScalingSize = new Size(20, 20);
-            menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, SystemStatusSubMenuItem, OperationsSubMenuItem, WorkPlansSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem });
-            menuStrip2.Location = new Point(0, 24);
+            menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, SystemStatusSubMenuItem, OperationsSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem });
+            menuStrip2.Location = new Point(0, 30);
             menuStrip2.Name = "menuStrip2";
-            menuStrip2.Padding = new Padding(5, 2, 0, 2);
-            menuStrip2.Size = new Size(158, 541);
+            menuStrip2.Padding = new Padding(6, 3, 0, 3);
+            menuStrip2.Size = new Size(181, 815);
             menuStrip2.TabIndex = 5;
             menuStrip2.Text = "menuStrip2";
             // 
             // MainWindowForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1034, 565);
+            ClientSize = new Size(1210, 845);
             Controls.Add(DateLabel);
             Controls.Add(menuStrip2);
             Controls.Add(button4);
@@ -271,7 +256,6 @@
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "MainWindowForm";
             Text = "MES System";
             FormClosing += MainWindowForm_FormClosing;
@@ -302,7 +286,6 @@
         private ToolStripMenuItem PlannedOrdersSubMenuItem;
         private ToolStripMenuItem NewOrderSubMenuItem;
         private ToolStripMenuItem FinishedOrdersSubMenuItem;
-        private ToolStripMenuItem WorkPlansSubMenuItem;
         private ToolStripMenuItem OperationsSubMenuItem;
         private MenuStrip menuStrip2;
         private ToolStripMenuItem exportToolStripMenuItem;

@@ -6,7 +6,6 @@ namespace ROB5_MES_System
     {
         private string _taskName; // hvad hedder denne task
         private string _taskDescription; // hvordan kan den beskrives
-        private string _taskType; // hvordan bliver det udført [processing, flytning med mere]
         private int _taskId; // ID på denne task 
         private string _status; // hvad er status på denne task 
         private string _statusDescription; // hvad betyder denne status
@@ -34,16 +33,6 @@ namespace ROB5_MES_System
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentNullException("Task description can not be empty");
                 _taskDescription = value;
-            }
-        }
-        public string TaskType
-        {
-            get { return _taskType; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Task type can not be empty");
-                _taskType = value;
             }
         }
         public int TaskId
@@ -127,11 +116,10 @@ namespace ROB5_MES_System
             }
         }
 
-        public Task(string taskName, string taskDescription, string taskType, int taskId, string status, string statusDescription)
+        public Task(string taskName, string taskDescription, int taskId, string status, string statusDescription)
         {
             TaskName = taskName;
             TaskDescription = taskDescription;
-            TaskType = taskType;
             TaskId = taskId;
             Status = status;
             StatusDescription = statusDescription;
@@ -145,7 +133,7 @@ namespace ROB5_MES_System
                 "Task type: {2}\n" +
                 "Task id: {3}\n" +
                 "Task status: {4}\n" +
-                "Task status description: {5}\n", TaskName, TaskDescription, TaskType, TaskId, Status, StatusDescription));
+                "Task status description: {5}\n", TaskName, TaskDescription, TaskId, Status, StatusDescription));
         }
 
     }

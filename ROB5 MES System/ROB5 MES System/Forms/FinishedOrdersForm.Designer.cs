@@ -47,7 +47,7 @@
             finishedOrdersDataGrid.ReadOnly = true;
             finishedOrdersDataGrid.RowHeadersVisible = false;
             finishedOrdersDataGrid.RowHeadersWidth = 51;
-            finishedOrdersDataGrid.Size = new Size(574, 381);
+            finishedOrdersDataGrid.Size = new Size(576, 389);
             finishedOrdersDataGrid.TabIndex = 2;
             // 
             // label1
@@ -93,10 +93,10 @@
             // 
             showAllCheckBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             showAllCheckBox.AutoSize = true;
-            showAllCheckBox.Location = new Point(12, 442);
+            showAllCheckBox.Location = new Point(12, 450);
             showAllCheckBox.Name = "showAllCheckBox";
             showAllCheckBox.Size = new Size(189, 24);
-            showAllCheckBox.TabIndex = 5;
+            showAllCheckBox.TabIndex = 3;
             showAllCheckBox.Text = "Show all finished orders";
             showAllCheckBox.UseVisualStyleBackColor = true;
             showAllCheckBox.CheckedChanged += showAllCheckBox_CheckedChanged;
@@ -105,7 +105,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(598, 478);
+            ClientSize = new Size(600, 486);
             Controls.Add(showAllCheckBox);
             Controls.Add(toDateTimePicker);
             Controls.Add(label2);
