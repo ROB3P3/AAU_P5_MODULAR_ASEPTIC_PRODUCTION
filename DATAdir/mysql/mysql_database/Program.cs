@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
+using ROB5_MES_System.Classes;
 
 namespace databaseSQL
 {
@@ -15,42 +16,33 @@ namespace databaseSQL
             string db_host = "localhost";
             string db_user = "anton";
             string db_password = "anton";
-            string db_name = "pets";
+            string db_name = "production";
 
-            database db = new database(db_host, db_user, db_password, db_name);
+            Database db = new Database(db_host, db_user, db_password, db_name);
 
             db.create_table_order();
-
             db.create_table_production();
 
-            db.insert_data_production(3, "type_container", 3,
-                    2, 1, 2,
-                    DateTime.Now, DateTime.Now.AddHours(1),2,
-                    DateTime.Now, DateTime.Now.AddHours(2), 1,
-                    1, "type_container");
-
-            
-            db.insert_data_order(7, 500, "AstraZeneca", "Tagrisso");
-
-            int latest_ordernummer=db.get_order_number();
-
-            int amount=db.amount(latest_ordernummer);
-
-            db.amount_left(latest_ordernummer, amount);
-            
-            //db.delete_order();
-
-
-
-
-
-
-
-
-
-
-
-
+            db.insert_data_production(
+                3, 101, "Plastic Container", 5,
+                DateTime.Now, DateTime.Now.AddHours(1), DateTime.Now.AddHours(2),
+                DateTime.Now, DateTime.Now.AddHours(1), DateTime.Now.AddMinutes(30),
+                DateTime.Now, DateTime.Now.AddMinutes(45), DateTime.Now.AddMinutes(20),
+                "Module A"
+            );
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+ 
