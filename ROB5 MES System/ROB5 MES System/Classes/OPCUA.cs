@@ -372,7 +372,7 @@ namespace ROB5_MES_System.Classes
                 Console.WriteLine("Error message: {0}", results[0]);
 
                 // Display the diagnostic information
-                //Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
+                Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
             }
         }
