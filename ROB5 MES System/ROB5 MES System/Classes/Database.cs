@@ -334,6 +334,7 @@ namespace ROB5_MES_System.Classes
                 Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType, operationList);
                 order.OrderStartTime = reader.GetDateTime("start_time");
                 order.OrderEndTime = reader.GetDateTime("end_time");
+                MainWindowForm.mesSystem.FinishedOrders.AddLast(order);
                 finishedOrders.Add(order);
             }
 
@@ -494,6 +495,56 @@ namespace ROB5_MES_System.Classes
 
             Console.WriteLine("Operations data updated in database");
 
+            database_close();
+        }
+
+        public void remove_operation_from_orders(int operationID)
+        {
+            connection();
+            string sqlCommand = "SELECT order_number, operation_list FROM production.order_data";
+            MySqlCommand cmd = new MySqlCommand(sqlCommand, mysql);
+            cmd.ExecuteNonQuery();
+
+            var updatedList = new List<(int order_number, string jsonArray)>();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                int order_number = reader.GetInt32("order_number");
+                string jsonArray = reader.GetString("operation_list");
+
+                var operationList = JsonConvert.DeserializeObject<List<int>>(jsonArray);
+                operationList.RemoveAll(id => id == operationID);
+
+                string updatedJsonArray = JsonConvert.SerializeObject(operationList);
+
+                updatedList.Add((order_number, updatedJsonArray));
+            }
+
+            Console.WriteLine(updatedList);
+
+            reader.Close();
+
+            foreach(var (order_number, updatedJsonArray) in updatedList)
+            {
+                string updateQuery = "UPDATE production.order_data SET operation_list = @updatedJsonArray WHERE order_number = @order_number";
+                MySqlCommand updateCmd = new MySqlCommand(updateQuery, mysql);
+                updateCmd.Parameters.AddWithValue("updatedJsonArray", updatedJsonArray);
+                updateCmd.Parameters.AddWithValue("order_number", order_number);
+                updateCmd.ExecuteNonQuery();
+            }
+
+            foreach(var order in MainWindowForm.mesSystem.Orders)
+            {
+                order.OperationList.RemoveAll(operation => operation.OperationID == operationID);
+            }
+
+            foreach(var order in MainWindowForm.mesSystem.PlannedOrders)
+            {
+                order.OperationList.RemoveAll(operation => operation.OperationID == operationID);
+            }
+
+            Console.WriteLine("Operation {0} removed from all orders", operationID);
             database_close();
         }
 

@@ -78,7 +78,7 @@ namespace ROB5_MES_System
 
         private void showAllCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(showAllCheckBox.Checked)
+            if (showAllCheckBox.Checked)
             {
                 fromDateTimePicker.Enabled = false;
                 toDateTimePicker.Enabled = false;
@@ -89,6 +89,16 @@ namespace ROB5_MES_System
                 toDateTimePicker.Enabled = true;
             }
             loadFinishedOrders();
+        }
+
+        private void finishedOrdersDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(finishedOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex], MainWindowForm.mesSystem.FinishedOrders);
+
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
+            }
         }
     }
 }

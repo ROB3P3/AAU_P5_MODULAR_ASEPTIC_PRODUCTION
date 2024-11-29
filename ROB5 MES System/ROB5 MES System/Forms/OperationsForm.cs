@@ -65,6 +65,7 @@ namespace ROB5_MES_System
                 if (result == DialogResult.Yes)
                 {
                     MainWindowForm.operations.Remove(selectedOperation);
+                    MainWindowForm.database.remove_operation_from_orders(selectedOperation.OperationID);
                     LoadOperations();
                     OperationNumberDispLabel.Text = "";
                     OperationNameTextBox.Text = "";

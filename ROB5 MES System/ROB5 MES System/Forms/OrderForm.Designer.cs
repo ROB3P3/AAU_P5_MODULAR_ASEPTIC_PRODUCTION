@@ -49,9 +49,7 @@
             PlannedEndTimeLabel = new Label();
             PlannedStartTimeLabel = new Label();
             PlannedStartTimeDispLabel = new Label();
-            label2 = new Label();
             OrderNumberDispLabel = new Label();
-            label1 = new Label();
             OrderNumberLabel = new Label();
             groupBox2 = new GroupBox();
             CarrierTreeView = new TreeView();
@@ -81,9 +79,7 @@
             groupBox1.Controls.Add(PlannedEndTimeLabel);
             groupBox1.Controls.Add(PlannedStartTimeLabel);
             groupBox1.Controls.Add(PlannedStartTimeDispLabel);
-            groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(OrderNumberDispLabel);
-            groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(OrderNumberLabel);
             groupBox1.Location = new Point(8, 6);
             groupBox1.Name = "groupBox1";
@@ -302,18 +298,6 @@
             PlannedStartTimeDispLabel.TabIndex = 3;
             PlannedStartTimeDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = SystemColors.Window;
-            label2.BorderStyle = BorderStyle.Fixed3D;
-            label2.Location = new Point(153, 20);
-            label2.MinimumSize = new Size(150, 25);
-            label2.Name = "label2";
-            label2.Size = new Size(150, 25);
-            label2.TabIndex = 0;
-            label2.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // OrderNumberDispLabel
             // 
             OrderNumberDispLabel.AutoSize = true;
@@ -325,15 +309,6 @@
             OrderNumberDispLabel.Size = new Size(150, 25);
             OrderNumberDispLabel.TabIndex = 1;
             OrderNumberDispLabel.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(6, 25);
-            label1.Name = "label1";
-            label1.Size = new Size(108, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Order Number:";
             // 
             // OrderNumberLabel
             // 
@@ -350,7 +325,7 @@
             groupBox2.Controls.Add(CarrierTreeView);
             groupBox2.Location = new Point(8, 271);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(635, 222);
+            groupBox2.Size = new Size(637, 222);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Carrier Queue";
@@ -360,14 +335,14 @@
             CarrierTreeView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CarrierTreeView.Location = new Point(6, 26);
             CarrierTreeView.Name = "CarrierTreeView";
-            CarrierTreeView.Size = new Size(623, 188);
+            CarrierTreeView.Size = new Size(625, 188);
             CarrierTreeView.TabIndex = 11;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(653, 509);
+            ClientSize = new Size(655, 517);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "OrderForm";
@@ -403,8 +378,6 @@
         private Label ActualEndLabel;
         private Label ActualStartDispLabel;
         private Label ActualStartLabel;
-        private Label label2;
-        private Label label1;
         private Label MedicineDispLabel;
         private Label MedicineLabel;
     }
