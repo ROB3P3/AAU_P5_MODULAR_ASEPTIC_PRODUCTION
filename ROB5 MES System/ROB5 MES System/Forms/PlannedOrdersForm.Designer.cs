@@ -53,7 +53,7 @@
             plannedOrdersDataGrid.ReadOnly = true;
             plannedOrdersDataGrid.RowHeadersVisible = false;
             plannedOrdersDataGrid.RowHeadersWidth = 51;
-            plannedOrdersDataGrid.Size = new Size(808, 434);
+            plannedOrdersDataGrid.Size = new Size(812, 450);
             plannedOrdersDataGrid.TabIndex = 0;
             plannedOrdersDataGrid.CellDoubleClick += plannedOrdersDataGrid_CellDoubleClick;
             plannedOrdersDataGrid.CellMouseClick += plannedOrdersDataGrid_CellMouseClick;
@@ -61,10 +61,10 @@
             // DeleteAllOrdersButton
             // 
             DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DeleteAllOrdersButton.Location = new Point(12, 452);
+            DeleteAllOrdersButton.Location = new Point(12, 468);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(193, 29);
-            DeleteAllOrdersButton.TabIndex = 2;
+            DeleteAllOrdersButton.TabIndex = 1;
             DeleteAllOrdersButton.Text = "Delete all planned orders";
             DeleteAllOrdersButton.UseVisualStyleBackColor = true;
             DeleteAllOrdersButton.MouseClick += DeleteAllOrdersButton_MouseClick;
@@ -72,10 +72,10 @@
             // SendOrdersToQueueButton
             // 
             SendOrdersToQueueButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            SendOrdersToQueueButton.Location = new Point(211, 452);
+            SendOrdersToQueueButton.Location = new Point(211, 468);
             SendOrdersToQueueButton.Name = "SendOrdersToQueueButton";
             SendOrdersToQueueButton.Size = new Size(257, 29);
-            SendOrdersToQueueButton.TabIndex = 3;
+            SendOrdersToQueueButton.TabIndex = 2;
             SendOrdersToQueueButton.Text = "Send all orders to production queue";
             SendOrdersToQueueButton.UseVisualStyleBackColor = true;
             SendOrdersToQueueButton.MouseClick += SendOrdersToQueueButton_MouseClick;
@@ -124,7 +124,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(832, 488);
+            ClientSize = new Size(836, 504);
             Controls.Add(SendOrdersToQueueButton);
             Controls.Add(DeleteAllOrdersButton);
             Controls.Add(plannedOrdersDataGrid);

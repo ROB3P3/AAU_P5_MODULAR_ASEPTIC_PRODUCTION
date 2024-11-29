@@ -43,19 +43,25 @@
             OrderNumberDispLabel = new Label();
             label4 = new Label();
             PlanOrderButton = new Button();
+            groupBox2 = new GroupBox();
+            RemoveOperationButton = new Button();
+            AddOperationButton = new Button();
+            OperationsComboBox = new ComboBox();
+            OperationsListBox = new ListBox();
             ((System.ComponentModel.ISupportInitialize)ContainerAmountNumeric).BeginInit();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // StartOrderButton
             // 
-            StartOrderButton.Location = new Point(449, 22);
+            StartOrderButton.Location = new Point(12, 328);
             StartOrderButton.Name = "StartOrderButton";
             StartOrderButton.Size = new Size(134, 66);
-            StartOrderButton.TabIndex = 6;
+            StartOrderButton.TabIndex = 10;
             StartOrderButton.Text = "Add Order to Queue";
             StartOrderButton.UseVisualStyleBackColor = true;
-            StartOrderButton.MouseUp += StartOrderButton_MouseUp;
+            StartOrderButton.Click += StartOrderButton_Click;
             // 
             // ContainerAmountNumeric
             // 
@@ -191,19 +197,70 @@
             // 
             // PlanOrderButton
             // 
-            PlanOrderButton.Location = new Point(449, 105);
+            PlanOrderButton.Location = new Point(161, 328);
             PlanOrderButton.Name = "PlanOrderButton";
             PlanOrderButton.Size = new Size(134, 66);
-            PlanOrderButton.TabIndex = 7;
+            PlanOrderButton.TabIndex = 11;
             PlanOrderButton.Text = "Plan Order";
             PlanOrderButton.UseVisualStyleBackColor = true;
             PlanOrderButton.Click += PlanOrderButton_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(RemoveOperationButton);
+            groupBox2.Controls.Add(AddOperationButton);
+            groupBox2.Controls.Add(OperationsComboBox);
+            groupBox2.Controls.Add(OperationsListBox);
+            groupBox2.Location = new Point(382, 12);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(257, 298);
+            groupBox2.TabIndex = 9;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Operations";
+            // 
+            // RemoveOperationButton
+            // 
+            RemoveOperationButton.Location = new Point(6, 263);
+            RemoveOperationButton.Name = "RemoveOperationButton";
+            RemoveOperationButton.Size = new Size(85, 29);
+            RemoveOperationButton.TabIndex = 9;
+            RemoveOperationButton.Text = "Remove";
+            RemoveOperationButton.UseVisualStyleBackColor = true;
+            RemoveOperationButton.Click += RemoveOperationButton_Click;
+            // 
+            // AddOperationButton
+            // 
+            AddOperationButton.Location = new Point(164, 26);
+            AddOperationButton.Name = "AddOperationButton";
+            AddOperationButton.Size = new Size(54, 28);
+            AddOperationButton.TabIndex = 7;
+            AddOperationButton.Text = "Add";
+            AddOperationButton.UseVisualStyleBackColor = true;
+            AddOperationButton.Click += AddOperationButton_Click;
+            // 
+            // OperationsComboBox
+            // 
+            OperationsComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            OperationsComboBox.FormattingEnabled = true;
+            OperationsComboBox.Location = new Point(7, 26);
+            OperationsComboBox.Name = "OperationsComboBox";
+            OperationsComboBox.Size = new Size(151, 28);
+            OperationsComboBox.TabIndex = 6;
+            // 
+            // OperationsListBox
+            // 
+            OperationsListBox.FormattingEnabled = true;
+            OperationsListBox.Location = new Point(7, 72);
+            OperationsListBox.Name = "OperationsListBox";
+            OperationsListBox.Size = new Size(151, 184);
+            OperationsListBox.TabIndex = 8;
             // 
             // NewOrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(650, 322);
+            ClientSize = new Size(663, 455);
+            Controls.Add(groupBox2);
             Controls.Add(PlanOrderButton);
             Controls.Add(groupBox1);
             Controls.Add(StartOrderButton);
@@ -212,6 +269,7 @@
             ((System.ComponentModel.ISupportInitialize)ContainerAmountNumeric).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -232,5 +290,10 @@
         private Button PlanOrderButton;
         private Label label6;
         private TextBox MedicineTypeBox;
+        private GroupBox groupBox2;
+        private ListBox OperationsListBox;
+        private ComboBox OperationsComboBox;
+        private Button RemoveOperationButton;
+        private Button AddOperationButton;
     }
 }

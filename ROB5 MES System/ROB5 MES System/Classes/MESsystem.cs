@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ROB5_MES_System.Classes;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace ROB5_MES_System
@@ -20,9 +21,9 @@ namespace ROB5_MES_System
         {
             _productionStatus = 1;
         }
-        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate, string medicineType)
+        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate, string medicineType, List<Operation> operationList)
         {
-            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE, medicineType);
+            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE, medicineType, operationList);
             _orders.AddLast(order);
             order.SendOrderInfoToDatabase();
         }

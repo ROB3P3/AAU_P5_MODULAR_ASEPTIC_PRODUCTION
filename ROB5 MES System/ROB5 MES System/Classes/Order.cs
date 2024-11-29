@@ -9,9 +9,6 @@ namespace ROB5_MES_System
     public class Order
     {
         private int _orderNumber; // brugt | odrenummer som er gemt i DB
-        private string _orderName;
-        private string _orderDescription;
-        private string _orderType; 
         private DateTime _orderPlannedStartTime; // brugt
         private DateTime _orderPlannedEndTime; // brugt
         private DateTime _orderStartTime; // brugt
@@ -32,6 +29,8 @@ namespace ROB5_MES_System
         private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
         private LinkedList<Carrier> _carriersInProductionList;
 
+        private List<Operation> _operationList;
+
         private Thread _productionThread;
         private void GenerateCarriers(string containerType, int containerAmount)
         {
@@ -43,7 +42,6 @@ namespace ROB5_MES_System
             {
                 Carrier carrier = new Carrier(-1, 5, containerType, _orderNumber); // her bliver carriersne genereret med 5 containere og et id
                 _carriersInOrder.AddLast(carrier);
-                Console.WriteLine("Full carrier added");
             }
 
             _carriersTotal = fullCarriers;
@@ -52,27 +50,25 @@ namespace ROB5_MES_System
             {
                 _carriersInOrder.AddLast(new Carrier(-1, containerRemainder, containerType, _orderNumber)); // add a carrier with the remainder of containers
                 _carriersTotal += 1;
-                Console.WriteLine(string.Format("Remainder carrier added with {0} containers added", containerRemainder));
             }
 
             Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} containers, making for {2} containers", fullCarriers, containerRemainder, containerAmount));
 
         }
         // tilfæjer et task objekt til køen af tasks på denne carriere
-        private void AddTaskToCarriers(string taskName, string taskDescription, string taskType, int taskId, string statusDescription)
+        private void AddTaskToCarriers(string taskName, string taskDescription, int taskId, string statusDescription)
         {
             foreach (var carrier in _carriersInOrder)
             {   
-                Task task = new Task(taskName, taskDescription, taskType, taskId, "Not yet started", statusDescription);
+                Task task = new Task(taskName, taskDescription, taskId, "Not yet started", statusDescription);
                 carrier.AddTaskToEndOfCarrier(task);
             }
         }
+
         public void SendOrderInfoToDatabase()
         {
-            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _orderStartTime, _orderEndTime);
-            // Anton shit
+            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _operationList, _orderStartTime, _orderEndTime);
         }
-
 
         public void StartOrderProduction()
         {
@@ -83,7 +79,6 @@ namespace ROB5_MES_System
                 _productionThread.Start();
             }
         }
-
 
         private void ProductionHandler()
         {
@@ -114,39 +109,6 @@ namespace ROB5_MES_System
                 if (value <= 0)
                     throw new ArgumentNullException("Order number cannot be less than 0");
                 _orderNumber = value;
-            }
-        }
-
-        public string OrderName
-        {
-            get { return _orderName; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Order name cannot be empty.");
-                _orderName = value;
-            }
-        }
-
-        public string OrderDescription
-        {
-            get { return _orderDescription; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Order description cannot be empty.");
-                _orderDescription = value;
-            }
-        }
-
-        public string OrderType
-        {
-            get { return _orderType; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Order type cannot be empty.");
-                _orderType = value;
             }
         }
 
@@ -314,6 +276,17 @@ namespace ROB5_MES_System
             }
         }
 
+        public List<Operation> OperationList
+        {
+            get { return _operationList; }
+            set
+            {
+                if(value == null)
+                    throw new ArgumentNullException("Operation list cannot be null.");
+                _operationList = value;
+            }
+        }
+
         public LinkedList<Carrier> CarriersInProductionList
         {
             get { return _carriersInProductionList; }
@@ -325,7 +298,7 @@ namespace ROB5_MES_System
             }
         }
 
-        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState, string medicineType)
+        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState, string medicineType, List<Operation> operationList)
         {
             _containerAmount = containerAmount;
             _orderNumber = orderNumber;
@@ -337,9 +310,12 @@ namespace ROB5_MES_System
             _medicineType = medicineType;
             _carriersInOrder = new LinkedList<Carrier>();
             _carriersInProductionList = new LinkedList<Carrier>();
+            _operationList = operationList;
             GenerateCarriers(_containerType, _containerAmount);
-            AddTaskToCarriers("fill", "Fills up the containers", "action on product", 1, "Not yet started");
-            AddTaskToCarriers("stopper", "Seals the containers", "action on product", 2, "Not yet started");
+            foreach(var operation in operationList)
+            {
+                AddTaskToCarriers(operation.OperationName, operation.OperationDescription, operation.OperationID, "Not yet started");
+            }
             foreach (var carrier in _carriersInOrder)
             {
                 carrier.PrintCarrierInfo();

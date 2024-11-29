@@ -64,7 +64,7 @@
             OrderNumberDispLabel.MinimumSize = new Size(170, 25);
             OrderNumberDispLabel.Name = "OrderNumberDispLabel";
             OrderNumberDispLabel.Size = new Size(170, 25);
-            OrderNumberDispLabel.TabIndex = 1;
+            OrderNumberDispLabel.TabIndex = 0;
             OrderNumberDispLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // OrderNumberLabel
@@ -85,7 +85,7 @@
             plannedStartDateTimePicker.Name = "plannedStartDateTimePicker";
             plannedStartDateTimePicker.ShowUpDown = true;
             plannedStartDateTimePicker.Size = new Size(170, 27);
-            plannedStartDateTimePicker.TabIndex = 5;
+            plannedStartDateTimePicker.TabIndex = 1;
             plannedStartDateTimePicker.ValueChanged += plannedStartDateTimePicker_ValueChanged;
             // 
             // plannedEndDateTimePicker
@@ -98,14 +98,14 @@
             plannedEndDateTimePicker.Name = "plannedEndDateTimePicker";
             plannedEndDateTimePicker.ShowUpDown = true;
             plannedEndDateTimePicker.Size = new Size(170, 27);
-            plannedEndDateTimePicker.TabIndex = 6;
+            plannedEndDateTimePicker.TabIndex = 2;
             // 
             // replanOrderButton
             // 
             replanOrderButton.Location = new Point(12, 156);
             replanOrderButton.Name = "replanOrderButton";
             replanOrderButton.Size = new Size(158, 29);
-            replanOrderButton.TabIndex = 7;
+            replanOrderButton.TabIndex = 3;
             replanOrderButton.Text = "Confirm replanning";
             replanOrderButton.UseVisualStyleBackColor = true;
             replanOrderButton.Click += replanOrderButton_Click;
@@ -114,7 +114,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(353, 197);
+            ClientSize = new Size(355, 205);
             Controls.Add(replanOrderButton);
             Controls.Add(plannedEndDateTimePicker);
             Controls.Add(plannedStartDateTimePicker);

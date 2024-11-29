@@ -40,9 +40,6 @@ namespace ROB5_MES_System
             plannedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             plannedOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
-            plannedOrdersDataGrid.Columns["OrderName"].Visible = false;
-            plannedOrdersDataGrid.Columns["OrderDescription"].Visible = false;
-            plannedOrdersDataGrid.Columns["OrderType"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderStartTime"].Visible = false;
             plannedOrdersDataGrid.Columns["OrderEndTime"].Visible = false;
             plannedOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;

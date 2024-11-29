@@ -51,8 +51,6 @@ namespace ROB5_MES_System
             }
         }
 
-
-
         public string Type
         {
             get { return _type; }

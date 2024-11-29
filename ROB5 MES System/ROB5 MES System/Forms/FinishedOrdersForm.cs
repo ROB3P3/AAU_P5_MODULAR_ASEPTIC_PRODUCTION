@@ -50,9 +50,6 @@ namespace ROB5_MES_System
             finishedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             finishedOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
-            finishedOrdersDataGrid.Columns["OrderName"].Visible = false;
-            finishedOrdersDataGrid.Columns["OrderDescription"].Visible = false;
-            finishedOrdersDataGrid.Columns["OrderType"].Visible = false;
             finishedOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
             finishedOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             finishedOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
@@ -81,7 +78,7 @@ namespace ROB5_MES_System
 
         private void showAllCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(showAllCheckBox.Checked)
+            if (showAllCheckBox.Checked)
             {
                 fromDateTimePicker.Enabled = false;
                 toDateTimePicker.Enabled = false;
@@ -92,6 +89,16 @@ namespace ROB5_MES_System
                 toDateTimePicker.Enabled = true;
             }
             loadFinishedOrders();
+        }
+
+        private void finishedOrdersDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                Order clickedOrder = MainWindowForm.getOrderFromCell(finishedOrdersDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex], MainWindowForm.mesSystem.FinishedOrders);
+
+                MainWindowForm.ShowOrderForm(clickedOrder, this.MdiParent);
+            }
         }
     }
 }

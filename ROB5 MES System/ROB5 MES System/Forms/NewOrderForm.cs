@@ -35,14 +35,22 @@ namespace ROB5_MES_System
             // replace max order number with current max order number from all lists
             int maxOrderNumber = MainWindowForm.database.get_order_number();
             OrderNumberDispLabel.Text = maxOrderNumber.ToString();
+
+            OperationsListBox.Items.Clear();
+            OperationsListBox.DisplayMember = "DisplayText";
+            OperationsListBox.ValueMember = "OperationID";
+            OperationsComboBox.DataSource = MainWindowForm.operations;
+            OperationsComboBox.DisplayMember = "DisplayText";
+            OperationsComboBox.ValueMember = "OperationID";
         }
 
         // event function for click on start order button
-        private void StartOrderButton_MouseUp(object sender, MouseEventArgs e)
+        private void StartOrderButton_Click(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            // pull data from input fields
+            List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
+            if(orderOperations.Count > 0)
             {
-                // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
@@ -50,7 +58,7 @@ namespace ROB5_MES_System
                 DateTime startTime = StartTimePicker.Value;
 
                 int maxOrderNumber = MainWindowForm.database.get_order_number();
-                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime, medicineType);
+                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime, medicineType, orderOperations);
 
                 // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
@@ -71,36 +79,68 @@ namespace ROB5_MES_System
                     }
                 }
             }
+            else
+            {
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                String caption = "At least 1 operation must be selected";
+                DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Warning);
+            }
         }
 
         // event function for click on plan order button
         private void PlanOrderButton_Click(object sender, EventArgs e)
         {
-            string containerType = ContainerTypeComboBox.Text;
-            int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
-            string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
-            string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
-            DateTime startTime = StartTimePicker.Value;
-
-            int maxOrderNumber = MainWindowForm.database.get_order_number();
-            Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND, medicineType);
-            MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
-            order.SendOrderInfoToDatabase();
-
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            String caption = String.Format("Order {0} created", maxOrderNumber);
-            DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
-
-            if (result == DialogResult.OK)
+            List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
+            if(orderOperations.Count > 0)
             {
-                LoadNewOrderForm();
+                string containerType = ContainerTypeComboBox.Text;
+                int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
+                string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
+                string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
+                DateTime startTime = StartTimePicker.Value;
 
-                PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
+                int maxOrderNumber = MainWindowForm.database.get_order_number();
+                Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND, medicineType, orderOperations);
+                MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
+                order.SendOrderInfoToDatabase();
 
-                if (plannedOrdersForm != null)
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                String caption = String.Format("Order {0} created", maxOrderNumber);
+                DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
+
+                if (result == DialogResult.OK)
                 {
-                    plannedOrdersForm.RefreshOrders();
+                    LoadNewOrderForm();
+
+                    PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
+
+                    if (plannedOrdersForm != null)
+                    {
+                        plannedOrdersForm.RefreshOrders();
+                    }
                 }
+            }
+            else
+            {
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                String caption = "At least 1 operation must be selected";
+                DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void AddOperationButton_Click(object sender, EventArgs e)
+        {
+            if (OperationsComboBox.SelectedItem != null)
+            {
+                OperationsListBox.Items.Add(OperationsComboBox.SelectedItem);
+            }
+        }
+
+        private void RemoveOperationButton_Click(object sender, EventArgs e)
+        {
+            if (OperationsListBox.SelectedItem != null)
+            {
+                OperationsListBox.Items.Remove(OperationsListBox.SelectedItem);
             }
         }
     }
