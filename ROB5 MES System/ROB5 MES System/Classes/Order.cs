@@ -9,10 +9,8 @@ namespace ROB5_MES_System
     public class Order
     {
         private int _orderNumber; // brugt | odrenummer som er gemt i DB
-        private DateTime _orderPlannedStartTime; // brugt
-        private DateTime _orderPlannedEndTime; // brugt
-        private DateTime _orderStartTime; // brugt
-        private DateTime _orderEndTime; // brugt
+        private DateTime? _orderStartTime; // brugt
+        private DateTime? _orderEndTime; // brugt
         private string _orderCustomer; // brugt
         private string _medicineType; // brugt
         private OrderState _orderState; // brugt
@@ -112,31 +110,7 @@ namespace ROB5_MES_System
             }
         }
 
-        public DateTime OrderPlannedStartTime
-        {
-            get { return _orderPlannedStartTime; }
-            set
-            {
-                if (value < DateTime.MinValue || value > DateTime.MaxValue)
-                    throw new ArgumentException("Order date cannot be in the past.");
-
-                _orderPlannedStartTime = value;
-            }
-        }
-
-        public DateTime OrderPlannedEndTime
-        {
-            get { return _orderPlannedEndTime; }
-            set
-            {
-                if (value < DateTime.MinValue || value > DateTime.MaxValue)
-                    throw new ArgumentException("Order date is null.");
-
-                _orderPlannedEndTime = value;
-            }
-        }
-
-        public DateTime OrderStartTime
+        public DateTime? OrderStartTime
         {
             get { return _orderStartTime; }
             set
@@ -148,7 +122,7 @@ namespace ROB5_MES_System
             }
         }
 
-        public DateTime OrderEndTime
+        public DateTime? OrderEndTime
         {
             get { return _orderEndTime; }
             set
@@ -298,19 +272,19 @@ namespace ROB5_MES_System
             }
         }
 
-        public Order(int containerAmount, string containerType, string customer, int orderNumber, DateTime orderDate, OrderState orderState, string medicineType, List<Operation> operationList)
+        public Order(int containerAmount, string containerType, string customer, int orderNumber, OrderState orderState, string medicineType, List<Operation> operationList)
         {
             _containerAmount = containerAmount;
             _orderNumber = orderNumber;
             _containerType = containerType;
             _orderCustomer = customer;
-            _orderPlannedStartTime = orderDate;
-            _orderPlannedEndTime = orderDate.AddHours(1); // lav en mere sofistikeret funktion som ser på amount og type af container
             _orderState = orderState;
             _medicineType = medicineType;
             _carriersInOrder = new LinkedList<Carrier>();
             _carriersInProductionList = new LinkedList<Carrier>();
             _operationList = operationList;
+            _orderStartTime = null;
+            _orderEndTime = null;
             GenerateCarriers(_containerType, _containerAmount);
             foreach(var operation in operationList)
             {

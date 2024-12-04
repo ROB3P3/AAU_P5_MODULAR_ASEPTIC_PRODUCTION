@@ -134,16 +134,16 @@
             groupBox1.Controls.Add(OperationDescriptionTextBox);
             groupBox1.Controls.Add(OperationNameTextBox);
             groupBox1.Controls.Add(label4);
-            groupBox1.Location = new Point(304, 12);
+            groupBox1.Location = new Point(317, 2);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(287, 229);
+            groupBox1.Size = new Size(287, 240);
             groupBox1.TabIndex = 9;
             groupBox1.TabStop = false;
             groupBox1.Text = "Operation Info";
             // 
             // SaveOperationButton
             // 
-            SaveOperationButton.Location = new Point(539, 247);
+            SaveOperationButton.Location = new Point(552, 247);
             SaveOperationButton.Name = "SaveOperationButton";
             SaveOperationButton.Size = new Size(52, 29);
             SaveOperationButton.TabIndex = 6;
@@ -155,7 +155,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(619, 330);
+            ClientSize = new Size(621, 338);
             Controls.Add(SaveOperationButton);
             Controls.Add(groupBox1);
             Controls.Add(DeleteOperationButton);

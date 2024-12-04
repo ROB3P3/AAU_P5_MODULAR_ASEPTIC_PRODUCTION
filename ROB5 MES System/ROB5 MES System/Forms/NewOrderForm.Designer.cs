@@ -31,10 +31,8 @@
             StartOrderButton = new Button();
             ContainerAmountNumeric = new NumericUpDown();
             ContainerTypeComboBox = new ComboBox();
-            StartTimePicker = new DateTimePicker();
             label1 = new Label();
             label2 = new Label();
-            label3 = new Label();
             groupBox1 = new GroupBox();
             MedicineTypeBox = new TextBox();
             label6 = new Label();
@@ -55,7 +53,7 @@
             // 
             // StartOrderButton
             // 
-            StartOrderButton.Location = new Point(12, 328);
+            StartOrderButton.Location = new Point(12, 261);
             StartOrderButton.Name = "StartOrderButton";
             StartOrderButton.Size = new Size(134, 66);
             StartOrderButton.TabIndex = 10;
@@ -74,23 +72,13 @@
             // 
             // ContainerTypeComboBox
             // 
+            ContainerTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ContainerTypeComboBox.FormattingEnabled = true;
             ContainerTypeComboBox.Items.AddRange(new object[] { "Vials", "Syringes" });
             ContainerTypeComboBox.Location = new Point(162, 113);
             ContainerTypeComboBox.Name = "ContainerTypeComboBox";
             ContainerTypeComboBox.Size = new Size(151, 28);
             ContainerTypeComboBox.TabIndex = 2;
-            // 
-            // StartTimePicker
-            // 
-            StartTimePicker.CustomFormat = "yyyy/MM/dd HH:mm:ss";
-            StartTimePicker.Format = DateTimePickerFormat.Custom;
-            StartTimePicker.Location = new Point(162, 234);
-            StartTimePicker.MinDate = new DateTime(2024, 11, 5, 0, 0, 0, 0);
-            StartTimePicker.Name = "StartTimePicker";
-            StartTimePicker.ShowUpDown = true;
-            StartTimePicker.Size = new Size(164, 27);
-            StartTimePicker.TabIndex = 5;
             // 
             // label1
             // 
@@ -110,15 +98,6 @@
             label2.TabIndex = 6;
             label2.Text = "Container amount:";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(17, 234);
-            label3.Name = "label3";
-            label3.Size = new Size(140, 20);
-            label3.TabIndex = 7;
-            label3.Text = "Start time and date:";
-            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(MedicineTypeBox);
@@ -127,15 +106,13 @@
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(OrderNumberDispLabel);
             groupBox1.Controls.Add(label4);
-            groupBox1.Controls.Add(StartTimePicker);
-            groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(ContainerAmountNumeric);
             groupBox1.Controls.Add(ContainerTypeComboBox);
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(346, 298);
+            groupBox1.Size = new Size(346, 241);
             groupBox1.TabIndex = 8;
             groupBox1.TabStop = false;
             groupBox1.Text = "Order";
@@ -153,9 +130,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(17, 198);
             label6.Name = "label6";
-            label6.Size = new Size(103, 20);
+            label6.Size = new Size(106, 20);
             label6.TabIndex = 12;
-            label6.Text = "Medicine type";
+            label6.Text = "Medicine type:";
             // 
             // CompanyNameTextBox
             // 
@@ -197,7 +174,7 @@
             // 
             // PlanOrderButton
             // 
-            PlanOrderButton.Location = new Point(161, 328);
+            PlanOrderButton.Location = new Point(161, 261);
             PlanOrderButton.Name = "PlanOrderButton";
             PlanOrderButton.Size = new Size(134, 66);
             PlanOrderButton.TabIndex = 11;
@@ -213,14 +190,14 @@
             groupBox2.Controls.Add(OperationsListBox);
             groupBox2.Location = new Point(382, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(257, 298);
+            groupBox2.Size = new Size(257, 241);
             groupBox2.TabIndex = 9;
             groupBox2.TabStop = false;
             groupBox2.Text = "Operations";
             // 
             // RemoveOperationButton
             // 
-            RemoveOperationButton.Location = new Point(6, 263);
+            RemoveOperationButton.Location = new Point(7, 205);
             RemoveOperationButton.Name = "RemoveOperationButton";
             RemoveOperationButton.Size = new Size(85, 29);
             RemoveOperationButton.TabIndex = 9;
@@ -252,14 +229,14 @@
             OperationsListBox.FormattingEnabled = true;
             OperationsListBox.Location = new Point(7, 72);
             OperationsListBox.Name = "OperationsListBox";
-            OperationsListBox.Size = new Size(151, 184);
+            OperationsListBox.Size = new Size(151, 124);
             OperationsListBox.TabIndex = 8;
             // 
             // NewOrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(663, 455);
+            ClientSize = new Size(669, 336);
             Controls.Add(groupBox2);
             Controls.Add(PlanOrderButton);
             Controls.Add(groupBox1);
@@ -278,10 +255,8 @@
         private Button StartOrderButton;
         private NumericUpDown ContainerAmountNumeric;
         private ComboBox ContainerTypeComboBox;
-        private DateTimePicker StartTimePicker;
         private Label label1;
         private Label label2;
-        private Label label3;
         private GroupBox groupBox1;
         private Label label4;
         private Label OrderNumberDispLabel;

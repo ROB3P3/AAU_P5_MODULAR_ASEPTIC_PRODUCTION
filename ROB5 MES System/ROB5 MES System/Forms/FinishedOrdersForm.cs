@@ -33,8 +33,6 @@ namespace ROB5_MES_System
             }
 
             finishedOrdersDataGrid.Columns["OrderNumber"].HeaderText = "Order Number";
-            finishedOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
-            finishedOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
             finishedOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
             finishedOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
             finishedOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
@@ -43,16 +41,15 @@ namespace ROB5_MES_System
             finishedOrdersDataGrid.Columns["ContainerType"].HeaderText = "Container Type";
             finishedOrdersDataGrid.Columns["ContainerAmount"].HeaderText = "Container Amount";
             finishedOrdersDataGrid.Columns["CarriersTotal"].HeaderText = "Total Carriers";
-            finishedOrdersDataGrid.Columns["CarriersInProduction"].HeaderText = "Carriers in Production";
-            finishedOrdersDataGrid.Columns["CarriersProduced"].HeaderText = "Carriers Produced";
-            finishedOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
-            finishedOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             finishedOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             finishedOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
             finishedOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
             finishedOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             finishedOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
+            finishedOrdersDataGrid.Columns["CarriersInProduction"].Visible = false;
+            finishedOrdersDataGrid.Columns["CarriersProduced"].Visible = false;
+            finishedOrdersDataGrid.Columns["CarriersInProductionList"].Visible = false;
         }
 
         private void FinishedOrders_Load(object sender, EventArgs e)

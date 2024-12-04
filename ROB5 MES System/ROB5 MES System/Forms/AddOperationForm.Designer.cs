@@ -94,7 +94,7 @@
             // 
             // AddOperationButton
             // 
-            AddOperationButton.Location = new Point(10, 154);
+            AddOperationButton.Location = new Point(10, 159);
             AddOperationButton.Name = "AddOperationButton";
             AddOperationButton.Size = new Size(135, 29);
             AddOperationButton.TabIndex = 9;

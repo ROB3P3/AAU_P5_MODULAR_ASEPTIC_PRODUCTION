@@ -35,7 +35,6 @@
             orderRightClickMenuStrip = new ContextMenuStrip(components);
             enableOrderToolMenuStripItem = new ToolStripMenuItem();
             deleteOrderToolMenuStripItem = new ToolStripMenuItem();
-            replanOrderToolMenuStripItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             showDetailsToolMenuStripItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)plannedOrdersDataGrid).BeginInit();
@@ -53,7 +52,7 @@
             plannedOrdersDataGrid.ReadOnly = true;
             plannedOrdersDataGrid.RowHeadersVisible = false;
             plannedOrdersDataGrid.RowHeadersWidth = 51;
-            plannedOrdersDataGrid.Size = new Size(812, 450);
+            plannedOrdersDataGrid.Size = new Size(816, 466);
             plannedOrdersDataGrid.TabIndex = 0;
             plannedOrdersDataGrid.CellDoubleClick += plannedOrdersDataGrid_CellDoubleClick;
             plannedOrdersDataGrid.CellMouseClick += plannedOrdersDataGrid_CellMouseClick;
@@ -61,7 +60,7 @@
             // DeleteAllOrdersButton
             // 
             DeleteAllOrdersButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DeleteAllOrdersButton.Location = new Point(12, 468);
+            DeleteAllOrdersButton.Location = new Point(12, 484);
             DeleteAllOrdersButton.Name = "DeleteAllOrdersButton";
             DeleteAllOrdersButton.Size = new Size(193, 29);
             DeleteAllOrdersButton.TabIndex = 1;
@@ -72,7 +71,7 @@
             // SendOrdersToQueueButton
             // 
             SendOrdersToQueueButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            SendOrdersToQueueButton.Location = new Point(211, 468);
+            SendOrdersToQueueButton.Location = new Point(211, 484);
             SendOrdersToQueueButton.Name = "SendOrdersToQueueButton";
             SendOrdersToQueueButton.Size = new Size(257, 29);
             SendOrdersToQueueButton.TabIndex = 2;
@@ -83,40 +82,33 @@
             // orderRightClickMenuStrip
             // 
             orderRightClickMenuStrip.ImageScalingSize = new Size(20, 20);
-            orderRightClickMenuStrip.Items.AddRange(new ToolStripItem[] { enableOrderToolMenuStripItem, deleteOrderToolMenuStripItem, replanOrderToolMenuStripItem, toolStripSeparator1, showDetailsToolMenuStripItem });
+            orderRightClickMenuStrip.Items.AddRange(new ToolStripItem[] { enableOrderToolMenuStripItem, deleteOrderToolMenuStripItem, toolStripSeparator1, showDetailsToolMenuStripItem });
             orderRightClickMenuStrip.Name = "orderRightClickMenuStrip";
-            orderRightClickMenuStrip.Size = new Size(167, 106);
+            orderRightClickMenuStrip.Size = new Size(155, 76);
             // 
             // enableOrderToolMenuStripItem
             // 
             enableOrderToolMenuStripItem.Name = "enableOrderToolMenuStripItem";
-            enableOrderToolMenuStripItem.Size = new Size(166, 24);
+            enableOrderToolMenuStripItem.Size = new Size(154, 22);
             enableOrderToolMenuStripItem.Text = "Enable Order";
             enableOrderToolMenuStripItem.MouseUp += enableOrderToolMenuStripItem_MouseUp;
             // 
             // deleteOrderToolMenuStripItem
             // 
             deleteOrderToolMenuStripItem.Name = "deleteOrderToolMenuStripItem";
-            deleteOrderToolMenuStripItem.Size = new Size(166, 24);
+            deleteOrderToolMenuStripItem.Size = new Size(154, 22);
             deleteOrderToolMenuStripItem.Text = "Delete Order";
             deleteOrderToolMenuStripItem.MouseUp += deleteOrderToolMenuStripItem_MouseUp;
-            // 
-            // replanOrderToolMenuStripItem
-            // 
-            replanOrderToolMenuStripItem.Name = "replanOrderToolMenuStripItem";
-            replanOrderToolMenuStripItem.Size = new Size(166, 24);
-            replanOrderToolMenuStripItem.Text = "Replan Order";
-            replanOrderToolMenuStripItem.MouseUp += replanOrderToolMenuStripItem_MouseUp;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(163, 6);
+            toolStripSeparator1.Size = new Size(151, 6);
             // 
             // showDetailsToolMenuStripItem
             // 
             showDetailsToolMenuStripItem.Name = "showDetailsToolMenuStripItem";
-            showDetailsToolMenuStripItem.Size = new Size(166, 24);
+            showDetailsToolMenuStripItem.Size = new Size(154, 22);
             showDetailsToolMenuStripItem.Text = "Show Details";
             showDetailsToolMenuStripItem.MouseUp += showDetailsToolMenuStripItem_MouseUp;
             // 
@@ -124,7 +116,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(836, 504);
+            ClientSize = new Size(840, 520);
             Controls.Add(SendOrdersToQueueButton);
             Controls.Add(DeleteAllOrdersButton);
             Controls.Add(plannedOrdersDataGrid);
@@ -145,6 +137,5 @@
         private ToolStripMenuItem deleteOrderToolMenuStripItem;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem showDetailsToolMenuStripItem;
-        private ToolStripMenuItem replanOrderToolMenuStripItem;
     }
 }
