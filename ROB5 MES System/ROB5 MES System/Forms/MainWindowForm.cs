@@ -100,14 +100,6 @@ namespace ROB5_MES_System
             FinishedOrdersSubMenuItem.Visible = !FinishedOrdersSubMenuItem.Visible;
         }
 
-        private void exitToolStripMenuItem_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Close();
-            }
-        }
-
         // event function to show system status form
         private SystemStatusForm systemStatusForm;
         private void SystemStatusSubMenuItem_Click(object sender, EventArgs e)
@@ -230,7 +222,7 @@ namespace ROB5_MES_System
         {
             Console.WriteLine("system closed");
             LinkedList<Order> allOrders = mesSystem.Orders;
-            foreach(var order in mesSystem.PlannedOrders)
+            foreach (var order in mesSystem.PlannedOrders)
             {
                 allOrders.AddLast(order);
             }

@@ -28,8 +28,6 @@ namespace ROB5_MES_System
             currentOrdersDataGrid.DataSource = MainWindowForm.mesSystem.Orders.ToList();
 
             currentOrdersDataGrid.Columns["OrderNumber"].HeaderText = "Order Number";
-            currentOrdersDataGrid.Columns["OrderPlannedStartTime"].HeaderText = "Planned Start Time";
-            currentOrdersDataGrid.Columns["OrderPlannedEndTime"].HeaderText = "Planned End Time";
             currentOrdersDataGrid.Columns["OrderStartTime"].HeaderText = "Start Time";
             currentOrdersDataGrid.Columns["OrderEndTime"].HeaderText = "End Time";
             currentOrdersDataGrid.Columns["OrderCustomer"].HeaderText = "Customer";
@@ -40,14 +38,13 @@ namespace ROB5_MES_System
             currentOrdersDataGrid.Columns["CarriersTotal"].HeaderText = "Total Carriers";
             currentOrdersDataGrid.Columns["CarriersInProduction"].HeaderText = "Carriers in Production";
             currentOrdersDataGrid.Columns["CarriersProduced"].HeaderText = "Carriers Produced";
-            currentOrdersDataGrid.Columns["OrderPlannedStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
-            currentOrdersDataGrid.Columns["OrderPlannedEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderStartTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             currentOrdersDataGrid.Columns["OrderEndTime"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
 
             currentOrdersDataGrid.Columns["ContainersInProduction"].Visible = false;
             currentOrdersDataGrid.Columns["ContainersProduced"].Visible = false;
             currentOrdersDataGrid.Columns["CarriersInOrder"].Visible = false;
+            currentOrdersDataGrid.Columns["CarriersInProductionList"].Visible = false;
         }
 
         // function to show order details based on a clicked cell
