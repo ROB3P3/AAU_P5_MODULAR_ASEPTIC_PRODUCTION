@@ -262,7 +262,7 @@ namespace ROB5_MES_System.Classes
 
             // assign the carrier to the order
             _carrierInOrder.CarrierID = carrierID;
-            Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderName);
+            Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderNumber);
 
             // add the carrier to the list of carriers in production
             currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
