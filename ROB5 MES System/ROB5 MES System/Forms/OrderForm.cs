@@ -25,9 +25,9 @@ namespace ROB5_MES_System
             OrderNumberDispLabel.Text = order.OrderNumber.ToString();
             CustomerDispLabel.Text = order.OrderCustomer;
             MedicineDispLabel.Text = order.MedicineType;
+            ActualStartDispLabel.Text = order.OrderStartTime.HasValue ? order.OrderStartTime.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
+            ActualEndDispLabel.Text = order.OrderEndTime.HasValue ? order.OrderEndTime.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             OrderStateDispLabel.Text = order.OrderState.ToString();
-            PlannedStartTimeDispLabel.Text = order.OrderPlannedStartTime.ToString("yyyy/MM/dd hh:mm:ss");
-            PlannedEndTimeDispLabel.Text = order.OrderPlannedStartTime.AddHours(1).ToString("yyyy/MM/dd hh:mm:ss");
             ContainerAmountDispLabel.Text = order.ContainerAmount.ToString();
             ContainerTypeDispLabel.Text = order.ContainerType.ToString();
             CarrierAmountDispLabel.Text = order.CarriersTotal.ToString();

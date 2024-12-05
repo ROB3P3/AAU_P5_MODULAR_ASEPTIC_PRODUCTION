@@ -9,7 +9,6 @@ namespace ROB5_MES_System
         private LinkedList<Order> _orders; // liste af odre som er i queu
         private LinkedList<Order> _plannedOrders; // liste af de odre som er planlagt
         private LinkedList<Order> _finishedOrders; // liste af odre som er færdigproduceret
-        private int _productionStatus;
         public MESSystem()
         {
             _orders = new LinkedList<Order>();
@@ -17,13 +16,9 @@ namespace ROB5_MES_System
             _finishedOrders = new LinkedList<Order>();
         }
 
-        public void SendNextOrderToProduction(Order order)
+        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, string medicineType, List<Operation> operationList)
         {
-            _productionStatus = 1;
-        }
-        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, DateTime orderDate, string medicineType, List<Operation> operationList)
-        {
-            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), orderDate, OrderState.QUEUE, medicineType, operationList);
+            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), OrderState.QUEUE, medicineType, operationList);
             _orders.AddLast(order);
             order.SendOrderInfoToDatabase();
         }

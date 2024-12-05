@@ -268,7 +268,7 @@ namespace ROB5_MES_System.Classes
                 List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
                 List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.QUEUE, medicineType, operationList);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, OrderState.QUEUE, medicineType, operationList);
                 MainWindowForm.mesSystem.Orders.AddLast(order);
             }
 
@@ -296,7 +296,7 @@ namespace ROB5_MES_System.Classes
                 List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
                 List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.PEND, medicineType, operationList);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, OrderState.PEND, medicineType, operationList);
                 MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
             }
 
@@ -331,7 +331,7 @@ namespace ROB5_MES_System.Classes
                 List<int> operationIds = JsonConvert.DeserializeObject<List<int>>(jsonArray);
                 List<Operation> operationList = operationIds.Select(id => MainWindowForm.operations.FirstOrDefault(operation => operation.OperationID == id)).ToList();
 
-                Order order = new Order(containerAmount, containerType, company, orderNumber, DateTime.Now, OrderState.DONE, medicineType, operationList);
+                Order order = new Order(containerAmount, containerType, company, orderNumber, OrderState.DONE, medicineType, operationList);
                 order.OrderStartTime = reader.GetDateTime("start_time");
                 order.OrderEndTime = reader.GetDateTime("end_time");
                 MainWindowForm.mesSystem.FinishedOrders.AddLast(order);

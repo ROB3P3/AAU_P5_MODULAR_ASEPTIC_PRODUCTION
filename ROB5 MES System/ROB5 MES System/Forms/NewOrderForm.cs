@@ -27,7 +27,6 @@ namespace ROB5_MES_System
         // function to load the new order form
         public void LoadNewOrderForm()
         {
-            StartTimePicker.MinDate = DateTime.Now;
             ContainerAmountNumeric.Value = 1;
             CompanyNameTextBox.Text = "";
             MedicineTypeBox.Text = "";
@@ -55,10 +54,9 @@ namespace ROB5_MES_System
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
                 string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
-                DateTime startTime = StartTimePicker.Value;
 
                 int maxOrderNumber = MainWindowForm.database.get_order_number();
-                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, startTime, medicineType, orderOperations);
+                MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, medicineType, orderOperations);
 
                 // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
@@ -97,10 +95,9 @@ namespace ROB5_MES_System
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
                 string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
-                DateTime startTime = StartTimePicker.Value;
 
                 int maxOrderNumber = MainWindowForm.database.get_order_number();
-                Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, startTime, OrderState.PEND, medicineType, orderOperations);
+                Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, OrderState.PEND, medicineType, orderOperations);
                 MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
                 order.SendOrderInfoToDatabase();
 
