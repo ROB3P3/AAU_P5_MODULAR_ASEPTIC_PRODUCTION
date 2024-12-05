@@ -61,12 +61,17 @@ namespace ROB5_MES_System
         // Færdiggøre den første task i carrierens produktionskø og flytter den til udførte opgave
         public void CompleteFirstTaskInCarrierQueue()
         {
-            if (_quantityOfTasks <= 0) throw new ArgumentException("You can't remove a task from an empty carrier queu");
-            Task completeTask = _taskQueue.First.Value;
-            _completedTasks.AddLast(completeTask);
-            _taskQueue.RemoveFirst();
-            _quantityOfTasks --;
-            _quantityOfCompletedTasks ++;
+            if (_quantityOfTasks > 0)
+            {
+                Task completeTask = _taskQueue.First.Value;
+                completeTask.EndTime = DateTime.Now;
+                completeTask.Status = "Completed";
+                _completedTasks.AddLast(completeTask);
+                _taskQueue.RemoveFirst();
+                _quantityOfTasks--;
+                _quantityOfCompletedTasks++;
+                UpdateOrderForm();
+            }
         }
         // sletter carrier "endnu ikke implementeret"
         public void TerminateCarrier()
@@ -214,6 +219,17 @@ namespace ROB5_MES_System
                 _completedTasks = value;
             }
         }
+
+        private void UpdateOrderForm()
+        {
+            OrderForm orderForm = Application.OpenForms.OfType<OrderForm>().FirstOrDefault();
+
+            if (orderForm != null)
+            {
+                orderForm.UpdateOrderForm();
+            }
+        }
+
         // constructer tol Carrier klasse
         public Carrier(int id, int containerAmount, string containerType, int orderId)
         {

@@ -74,7 +74,7 @@
             // 
             ContainerTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             ContainerTypeComboBox.FormattingEnabled = true;
-            ContainerTypeComboBox.Items.AddRange(new object[] { "Vials", "Syringes" });
+            ContainerTypeComboBox.Items.AddRange(new object[] { "Cartridges", "Syringes" });
             ContainerTypeComboBox.Location = new Point(162, 113);
             ContainerTypeComboBox.Name = "ContainerTypeComboBox";
             ContainerTypeComboBox.Size = new Size(151, 28);
@@ -236,7 +236,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(669, 336);
+            ClientSize = new Size(671, 344);
             Controls.Add(groupBox2);
             Controls.Add(PlanOrderButton);
             Controls.Add(groupBox1);

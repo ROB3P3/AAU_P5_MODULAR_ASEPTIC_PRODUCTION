@@ -24,6 +24,12 @@ namespace ROB5_MES_System
         // function to refresh the current orders data grid
         public void RefreshOrders()
         {
+            if (InvokeRequired)
+            {
+                Invoke((Action)RefreshOrders);
+                return;
+            }
+
             currentOrdersDataGrid.DataSource = null;
             currentOrdersDataGrid.DataSource = MainWindowForm.mesSystem.Orders.ToList();
 

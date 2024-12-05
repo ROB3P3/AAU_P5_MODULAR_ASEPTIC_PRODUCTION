@@ -210,7 +210,7 @@ namespace ROB5_MES_System
             {
                 orderForm.BringToFront();
             }
-            orderForm.UpdateOrderForm(clickedOrder);
+            orderForm.LoadOrderForm(clickedOrder);
         }
 
         public static Order getOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)

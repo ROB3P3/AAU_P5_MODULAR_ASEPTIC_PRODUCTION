@@ -84,7 +84,6 @@ namespace ROB5_MES_System.Classes
                 // subscribe to application state and carrier id
                 SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
                 SubscribeNodeValue(_clientSession, String.Format("{0}.CarrierID", nodeId), "CarrierID", plcinfo);
-
             }
             catch (Exception e)
             {
@@ -217,26 +216,39 @@ namespace ROB5_MES_System.Classes
                         Console.WriteLine("Carrier {0} is already assigned to order {1}, checking if the first task is the desired task", carrierID, order);
                         _carrierExists = true;
                         // if the carrier is already assigned to the order, check if the first task is filling
-                        if (carrier.TaskQueue.ElementAt(0).TaskName == "fill")
+                        if(carrier.TaskQueue.Count > 0)
                         {
-                            Console.WriteLine("Carrier {0} has filling as its first task, performing the task", carrierID);
-                            // send the carrier to the PLC
-                            OpcuaHandler("valid");
-                            return;
+                            if (carrier.TaskQueue.ElementAt(0).TaskName == "filling")
+                            {
+                                Console.WriteLine("Carrier {0} has filling as its first task, performing the task", carrierID);
+                                carrier.TaskQueue.ElementAt(0).Status = "in progress";
+                                carrier.TaskQueue.ElementAt(0).StartTime = DateTime.Now;
+                                UpdateOrderForm();
+                                // send the carrier to the PLC
+                                OpcuaHandler("valid");
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierID);
+                                OpcuaHandler("pass");
+                                return;
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierID);
+                            Console.WriteLine("Carrier {0} does not have anymore tasks, passing it on", carrierID);
                             OpcuaHandler("pass");
                             return;
                         }
+                        
 
                     }
                 }
             }
 
             // only reaches this point if the carrier is not assigned to any order
-            if (!_carrierExists) { TaskHandlerNewCarrier(carrierID, "fill"); }
+            if (!_carrierExists) { TaskHandlerNewCarrier(carrierID, "filling"); }
 
         }
 
@@ -254,49 +266,65 @@ namespace ROB5_MES_System.Classes
             Console.WriteLine("\n");
 
             // get first order in queue and set as current order
-            _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
-
-            // get the first carrier in CarriersInOrder list and set as new carrier
-            _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
-
-
-            // assign the carrier to the order
-            _carrierInOrder.CarrierID = carrierID;
-            Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderNumber);
-
-            // add the carrier to the list of carriers in production
-            currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
-            Console.WriteLine("Carrier {0} added to production list", _carrierInOrder.CarrierID);
-
-            // remove the carrier from the list of carriers in order
-            currentOrder.CarriersInOrder.Remove(carrierInOrder);
-            Console.WriteLine("Carrier {0} removed from order list", _carrierInOrder.CarrierID);
-
-            // print carrier info
-            carrierInOrder.PrintCarrierInfo();
-
-
-            // check if the desired task is the first task in the queue, if not then pass the carrier on
-            if (_carrierInOrder.TaskQueue.ElementAt(0).TaskName == task)
+            if(MainWindowForm.mesSystem.Orders.Count > 0)
             {
-                // send the carrier to the PLC
-                OpcuaHandler("valid");
-                Console.WriteLine("Carrier {0} sent to PLC with command {1}", carrierInOrder.CarrierID, "valid");
+                _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
+                _currentOrder.OrderStartTime = DateTime.Now;
+                _currentOrder.OrderState = OrderState.BUSY;
+                // get the first carrier in CarriersInOrder list and set as new carrier
+                _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
 
-                // console write the production list and order list
-                //Console.WriteLine("Production list: ");
-                //Console.WriteLine(
-                //    string.Join(", ", currentOrder.CarriersInProductionList.Select(x => x.CarrierID).ToArray()));
-                //Console.WriteLine("Order list: ");
-                //Console.WriteLine(string.Join(", ", currentOrder.CarriersInOrder.Select(x => x.CarrierID).ToArray()));
-                return;
+
+                // assign the carrier to the order
+                _carrierInOrder.CarrierID = carrierID;
+                Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderNumber);
+
+                // add the carrier to the list of carriers in production
+                carrierInOrder.CarrierState = OrderState.BUSY;
+                currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
+                Console.WriteLine("Carrier {0} added to production list", _carrierInOrder.CarrierID);
+
+
+                // remove the carrier from the list of carriers in order
+                currentOrder.CarriersInOrder.Remove(carrierInOrder);
+                Console.WriteLine("Carrier {0} removed from order list", _carrierInOrder.CarrierID);
+
+                // print carrier info
+                carrierInOrder.PrintCarrierInfo();
+
+
+                // check if the desired task is the first task in the queue, if not then pass the carrier on
+                if (_carrierInOrder.TaskQueue.ElementAt(0).TaskName == task)
+                {
+                    // send the carrier to the PLC
+                    OpcuaHandler("valid");
+                    Console.WriteLine("Carrier {0} sent to PLC with command {1}", carrierInOrder.CarrierID, "valid");
+                    _carrierInOrder.TaskQueue.ElementAt(0).Status = "in progress";
+                    _carrierInOrder.TaskQueue.ElementAt(0).StartTime = DateTime.Now;
+                    UpdateOrderForm();
+                    // console write the production list and order list
+                    //Console.WriteLine("Production list: ");
+                    //Console.WriteLine(
+                    //    string.Join(", ", currentOrder.CarriersInProductionList.Select(x => x.CarrierID).ToArray()));
+                    //Console.WriteLine("Order list: ");
+                    //Console.WriteLine(string.Join(", ", currentOrder.CarriersInOrder.Select(x => x.CarrierID).ToArray()));
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierInOrder.CarrierID);
+                    OpcuaHandler("pass");
+                    return;
+                }
             }
             else
             {
-                Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierInOrder.CarrierID);
+                Console.WriteLine("No more orders in production queue");
                 OpcuaHandler("pass");
                 return;
             }
+
+            
         }
 
         
@@ -315,11 +343,24 @@ namespace ROB5_MES_System.Classes
                 case "running":
                     Console.WriteLine("Application is running");
                     break;
+                case "passed":
+                    Console.WriteLine("Application has passed carrier to next module");
+                    break;
                 case "done":
                     Console.WriteLine("Application is done");
                     // remove the filling task from the carrier
                     carrierInOrder.CompleteFirstTaskInCarrierQueue();
                     carrierInOrder.PrintCarrierInfo();
+
+                    if(_currentOrder.CarriersInOrder.Count <= 0)
+                    {
+                        _currentOrder.OrderEndTime = DateTime.Now;
+                        _currentOrder.OrderState = OrderState.DONE;
+                        //_currentOrder.SendOrderInfoToDatabase();
+                        MainWindowForm.mesSystem.Orders.Remove(_currentOrder);
+                        UpdateProductionQueueForm();
+                    }
+
                     OpcuaHandler("transfer");
                     break;
             }
@@ -374,6 +415,26 @@ namespace ROB5_MES_System.Classes
                 // Display the diagnostic information
                 Console.WriteLine("Diagnostic information: {0}", diagnosticInfos[0]);
 
+            }
+        }
+
+        private void UpdateOrderForm()
+        {
+            OrderForm orderForm = Application.OpenForms.OfType<OrderForm>().FirstOrDefault();
+
+            if (orderForm != null)
+            {
+                orderForm.UpdateOrderForm();
+            }
+        }
+
+        private void UpdateProductionQueueForm()
+        {
+            ProductionQueueForm produtionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
+
+            if (produtionQueueForm != null)
+            {
+                produtionQueueForm.RefreshOrders();
             }
         }
     }
