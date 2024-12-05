@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Opc.Ua;
+﻿using Opc.Ua;
 using Opc.Ua.Client;
 
 namespace ROB5_MES_System.Classes
@@ -173,7 +172,7 @@ namespace ROB5_MES_System.Classes
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // react differently depending on the variable name
-                
+
                 switch (variableName)
                 {
                     case "AppState":
@@ -215,7 +214,7 @@ namespace ROB5_MES_System.Classes
                         Console.WriteLine("Carrier {0} is already assigned to order {1}, checking if the first task is the desired task", carrierID, order);
                         _carrierExists = true;
                         // if the carrier is already assigned to the order, check if the first task is valid
-                        if(carrier.TaskQueue.Count > 0)
+                        if (carrier.TaskQueue.Count > 0)
                         {
                             if (carrier.TaskQueue.ElementAt(0).TaskName == task)
                             {
@@ -240,7 +239,7 @@ namespace ROB5_MES_System.Classes
                             OpcuaHandler("pass");
                             return;
                         }
-                        
+
 
                     }
                 }
@@ -265,7 +264,7 @@ namespace ROB5_MES_System.Classes
             Console.WriteLine("\n");
 
             // get first order in queue and set as current order
-            if(MainWindowForm.mesSystem.Orders.Count > 0)
+            if (MainWindowForm.mesSystem.Orders.Count > 0)
             {
                 _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
                 _currentOrder.OrderStartTime = DateTime.Now;
@@ -323,10 +322,10 @@ namespace ROB5_MES_System.Classes
                 return;
             }
 
-            
+
         }
 
-        
+
 
         private void ApplicationHandler(Session client, string state)
         {
@@ -351,7 +350,7 @@ namespace ROB5_MES_System.Classes
                     carrierInOrder.CompleteFirstTaskInCarrierQueue();
                     carrierInOrder.PrintCarrierInfo();
 
-                    if(_currentOrder.CarriersInOrder.Count <= 0)
+                    if (_currentOrder.CarriersInOrder.Count <= 0)
                     {
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
