@@ -27,10 +27,6 @@ namespace ROB5_MES_System
         // function to load the new order form
         public void LoadNewOrderForm()
         {
-            ContainerAmountNumeric.Value = 1;
-            CompanyNameTextBox.Text = "";
-            MedicineTypeBox.Text = "";
-            ContainerTypeComboBox.SelectedIndex = 0;
             // replace max order number with current max order number from all lists
             int maxOrderNumber = MainWindowForm.database.get_order_number();
             OrderNumberDispLabel.Text = maxOrderNumber.ToString();
