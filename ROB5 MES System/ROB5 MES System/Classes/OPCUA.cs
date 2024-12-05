@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Opc.Ua;
+﻿using Opc.Ua;
 using Opc.Ua.Client;
 
 namespace ROB5_MES_System.Classes
@@ -173,21 +172,21 @@ namespace ROB5_MES_System.Classes
                 // get the value of the ApplicationState node
                 var value = ((MonitoredItemNotification)eventArgs.NotificationValue).Value.Value;
                 // react differently depending on the variable name
-                
+
                 switch (variableName)
                 {
                     case "AppState":
                         plcinfo.AppState = (string)value;
                         Console.WriteLine("\nPLC {0} event:", plcinfo.Id);
                         Console.WriteLine("Application state changed, new state is: {0}\n", value);
-                        if (MainWindowForm.isProductionRunning) { ApplicationHandlerFilling(client, (string)value); }
+                        if (MainWindowForm.isProductionRunning) { ApplicationHandler(client, (string)value); }
                         break;
                     case "CarrierID":
                         Console.WriteLine("\nPLC {0} event:", plcinfo.Id);
                         plcinfo.CarrierID = (ushort)value;
                         Console.WriteLine("{0} is: {1}\n", variableName, value);
                         // only do something if carrierID is not 0 and production is running
-                        if (plcinfo.CarrierID != 0 && MainWindowForm.isProductionRunning) { CarrierHandlerFilling((ushort)value); }
+                        if (plcinfo.CarrierID != 0 && MainWindowForm.isProductionRunning) { CarrierHandler((ushort)value, plcinfo.Type); }
                         break;
                 }
             };
@@ -198,8 +197,7 @@ namespace ROB5_MES_System.Classes
             _subscription.Create();
         }
 
-        // filling is first so it wants a new carrier
-        private void CarrierHandlerFilling(ushort carrierID)
+        private void CarrierHandler(ushort carrierID, string task)
         {
             Console.WriteLine("\nCarrier {0} found, checking if assigned to order.", carrierID);
             // goes through all orders to see if carrierID is in production, then adds it to the list if it isn't
@@ -215,12 +213,12 @@ namespace ROB5_MES_System.Classes
                     {
                         Console.WriteLine("Carrier {0} is already assigned to order {1}, checking if the first task is the desired task", carrierID, order);
                         _carrierExists = true;
-                        // if the carrier is already assigned to the order, check if the first task is filling
-                        if(carrier.TaskQueue.Count > 0)
+                        // if the carrier is already assigned to the order, check if the first task is valid
+                        if (carrier.TaskQueue.Count > 0)
                         {
-                            if (carrier.TaskQueue.ElementAt(0).TaskName == "filling")
+                            if (carrier.TaskQueue.ElementAt(0).TaskName == task)
                             {
-                                Console.WriteLine("Carrier {0} has filling as its first task, performing the task", carrierID);
+                                Console.WriteLine("Carrier {0} has {1} as its first task, performing the task", carrierID, task);
                                 carrier.TaskQueue.ElementAt(0).Status = "in progress";
                                 carrier.TaskQueue.ElementAt(0).StartTime = DateTime.Now;
                                 UpdateOrderForm();
@@ -230,7 +228,7 @@ namespace ROB5_MES_System.Classes
                             }
                             else
                             {
-                                Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierID);
+                                Console.WriteLine("Carrier {0} does not have {1} as its first task, passing on to next module", carrierID, task);
                                 OpcuaHandler("pass");
                                 return;
                             }
@@ -241,14 +239,14 @@ namespace ROB5_MES_System.Classes
                             OpcuaHandler("pass");
                             return;
                         }
-                        
+
 
                     }
                 }
             }
 
             // only reaches this point if the carrier is not assigned to any order
-            if (!_carrierExists) { TaskHandlerNewCarrier(carrierID, "filling"); }
+            if (!_carrierExists) { TaskHandlerNewCarrier(carrierID, task); }
 
         }
 
@@ -266,7 +264,7 @@ namespace ROB5_MES_System.Classes
             Console.WriteLine("\n");
 
             // get first order in queue and set as current order
-            if(MainWindowForm.mesSystem.Orders.Count > 0)
+            if (MainWindowForm.mesSystem.Orders.Count > 0)
             {
                 _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
                 _currentOrder.OrderStartTime = DateTime.Now;
@@ -312,7 +310,7 @@ namespace ROB5_MES_System.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Carrier {0} does not have filling as its first task, passing on to next module", carrierInOrder.CarrierID);
+                    Console.WriteLine("Carrier {0} does not have {1} as its first task, passing on to next module", carrierInOrder.CarrierID, task);
                     OpcuaHandler("pass");
                     return;
                 }
@@ -324,12 +322,12 @@ namespace ROB5_MES_System.Classes
                 return;
             }
 
-            
+
         }
 
-        
 
-        private void ApplicationHandlerFilling(Session client, string state)
+
+        private void ApplicationHandler(Session client, string state)
         {
             // set up switch cases to handle when application is starting, is ready, is running, and is finished
             switch (state)
@@ -348,11 +346,11 @@ namespace ROB5_MES_System.Classes
                     break;
                 case "done":
                     Console.WriteLine("Application is done");
-                    // remove the filling task from the carrier
+                    // remove the current task from the carrier
                     carrierInOrder.CompleteFirstTaskInCarrierQueue();
                     carrierInOrder.PrintCarrierInfo();
 
-                    if(_currentOrder.CarriersInOrder.Count <= 0)
+                    if (_currentOrder.CarriersInOrder.Count <= 0)
                     {
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
