@@ -269,7 +269,11 @@ namespace ROB5_MES_System.Classes
             if(MainWindowForm.mesSystem.Orders.Count > 0)
             {
                 _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
-                _currentOrder.OrderStartTime = DateTime.Now;
+                if(_currentOrder.OrderStartTime == null)
+                {
+                    _currentOrder.OrderStartTime = DateTime.Now;
+                }
+                
                 _currentOrder.OrderState = OrderState.BUSY;
                 // get the first carrier in CarriersInOrder list and set as new carrier
                 _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
