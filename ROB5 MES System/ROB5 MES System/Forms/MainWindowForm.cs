@@ -31,6 +31,7 @@ namespace ROB5_MES_System
             database.create_table_order();
             database.create_table_production();
             database.create_table_operations();
+            database.create_table_tasks();
 
             database.get_operations();
             database.get_production_queue();
