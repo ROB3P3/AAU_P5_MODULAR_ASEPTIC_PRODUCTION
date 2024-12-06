@@ -16,7 +16,8 @@ namespace ROB5_MES_System.Forms
         public AddOperationForm()
         {
             InitializeComponent();
-            int maxOperationNumber = MainWindowForm.operations.Max(operation => operation.OperationID);
+            //int maxOperationNumber = MainWindowForm.operations.Max(operation => operation.OperationID);
+            int maxOperationNumber = 0;
             OperationNumberNumeric.Value = maxOperationNumber < 999 ? maxOperationNumber + 1 : 1;
         }
 
