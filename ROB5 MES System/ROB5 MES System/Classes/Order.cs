@@ -30,7 +30,7 @@ namespace ROB5_MES_System
         private List<Operation> _operationList;
 
         private Thread _productionThread;
-        private void GenerateCarriers(string containerType, int containerAmount)
+        public void GenerateCarriers(string containerType, int containerAmount)
         {
             //generates carriers based on the amount of containers in the order
             int fullCarriers = containerAmount / 5; // 5 containers per carrier
@@ -54,11 +54,11 @@ namespace ROB5_MES_System
 
         }
         // tilfæjer et task objekt til køen af tasks på denne carriere
-        private void AddTaskToCarriers(string taskName, string taskDescription, int taskId, string statusDescription)
+        public void AddTaskToCarriers(string taskName, string taskDescription, int taskId)
         {
             foreach (var carrier in _carriersInOrder)
             {   
-                Task task = new Task(taskName, taskDescription, taskId, "Not yet started", statusDescription);
+                Task task = new Task(taskName, taskDescription, taskId, "Not yet started");
                 carrier.AddTaskToEndOfCarrier(task);
             }
         }
@@ -286,10 +286,11 @@ namespace ROB5_MES_System
             _orderStartTime = null;
             _orderEndTime = null;
             GenerateCarriers(_containerType, _containerAmount);
-            foreach(var operation in operationList)
+            foreach (var operation in operationList)
             {
-                AddTaskToCarriers(operation.OperationName, operation.OperationDescription, operation.OperationID, "Not yet started");
+                AddTaskToCarriers(operation.OperationName, operation.OperationDescription, operation.OperationID);
             }
+            
             foreach (var carrier in _carriersInOrder)
             {
                 carrier.PrintCarrierInfo();

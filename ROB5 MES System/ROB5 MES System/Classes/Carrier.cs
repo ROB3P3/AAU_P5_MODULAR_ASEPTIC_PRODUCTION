@@ -70,6 +70,12 @@ namespace ROB5_MES_System
                 _taskQueue.RemoveFirst();
                 _quantityOfTasks--;
                 _quantityOfCompletedTasks++;
+                if(_taskQueue.Count <= 0)
+                {
+                    _endTime = DateTime.Now;
+                    _state = OrderState.DONE;
+                    TerminateCarrier();
+                }
                 UpdateOrderForm();
             }
         }
@@ -77,8 +83,19 @@ namespace ROB5_MES_System
         public void TerminateCarrier()
         {
             Console.WriteLine("Terminating carrier");
-            /* Send shit til anton*/
-            //MainWindowForm.database.insert_data_production(_orderId, _id, _containerType, _containerAmount, _startTime, _endTime, (_endTime - _startTime), );
+            LinkedList<Task> combinedTaskList = new LinkedList<Task>();
+
+            foreach(var task in _taskQueue)
+            {
+                combinedTaskList.AddLast(task);
+            }
+
+            foreach(var task in _completedTasks)
+            {
+                combinedTaskList.AddLast(task);
+            }
+
+            MainWindowForm.database.insert_data_production(_orderId, _id, _state, _containerType, _containerAmount, _startTime, _endTime, combinedTaskList);
         }
         // Printer information om carrieren i konsollen
         public void PrintCarrierInfo()
@@ -231,7 +248,7 @@ namespace ROB5_MES_System
         }
 
         // constructer tol Carrier klasse
-        public Carrier(int id, int containerAmount, string containerType, int orderId)
+        public Carrier(int id, int containerAmount, string containerType, int orderId, OrderState? state = null, DateTime? startTime = null, DateTime? endTime = null)
         {
             _taskQueue = new LinkedList<Task>();
             _completedTasks = new LinkedList<Task>();
@@ -241,6 +258,9 @@ namespace ROB5_MES_System
             _orderId = orderId;
             _containerAmount = containerAmount;
             _containerType = containerType;
+            if (state != null) _state = state.Value;
+            if (startTime != null) _startTime = startTime.Value;
+            if (endTime != null) _endTime = endTime.Value;
         }
     }
 }

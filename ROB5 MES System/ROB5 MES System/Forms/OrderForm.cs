@@ -52,17 +52,6 @@ namespace ROB5_MES_System
             {
                 TreeNode carrierNode = new TreeNode();
                 String carrierNodeString = "CID: " + carrier.CarrierID + " | Amount: " + carrier.ContainerAmount + " | State: " + carrier.CarrierState;
-                if(carrier.CarrierState == OrderState.DONE)
-                {
-                    carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss") + " | End: " + carrier.EndTime.ToString("yyyy/MM/dd hh:mm:ss");
-                    carrierNode.BackColor = Color.FromArgb(255, 128, 128, 255);
-                } else if(carrier.CarrierState == OrderState.BUSY)
-                {
-                    carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss");
-                    carrierNode.BackColor = Color.FromArgb(255, 255, 255, 128);
-                    carrierNode.Expand();
-                }
-
                 carrierNode.Text = carrierNodeString;
 
                 foreach(var task in carrier.CompletedTasks)
@@ -101,6 +90,7 @@ namespace ROB5_MES_System
                 {
                     carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss");
                     carrierNode.BackColor = Color.FromArgb(255, 255, 255, 128);
+                    carrierNode.Expand();
                 }
 
                 carrierNode.Text = carrierNodeString;

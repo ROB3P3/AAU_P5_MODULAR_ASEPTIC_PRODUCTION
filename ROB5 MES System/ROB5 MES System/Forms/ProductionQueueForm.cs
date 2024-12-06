@@ -116,10 +116,12 @@ namespace ROB5_MES_System
             {
                 Order clickedOrder = MainWindowForm.getOrderFromCell(rightClickedCell, MainWindowForm.mesSystem.Orders);
 
-                MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
-                MainWindowForm.database.delete_order(clickedOrder.OrderNumber);
-
-                RefreshOrders();
+                if(clickedOrder.OrderState != OrderState.BUSY)
+                {
+                    MainWindowForm.mesSystem.Orders.Remove(clickedOrder);
+                    MainWindowForm.database.delete_order(clickedOrder.OrderNumber);
+                    RefreshOrders();
+                }
             }
         }
 

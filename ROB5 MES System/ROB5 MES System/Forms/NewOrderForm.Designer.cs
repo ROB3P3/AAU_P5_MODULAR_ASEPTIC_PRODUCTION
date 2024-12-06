@@ -63,12 +63,15 @@
             // 
             // ContainerAmountNumeric
             // 
+            ContainerAmountNumeric.Increment = new decimal(new int[] { 5, 0, 0, 0 });
             ContainerAmountNumeric.Location = new Point(162, 156);
-            ContainerAmountNumeric.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            ContainerAmountNumeric.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            ContainerAmountNumeric.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             ContainerAmountNumeric.Name = "ContainerAmountNumeric";
+            ContainerAmountNumeric.ReadOnly = true;
             ContainerAmountNumeric.Size = new Size(74, 27);
             ContainerAmountNumeric.TabIndex = 3;
-            ContainerAmountNumeric.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            ContainerAmountNumeric.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
             // ContainerTypeComboBox
             // 
