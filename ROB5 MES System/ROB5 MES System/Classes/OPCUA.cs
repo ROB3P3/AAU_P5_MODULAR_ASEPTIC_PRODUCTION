@@ -267,12 +267,16 @@ namespace ROB5_MES_System.Classes
             if (MainWindowForm.mesSystem.Orders.Count > 0)
             {
                 _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
-                if(_currentOrder.OrderStartTime == null)
+                _currentOrder.OrderState = OrderState.BUSY;
+
+                Console.WriteLine("-----------------------------------------------------------------");
+                Console.WriteLine(_currentOrder.OrderStartTime);
+                if (_currentOrder.OrderStartTime == null)
                 {
+                    Console.WriteLine("setting start date time of order -------------------");
                     _currentOrder.OrderStartTime = DateTime.Now;
                 }
-                
-                _currentOrder.OrderState = OrderState.BUSY;
+                UpdateProductionQueueForm();
                 // get the first carrier in CarriersInOrder list and set as new carrier
                 _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
 
@@ -283,6 +287,10 @@ namespace ROB5_MES_System.Classes
 
                 // add the carrier to the list of carriers in production
                 carrierInOrder.CarrierState = OrderState.BUSY;
+                if(carrierInOrder.StartTime == DateTime.MinValue)
+                {
+                    carrierInOrder.StartTime = DateTime.Now;
+                }
                 currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
                 Console.WriteLine("Carrier {0} added to production list", _carrierInOrder.CarrierID);
 
@@ -354,13 +362,15 @@ namespace ROB5_MES_System.Classes
                     carrierInOrder.CompleteFirstTaskInCarrierQueue();
                     carrierInOrder.PrintCarrierInfo();
 
-                    if (_currentOrder.CarriersInOrder.Count <= 0)
+                    if (_currentOrder.CarriersInOrder.Count <= 0 && _currentOrder.CarriersInProductionList.All(carrier => carrier.CarrierState == OrderState.DONE))
                     {
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
-                        //_currentOrder.SendOrderInfoToDatabase();
+                        MainWindowForm.database.delete_order(_currentOrder.OrderNumber);
+                        _currentOrder.SendOrderInfoToDatabase();
                         MainWindowForm.mesSystem.Orders.Remove(_currentOrder);
                         UpdateProductionQueueForm();
+                        UpdateOrderForm();
                     }
 
                     OpcuaHandler("transfer");

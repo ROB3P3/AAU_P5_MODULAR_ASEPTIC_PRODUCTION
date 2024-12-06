@@ -8,7 +8,6 @@ namespace ROB5_MES_System
         private string _taskDescription; // hvordan kan den beskrives
         private int _taskId; // ID på denne task 
         private string _status; // hvad er status på denne task 
-        private string _statusDescription; // hvad betyder denne status
         private DateTime _startTime; // start tid for denne task
         private DateTime _endTime; // slut tid for denne task
         private int _itemsInCarrier; // hvor mange containers der er i carriere
@@ -53,16 +52,6 @@ namespace ROB5_MES_System
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentNullException("Status can not be empty");
                 _status = value;
-            }
-        }
-        public string StatusDescription
-        {
-            get { return _statusDescription; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    throw new ArgumentNullException("Status description can not be empty");
-                _statusDescription = value;
             }
         }
         public DateTime StartTime
@@ -116,13 +105,14 @@ namespace ROB5_MES_System
             }
         }
 
-        public Task(string taskName, string taskDescription, int taskId, string status, string statusDescription)
+        public Task(string taskName, string taskDescription, int taskId, string status, DateTime? startTime = null, DateTime? endTime = null)
         {
             TaskName = taskName;
             TaskDescription = taskDescription;
             TaskId = taskId;
             Status = status;
-            StatusDescription = statusDescription;
+            if (startTime != null) StartTime = startTime.Value;
+            if (endTime != null) EndTime = endTime.Value;
         }
         // printer information omkring denne task
         public string GetTaskInfo()
@@ -133,7 +123,7 @@ namespace ROB5_MES_System
                 "Task type: {2}\n" +
                 "Task id: {3}\n" +
                 "Task status: {4}\n" +
-                "Task status description: {5}\n", TaskName, TaskDescription, TaskId, Status, StatusDescription));
+                "Task status description: {5}\n", TaskName, TaskDescription, TaskId, Status));
         }
 
     }
