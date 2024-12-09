@@ -393,12 +393,18 @@ namespace ROB5_MES_System.Classes
                 case "done":
                     Console.WriteLine("Application is done");
                     // remove the current process from the product
+                    // print the order info
+                    Console.WriteLine("reached here1");
                     ProductInOrder.CompleteFirstProcessInProductQueue();
+                    Console.WriteLine("reached her2");
                     ProductInOrder.PrintProductInfo();
+                    Console.WriteLine("reached her3");
 
                     // check if there are any products left in the order's product list and that all products in the order's product production list are done
                     if (_currentOrder.ProductsInOrderList.Count <= 0 && _currentOrder.ProductsInProductionList.All(product => product.ProductState == OrderState.DONE))
                     {
+                        Console.WriteLine("reached here 4");
+
                         // set the order end time and state to done
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
@@ -479,6 +485,7 @@ namespace ROB5_MES_System.Classes
         /// </summary>
         private void UpdateOrderForm()
         {
+            Console.WriteLine("Updating Order Form");
             OrderForm orderForm = Application.OpenForms.OfType<OrderForm>().FirstOrDefault();
 
             if (orderForm != null)
@@ -492,6 +499,7 @@ namespace ROB5_MES_System.Classes
         /// </summary>
         private void UpdateProductionQueueForm()
         {
+            Console.WriteLine("Updating Production Queue Form");
             ProductionQueueForm produtionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
 
             if (produtionQueueForm != null)

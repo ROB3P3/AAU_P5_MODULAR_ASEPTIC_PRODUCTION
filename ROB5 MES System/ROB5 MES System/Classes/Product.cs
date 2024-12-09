@@ -31,6 +31,7 @@ namespace ROB5_MES_System
         /// </summary>
         public void CompleteFirstProcessInProductQueue()
         {
+            Console.WriteLine("Completing First Process In Porduction Queue");
             if (_productProcessQueue.Count > 0)
             {
                 Process completeProcess = _productProcessQueue.First.Value;
