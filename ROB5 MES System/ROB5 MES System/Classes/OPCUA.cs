@@ -7,13 +7,13 @@ namespace ROB5_MES_System.Classes
     {
         private string _appType;
         private string _appState;
-        private ushort _carrierID;
+        private ushort _productID;
         private Session _clientSession;
         private Subscription _subscription;
-        private string _nodeId;
-        private PLCInfo _plcinfo;
+        private string _nodeID;
+        private PLCInfo _plcInfo;
         private Order _currentOrder;
-        private Carrier _carrierInOrder;
+        private Product _productInOrder;
 
         public string AppType
         {
@@ -25,42 +25,47 @@ namespace ROB5_MES_System.Classes
             get { return _appState; }
             set { _appState = value; }
         }
-        public ushort CarrierIdentifier
+        public ushort ProductIdentifier
         {
-            get { return _carrierID; }
-            set { _carrierID = value; }
+            get { return _productID; }
+            set { _productID = value; }
         }
 
         public string NodeIdentifier
         {
-            get { return _nodeId; }
-            set { _nodeId = value; }
+            get { return _nodeID; }
+            set { _nodeID = value; }
         }
         public PLCInfo PlcInfo
         {
-            get { return _plcinfo; }
-            set { _plcinfo = value; }
+            get { return _plcInfo; }
+            set { _plcInfo = value; }
         }
 
-        public Order currentOrder
+        public Order CurrentOrder
         {
             get { return _currentOrder; }
             set { _currentOrder = value; }
         }
-        public Carrier carrierInOrder
+        public Product ProductInOrder
         {
-            get { return _carrierInOrder; }
-            set { _carrierInOrder = value; }
+            get { return _productInOrder; }
+            set { _productInOrder = value; }
         }
 
-
+        /// <summary>
+        /// Constructor for the OPCUA class.
+        /// Attempts to connect to the server and subscribe to the application state and product id
+        /// </summary>
+        /// <param name="endpointUrl"></param>
+        /// <param name="nodeId"></param>
+        /// <param name="plcinfo"></param>
         public OPCUA(string endpointUrl, string nodeId, PLCInfo plcinfo)
         {
             // try to create a connection to the server
             Console.WriteLine("Connecting to {0}", endpointUrl);
             NodeIdentifier = nodeId;
             PlcInfo = plcinfo;
-
 
             try
             {
@@ -80,7 +85,7 @@ namespace ROB5_MES_System.Classes
                 // read application type
                 this.AppType = (string)DisplayNodeValue(_clientSession, String.Format("{0}.AppType", nodeId), "AppType");
                 plcinfo.Type = this.AppType;
-                // subscribe to application state and carrier id
+                // subscribe to application state and product id
                 SubscribeNodeValue(_clientSession, String.Format("{0}.AppState", nodeId), "AppState", plcinfo);
                 SubscribeNodeValue(_clientSession, String.Format("{0}.CarrierID", nodeId), "CarrierID", plcinfo);
             }
@@ -95,8 +100,10 @@ namespace ROB5_MES_System.Classes
 
         }
 
-
-
+        /// <summary>
+        /// Create an application configuration object
+        /// </summary>
+        /// <returns></returns>
         private static Opc.Ua.ApplicationConfiguration CreateApplicationConfiguration()
         {
             // Create a ApplicationConfiguration object
@@ -118,6 +125,12 @@ namespace ROB5_MES_System.Classes
             };
         }
 
+        /// <summary>
+        /// Create an endpoint object
+        /// </summary>
+        /// <param name="applicationConfiguration"></param>
+        /// <param name="endpointUrl"></param>
+        /// <returns></returns>
         private static ConfiguredEndpoint CreateEndpoint(Opc.Ua.ApplicationConfiguration applicationConfiguration, string endpointUrl)
         {
             // Create an endpoint configuration using the application configuration, said so online!
@@ -130,6 +143,13 @@ namespace ROB5_MES_System.Classes
             return new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
         }
 
+        /// <summary>
+        /// Display the value of a node
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="nodeId"></param>
+        /// <param name="variableName"></param>
+        /// <returns></returns>
         private static string DisplayNodeValue(Session client, string nodeId, string variableName)
         {
             // Create a NodeId object from the string nodeId
@@ -145,6 +165,13 @@ namespace ROB5_MES_System.Classes
             return (string)value.Value;
         }
 
+        /// <summary>
+        /// Subsrcibe to a node value
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="nodeId"></param>
+        /// <param name="variableName"></param>
+        /// <param name="plcinfo"></param>
         private void SubscribeNodeValue(Session client, string nodeId, string variableName, PLCInfo plcinfo)
         {
             // write which node we are subscribing to and if connection is successful
@@ -183,10 +210,10 @@ namespace ROB5_MES_System.Classes
                         break;
                     case "CarrierID":
                         Console.WriteLine("\nPLC {0} event:", plcinfo.Id);
-                        plcinfo.CarrierID = (ushort)value;
+                        plcinfo.ProductID = (ushort)value;
                         Console.WriteLine("{0} is: {1}\n", variableName, value);
-                        // only do something if carrierID is not 0 and production is running
-                        if (plcinfo.CarrierID != 0 && MainWindowForm.isProductionRunning) { CarrierHandler((ushort)value, plcinfo.Type); }
+                        // only do something if productID is not 0 and production is running
+                        if (plcinfo.ProductID != 0 && MainWindowForm.isProductionRunning) { ProductHandler((ushort)value, plcinfo.Type); }
                         break;
                 }
             };
@@ -197,151 +224,158 @@ namespace ROB5_MES_System.Classes
             _subscription.Create();
         }
 
-        private void CarrierHandler(ushort carrierID, string task)
+        /// <summary>
+        /// Function to handle when the productID is read by the RFID reader
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="process"></param>
+        private void ProductHandler(ushort productID, string process)
         {
-            Console.WriteLine("\nCarrier {0} found, checking if assigned to order.", carrierID);
-            // goes through all orders to see if carrierID is in production, then adds it to the list if it isn't
+            Console.WriteLine("\nProduct {0} found, checking if assigned to order.", productID);
+            // goes through all orders to see if productID is in production, then adds it to the list if it isn't
 
-            bool _carrierExists = false;
-            foreach (Order order in MainWindowForm.mesSystem.Orders)
+            bool _productExists = false;
+            foreach (Order order in MainWindowForm.mesSystem.OrderQueue)
             {
                 //Console.WriteLine("Order: {0}", order);
-                foreach (Carrier carrier in order.CarriersInProductionList)
+                foreach (Product product in order.ProductsInProductionList)
                 {
-                    // if the carrier is already assigned to the order, tell PLC to pass it on
-                    if (carrier.CarrierID == carrierID)
+                    // if the product is already assigned to the order, tell PLC to pass it on
+                    if (product.ProductID == productID)
                     {
-                        Console.WriteLine("Carrier {0} is already assigned to order {1}, checking if the first task is the desired task", carrierID, order);
-                        _carrierExists = true;
-                        // if the carrier is already assigned to the order, check if the first task is valid
-                        if (carrier.TaskQueue.Count > 0)
+                        Console.WriteLine("Product {0} is already assigned to order {1}, checking if the first process is the desired process", productID, order);
+                        _productExists = true;
+                        
+                        // check if the product has any processs left
+                        if (product.ProductProcessQueue.Count > 0)
                         {
-                            if (carrier.TaskQueue.ElementAt(0).TaskName == task)
+                            // if the product is already assigned to the order, check if the first process is the desired process
+                            if (product.ProductProcessQueue.ElementAt(0).ProcessName == process)
                             {
-                                Console.WriteLine("Carrier {0} has {1} as its first task, performing the task", carrierID, task);
-                                carrier.TaskQueue.ElementAt(0).Status = "in progress";
-                                carrier.TaskQueue.ElementAt(0).StartTime = DateTime.Now;
+                                Console.WriteLine("Product {0} has {1} as its first process, performing the process", productID, process);
+                                product.ProductProcessQueue.ElementAt(0).ProcessState = OrderState.BUSY;
+                                product.ProductProcessQueue.ElementAt(0).ProcessStartTime = DateTime.Now;
                                 UpdateOrderForm();
-                                // send the carrier to the PLC
+                                // send the product to the PLC
+                                // letting the PLC know that the process is valid
                                 OpcuaHandler("valid");
                                 return;
                             }
                             else
                             {
-                                Console.WriteLine("Carrier {0} does not have {1} as its first task, passing on to next module", carrierID, task);
+                                // passing the product on to the next module if it doesn't have the desired process as the first process
+                                Console.WriteLine("Product {0} does not have {1} as its first process, passing on to next module", productID, process);
                                 OpcuaHandler("pass");
                                 return;
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Carrier {0} does not have anymore tasks, passing it on", carrierID);
+                            // if the product has no processs left, pass it on
+                            Console.WriteLine("Product {0} does not have anymore processs, passing it on", productID);
                             OpcuaHandler("pass");
                             return;
                         }
-
-
                     }
                 }
             }
 
-            // only reaches this point if the carrier is not assigned to any order
-            if (!_carrierExists) { TaskHandlerNewCarrier(carrierID, task); }
-
+            // only reaches this point if the product is not assigned to any order
+            if (!_productExists) { ProcessHandlerNewProduct(productID, process); }
         }
 
-        private void TaskHandlerNewCarrier(ushort carrierID, string task)
+        /// <summary>
+        /// Function to handle when a new product is found by the RFID reader
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="process"></param>
+        private void ProcessHandlerNewProduct(ushort productID, string process)
         {
 
-            Console.WriteLine("\nCarrier {0} is not assigned to any order, assigning to first order in queue.", carrierID);
+            Console.WriteLine("\nProduct {0} is not assigned to any order, assigning to first order in queue.", productID);
 
             // console write all orders
             Console.WriteLine("\nOrders: ");
-            foreach (Order order in MainWindowForm.mesSystem.Orders)
+            foreach (Order order in MainWindowForm.mesSystem.OrderQueue)
             {
                 Console.WriteLine("Order number {0} by customer {1}", order.OrderNumber, order.OrderCustomer);
             }
             Console.WriteLine("\n");
 
-            // get first order in queue and set as current order
-            if (MainWindowForm.mesSystem.Orders.Count > 0)
+            // check if there are any orders left in the production queue
+            if (MainWindowForm.mesSystem.OrderQueue.Count > 0)
             {
-                _currentOrder = MainWindowForm.mesSystem.Orders.ElementAt(0);
+                // get first order in queue and set as current order
+                _currentOrder = MainWindowForm.mesSystem.OrderQueue.ElementAt(0);
                 _currentOrder.OrderState = OrderState.BUSY;
 
-                Console.WriteLine("-----------------------------------------------------------------");
-                Console.WriteLine(_currentOrder.OrderStartTime);
+                // set the order start time if it is null (this is to ensure it does not get overwritten)
                 if (_currentOrder.OrderStartTime == null)
                 {
-                    Console.WriteLine("setting start date time of order -------------------");
                     _currentOrder.OrderStartTime = DateTime.Now;
                 }
                 UpdateProductionQueueForm();
-                // get the first carrier in CarriersInOrder list and set as new carrier
-                _carrierInOrder = currentOrder.CarriersInOrder.ElementAt(0);
+                
+                // get the first product in ProductsInOrder list and set as new product
+                _productInOrder = CurrentOrder.ProductsInOrderList.ElementAt(0);
 
+                // assign the productID the RFID read to the product in the order
+                _productInOrder.ProductID = productID;
+                Console.WriteLine("Product {0} assigned to order {1}", productID, _currentOrder.OrderNumber);
 
-                // assign the carrier to the order
-                _carrierInOrder.CarrierID = carrierID;
-                Console.WriteLine("Carrier {0} assigned to order {1}", carrierID, _currentOrder.OrderNumber);
-
-                // add the carrier to the list of carriers in production
-                carrierInOrder.CarrierState = OrderState.BUSY;
-                if(carrierInOrder.StartTime == DateTime.MinValue)
+                // add the product to the list of products in production
+                _productInOrder.ProductState = OrderState.BUSY;
+                if(_productInOrder.ProductStartTime == DateTime.MinValue)
                 {
-                    carrierInOrder.StartTime = DateTime.Now;
+                    _productInOrder.ProductStartTime = DateTime.Now;
                 }
-                currentOrder.CarriersInProductionList.AddLast(carrierInOrder);
-                Console.WriteLine("Carrier {0} added to production list", _carrierInOrder.CarrierID);
+                _currentOrder.ProductsInProductionList.AddLast(ProductInOrder);
+                Console.WriteLine("Product {0} added to order's product production list", _productInOrder.ProductID);
 
+                // remove the product from the list of products in order that are not in production
+                _currentOrder.ProductsInOrderList.Remove(ProductInOrder);
+                Console.WriteLine("Product {0} removed from the order's product order list", _productInOrder.ProductID);
 
-                // remove the carrier from the list of carriers in order
-                currentOrder.CarriersInOrder.Remove(carrierInOrder);
-                Console.WriteLine("Carrier {0} removed from order list", _carrierInOrder.CarrierID);
+                // print product info
+                _productInOrder.PrintProductInfo();
 
-                // print carrier info
-                carrierInOrder.PrintCarrierInfo();
-
-
-                // check if the desired task is the first task in the queue, if not then pass the carrier on
-                if (_carrierInOrder.TaskQueue.ElementAt(0).TaskName == task)
+                // check if the desired process is the first process in the queue, if not then pass the product on
+                if (_productInOrder.ProductProcessQueue.ElementAt(0).ProcessName == process)
                 {
-                    // send the carrier to the PLC
-                    OpcuaHandler("valid");
-                    Console.WriteLine("Carrier {0} sent to PLC with command {1}", carrierInOrder.CarrierID, "valid");
-                    _carrierInOrder.TaskQueue.ElementAt(0).Status = "in progress";
-                    _carrierInOrder.TaskQueue.ElementAt(0).StartTime = DateTime.Now;
+                    // send the product to the PLC
+                    Console.WriteLine("Product {0} sent to PLC with command {1}", ProductInOrder.ProductID, "valid");
+                    _productInOrder.ProductProcessQueue.ElementAt(0).ProcessState = OrderState.BUSY;
+                    _productInOrder.ProductProcessQueue.ElementAt(0).ProcessStartTime = DateTime.Now;
                     UpdateOrderForm();
-                    // console write the production list and order list
-                    //Console.WriteLine("Production list: ");
-                    //Console.WriteLine(
-                    //    string.Join(", ", currentOrder.CarriersInProductionList.Select(x => x.CarrierID).ToArray()));
-                    //Console.WriteLine("Order list: ");
-                    //Console.WriteLine(string.Join(", ", currentOrder.CarriersInOrder.Select(x => x.CarrierID).ToArray()));
+
+                    OpcuaHandler("valid");
                     return;
                 }
                 else
                 {
-                    Console.WriteLine("Carrier {0} does not have {1} as its first task, passing on to next module", carrierInOrder.CarrierID, task);
+                    // pass the product on to the next module if the first process is not the desired process
+                    Console.WriteLine("Product {0} does not have {1} as its first process, passing on to next module", ProductInOrder.ProductID, process);
                     OpcuaHandler("pass");
                     return;
                 }
             }
             else
             {
+                // if there are no orders left in the production queue, pass the product
                 Console.WriteLine("No more orders in production queue");
                 OpcuaHandler("pass");
                 return;
             }
-
-
         }
 
-
-
+        /// <summary>
+        /// Function to handle the application state
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="state"></param>
         private void ApplicationHandler(Session client, string state)
         {
-            // set up switch cases to handle when application is starting, is ready, is running, and is finished
+            // set up switch cases to handle when application is starting, is ready, is running, is passing, and is finished
             switch (state)
             {
                 case "starting":
@@ -354,21 +388,25 @@ namespace ROB5_MES_System.Classes
                     Console.WriteLine("Application is running");
                     break;
                 case "passed":
-                    Console.WriteLine("Application has passed carrier to next module");
+                    Console.WriteLine("Application has passed product to next module");
                     break;
                 case "done":
                     Console.WriteLine("Application is done");
-                    // remove the current task from the carrier
-                    carrierInOrder.CompleteFirstTaskInCarrierQueue();
-                    carrierInOrder.PrintCarrierInfo();
+                    // remove the current process from the product
+                    ProductInOrder.CompleteFirstProcessInProductQueue();
+                    ProductInOrder.PrintProductInfo();
 
-                    if (_currentOrder.CarriersInOrder.Count <= 0 && _currentOrder.CarriersInProductionList.All(carrier => carrier.CarrierState == OrderState.DONE))
+                    // check if there are any products left in the order's product list and that all products in the order's product production list are done
+                    if (_currentOrder.ProductsInOrderList.Count <= 0 && _currentOrder.ProductsInProductionList.All(product => product.ProductState == OrderState.DONE))
                     {
+                        // set the order end time and state to done
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
-                        MainWindowForm.database.delete_order(_currentOrder.OrderNumber);
+                        // remove the order from the database and readd it as a finished order
+                        MainWindowForm.database.DeleteOrder(_currentOrder.OrderNumber);
                         _currentOrder.SendOrderInfoToDatabase();
-                        MainWindowForm.mesSystem.Orders.Remove(_currentOrder);
+                        // remove the order from the production queue
+                        MainWindowForm.mesSystem.OrderQueue.Remove(_currentOrder);
                         UpdateProductionQueueForm();
                         UpdateOrderForm();
                     }
@@ -378,18 +416,24 @@ namespace ROB5_MES_System.Classes
             }
         }
 
-        // function to handle the commands sent to the PLC
+        /// <summary>
+        /// Function to handle the commands sent to the PLC
+        /// </summary>
+        /// <param name="serverCommand"></param>
         public void OpcuaHandler(string serverCommand)
         {
             ModifyNodeValue("ServerCommand", serverCommand);
         }
 
-
-
+        /// <summary>
+        /// Function to modify the node value
+        /// </summary>
+        /// <param name="variableName"></param>
+        /// <param name="newValue"></param>
         public void ModifyNodeValue(string variableName, string newValue)
         {
             // Create a NodeId object from the string nodeId
-            NodeId node = new NodeId(String.Format("{0}.{1}", _nodeId, variableName));
+            NodeId node = new NodeId(String.Format("{0}.{1}", _nodeID, variableName));
             WriteValueCollection nodesToWrite = new WriteValueCollection();
 
             // write the current value of the node
@@ -430,6 +474,9 @@ namespace ROB5_MES_System.Classes
             }
         }
 
+        /// <summary>
+        /// Function to update the order form if open
+        /// </summary>
         private void UpdateOrderForm()
         {
             OrderForm orderForm = Application.OpenForms.OfType<OrderForm>().FirstOrDefault();
@@ -440,6 +487,9 @@ namespace ROB5_MES_System.Classes
             }
         }
 
+        /// <summary>
+        /// Function to update the production queue form if open
+        /// </summary>
         private void UpdateProductionQueueForm()
         {
             ProductionQueueForm produtionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();

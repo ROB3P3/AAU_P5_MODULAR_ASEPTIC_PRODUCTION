@@ -32,7 +32,6 @@
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
-            DateLabel = new Label();
             SystemStatusSubMenuItem = new ToolStripMenuItem();
             OrderManagementMenuItem = new ToolStripMenuItem();
             CurrentOrdersSubMenuItem = new ToolStripMenuItem();
@@ -47,55 +46,50 @@
             // 
             // button1
             // 
-            button1.Location = new Point(11, 233);
+            button1.Location = new Point(10, 175);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(94, 29);
+            button1.Size = new Size(82, 22);
             button1.TabIndex = 1;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            button2.Location = new Point(11, 77);
+            button2.Location = new Point(10, 58);
+            button2.Margin = new Padding(3, 2, 3, 2);
             button2.Name = "button2";
-            button2.Size = new Size(94, 29);
+            button2.Size = new Size(82, 22);
             button2.TabIndex = 2;
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            button3.Location = new Point(11, 123);
+            button3.Location = new Point(10, 92);
+            button3.Margin = new Padding(3, 2, 3, 2);
             button3.Name = "button3";
-            button3.Size = new Size(94, 29);
+            button3.Size = new Size(82, 22);
             button3.TabIndex = 3;
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            button4.Location = new Point(11, 169);
+            button4.Location = new Point(10, 127);
+            button4.Margin = new Padding(3, 2, 3, 2);
             button4.Name = "button4";
-            button4.Size = new Size(94, 29);
+            button4.Size = new Size(82, 22);
             button4.TabIndex = 4;
             button4.Text = "button4";
             button4.UseVisualStyleBackColor = true;
-            // 
-            // DateLabel
-            // 
-            DateLabel.AutoSize = true;
-            DateLabel.Location = new Point(21, 847);
-            DateLabel.Name = "DateLabel";
-            DateLabel.Size = new Size(39, 20);
-            DateLabel.TabIndex = 6;
-            DateLabel.Text = "date";
             // 
             // SystemStatusSubMenuItem
             // 
             SystemStatusSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             SystemStatusSubMenuItem.Name = "SystemStatusSubMenuItem";
             SystemStatusSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            SystemStatusSubMenuItem.Size = new Size(136, 28);
+            SystemStatusSubMenuItem.Size = new Size(115, 23);
             SystemStatusSubMenuItem.Text = "System Status";
             SystemStatusSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             SystemStatusSubMenuItem.Visible = false;
@@ -107,7 +101,7 @@
             OrderManagementMenuItem.Margin = new Padding(0, 10, 0, 0);
             OrderManagementMenuItem.Name = "OrderManagementMenuItem";
             OrderManagementMenuItem.Padding = new Padding(6, 10, 6, 10);
-            OrderManagementMenuItem.Size = new Size(171, 47);
+            OrderManagementMenuItem.Size = new Size(150, 43);
             OrderManagementMenuItem.Text = "Order Management";
             OrderManagementMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             OrderManagementMenuItem.Click += OrderManagementMenuItem_Click;
@@ -117,7 +111,7 @@
             CurrentOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             CurrentOrdersSubMenuItem.Name = "CurrentOrdersSubMenuItem";
             CurrentOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            CurrentOrdersSubMenuItem.Size = new Size(136, 28);
+            CurrentOrdersSubMenuItem.Size = new Size(115, 23);
             CurrentOrdersSubMenuItem.Text = "Production Queue";
             CurrentOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             CurrentOrdersSubMenuItem.Visible = false;
@@ -128,7 +122,7 @@
             PlannedOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             PlannedOrdersSubMenuItem.Name = "PlannedOrdersSubMenuItem";
             PlannedOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            PlannedOrdersSubMenuItem.Size = new Size(136, 28);
+            PlannedOrdersSubMenuItem.Size = new Size(115, 23);
             PlannedOrdersSubMenuItem.Text = "Orders";
             PlannedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             PlannedOrdersSubMenuItem.Visible = false;
@@ -139,7 +133,7 @@
             NewOrderSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             NewOrderSubMenuItem.Name = "NewOrderSubMenuItem";
             NewOrderSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            NewOrderSubMenuItem.Size = new Size(136, 28);
+            NewOrderSubMenuItem.Size = new Size(115, 23);
             NewOrderSubMenuItem.Text = "New Order";
             NewOrderSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             NewOrderSubMenuItem.Visible = false;
@@ -150,7 +144,7 @@
             FinishedOrdersSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             FinishedOrdersSubMenuItem.Name = "FinishedOrdersSubMenuItem";
             FinishedOrdersSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            FinishedOrdersSubMenuItem.Size = new Size(136, 28);
+            FinishedOrdersSubMenuItem.Size = new Size(115, 23);
             FinishedOrdersSubMenuItem.Text = "Finished Orders";
             FinishedOrdersSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             FinishedOrdersSubMenuItem.Visible = false;
@@ -161,7 +155,7 @@
             OperationsSubMenuItem.Margin = new Padding(35, 0, 0, 0);
             OperationsSubMenuItem.Name = "OperationsSubMenuItem";
             OperationsSubMenuItem.Padding = new Padding(6, 2, 6, 2);
-            OperationsSubMenuItem.Size = new Size(136, 28);
+            OperationsSubMenuItem.Size = new Size(115, 23);
             OperationsSubMenuItem.Text = "Operations";
             OperationsSubMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             OperationsSubMenuItem.Visible = false;
@@ -175,8 +169,8 @@
             menuStrip2.Items.AddRange(new ToolStripItem[] { ProductionControlMenuItem, SystemStatusSubMenuItem, OperationsSubMenuItem, OrderManagementMenuItem, CurrentOrdersSubMenuItem, PlannedOrdersSubMenuItem, NewOrderSubMenuItem, FinishedOrdersSubMenuItem });
             menuStrip2.Location = new Point(0, 0);
             menuStrip2.Name = "menuStrip2";
-            menuStrip2.Padding = new Padding(5, 3, 0, 3);
-            menuStrip2.Size = new Size(177, 845);
+            menuStrip2.Padding = new Padding(4, 2, 0, 2);
+            menuStrip2.Size = new Size(155, 676);
             menuStrip2.TabIndex = 5;
             menuStrip2.Text = "menuStrip2";
             // 
@@ -185,30 +179,29 @@
             ProductionControlMenuItem.Font = new Font("Segoe UI", 10F);
             ProductionControlMenuItem.Name = "ProductionControlMenuItem";
             ProductionControlMenuItem.Padding = new Padding(6, 10, 6, 10);
-            ProductionControlMenuItem.Size = new Size(171, 47);
+            ProductionControlMenuItem.Size = new Size(150, 43);
             ProductionControlMenuItem.Text = "Production Control";
             ProductionControlMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             ProductionControlMenuItem.Click += ProductionControlMenuItem_Click;
             // 
             // MainWindowForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1449, 845);
-            Controls.Add(DateLabel);
+            ClientSize = new Size(1268, 676);
             Controls.Add(menuStrip2);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
             IsMdiContainer = true;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "MainWindowForm";
             Text = "MES System";
             FormClosing += MainWindowForm_FormClosing;
             menuStrip2.ResumeLayout(false);
             menuStrip2.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -216,7 +209,6 @@
         private Button button2;
         private Button button3;
         private Button button4;
-        private Label DateLabel;
         private ToolStripMenuItem SystemStatusSubMenuItem;
         private ToolStripMenuItem OrderManagementMenuItem;
         private ToolStripMenuItem CurrentOrdersSubMenuItem;

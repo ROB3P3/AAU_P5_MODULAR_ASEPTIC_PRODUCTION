@@ -6,23 +6,54 @@ namespace ROB5_MES_System
 {
     public class MESSystem
     {
-        private LinkedList<Order> _orders; // liste af odre som er i queu
-        private LinkedList<Order> _plannedOrders; // liste af de odre som er planlagt
-        private LinkedList<Order> _finishedOrders; // liste af odre som er færdigproduceret
+        private LinkedList<Order> _orderQueue; // list of orders in the production queue
+        private LinkedList<Order> _plannedOrders; // list of planned orders
+        private LinkedList<Order> _finishedOrders; // list of finished orders
+
         public MESSystem()
         {
-            _orders = new LinkedList<Order>();
+            _orderQueue = new LinkedList<Order>();
             _plannedOrders = new LinkedList<Order>();
             _finishedOrders = new LinkedList<Order>();
         }
 
-        public void AddOrderToEndOfProductionQueue(int numberOfContainers, string containerType, string customer, string medicineType, List<Operation> operationList)
+        /// <summary>
+        /// Add an order to the end of the production queue
+        /// </summary>
+        /// <param name="containerAmount"></param>
+        /// <param name="containerType"></param>
+        /// <param name="customer"></param>
+        /// <param name="medicineType"></param>
+        /// <param name="operationList"></param>
+        public void AddOrderToEndOfProductionQueue(int containerAmount, string containerType, string customer, string medicineType, List<Operation> operationList)
         {
-            Order order = new Order(numberOfContainers, containerType, customer, MainWindowForm.database.get_order_number(), OrderState.QUEUE, medicineType, operationList);
-            _orders.AddLast(order);
+            Order order = new Order(containerAmount, containerType, customer, MainWindowForm.database.GetMaxOrderNumber(), OrderState.QUEUE, medicineType, operationList);
+            _orderQueue.AddLast(order);
             order.SendOrderInfoToDatabase();
         }
-        // find en odre på et i en givet liste på det givende index
+
+        /// <summary>
+        /// Add an order to the end of the planned orders
+        /// </summary>
+        /// <param name="containerAmount"></param>
+        /// <param name="containerType"></param>
+        /// <param name="customer"></param>
+        /// <param name="medicineType"></param>
+        /// <param name="operationList"></param>
+        public void AddOrderToEndOfPlannedOrders(int containerAmount, string containerType, string customer, string medicineType, List<Operation> operationList)
+        {
+            Order order = new Order(containerAmount, containerType, customer, MainWindowForm.database.GetMaxOrderNumber(), OrderState.PEND, medicineType, operationList);
+            _plannedOrders.AddLast(order);
+            order.SendOrderInfoToDatabase();
+        }
+
+        /// <summary>
+        /// Find an order in a given list based on a given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public Order GetOrderAtIndex(int index, LinkedList<Order> list)
         {
             if (index < 0 || index >= list.Count)
@@ -39,10 +70,10 @@ namespace ROB5_MES_System
             return currentNode.Value;
         }
 
-        public LinkedList<Order> Orders
+        public LinkedList<Order> OrderQueue
         {
-            get { return _orders; }
-            set { _orders = value; }
+            get { return _orderQueue; }
+            set { _orderQueue = value; }
         }
 
         public LinkedList<Order> PlannedOrders

@@ -59,7 +59,7 @@
             startProductionButton.TabIndex = 1;
             startProductionButton.Text = "Start production";
             startProductionButton.UseVisualStyleBackColor = true;
-            startProductionButton.MouseClick += startProductionButton_MouseClick;
+            startProductionButton.Click += startProductionButton_Click;
             // 
             // SystemStatusForm
             // 
@@ -71,7 +71,6 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "SystemStatusForm";
             Text = "System Status";
-            Load += SystemStatusForm_Load;
             ((System.ComponentModel.ISupportInitialize)systemStatusDataGrid).EndInit();
             ResumeLayout(false);
         }

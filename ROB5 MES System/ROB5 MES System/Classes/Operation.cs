@@ -58,6 +58,8 @@ namespace ROB5_MES_System.Classes
             }
         }
 
+        // event handler for changing values of Operation class
+        // this is used to update the UI automatically when a value is changed
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -65,6 +67,9 @@ namespace ROB5_MES_System.Classes
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Constructor for the Operation class
+        /// </summary>
         public Operation(int operationID, string operationName, string operationDescription)
         {
             OperationID = operationID;

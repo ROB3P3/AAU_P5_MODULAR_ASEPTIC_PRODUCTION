@@ -21,12 +21,19 @@ namespace ROB5_MES_System
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Load the order form with the given order
+        /// </summary>
+        /// <param name="order"></param>
         public void LoadOrderForm(Order order)
         {
             _assignedOrder = order;
             UpdateOrderForm();
         }
 
+        /// <summary>
+        /// Update the order form
+        /// </summary>
         public void UpdateOrderForm()
         {
             if (InvokeRequired)
@@ -35,6 +42,7 @@ namespace ROB5_MES_System
                 return;
             }
 
+            // update all data fields
             this.Text = "Order " + _assignedOrder.OrderNumber;
             OrderNumberDispLabel.Text = _assignedOrder.OrderNumber.ToString();
             CustomerDispLabel.Text = _assignedOrder.OrderCustomer;
@@ -44,79 +52,81 @@ namespace ROB5_MES_System
             OrderStateDispLabel.Text = _assignedOrder.OrderState.ToString();
             ContainerAmountDispLabel.Text = _assignedOrder.ContainerAmount.ToString();
             ContainerTypeDispLabel.Text = _assignedOrder.ContainerType.ToString();
-            CarrierAmountDispLabel.Text = _assignedOrder.CarriersTotal.ToString();
+            ProductAmountDispLabel.Text = _assignedOrder.ProductsTotal.ToString();
 
-            CarrierTreeView.Nodes.Clear();
+            
+            // clear the tree view
+            ProductTreeView.Nodes.Clear();
 
-            foreach(var carrier in _assignedOrder.CarriersInOrder)
+            // first loop through all products in the order that are not in production and have not finished production
+            foreach (var product in _assignedOrder.ProductsInOrderList)
             {
-                TreeNode carrierNode = new TreeNode();
-                String carrierNodeString = "CID: " + carrier.CarrierID + " | Amount: " + carrier.ContainerAmount + " | State: " + carrier.CarrierState;
-                carrierNode.Text = carrierNodeString;
+                TreeNode productNode = new TreeNode();
+                String productNodeString = "Product ID: " + product.ProductID + " | Amount: " + product.ContainerAmount + " | State: " + product.ProductState;
+                productNode.Text = productNodeString;
 
-                foreach(var task in carrier.CompletedTasks)
-                {
-                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status + " | Start: " + task.StartTime + " | End: " + task.EndTime;
+                productNode = AddProcessesToProductNode(product, productNode);
 
-                    TreeNode taskNode = new TreeNode(taskNodeString);
-
-                    taskNode.BackColor = Color.FromArgb(255, 128, 128, 255);
-
-                    carrierNode.Nodes.Add(taskNode);
-                }
-
-                foreach (var task in carrier.TaskQueue)
-                {
-                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status;
-
-                    TreeNode taskNode = new TreeNode(taskNodeString);
-
-                    carrierNode.Nodes.Add(taskNode);
-                }
-
-                CarrierTreeView.Nodes.Add(carrierNode);
+                ProductTreeView.Nodes.Add(productNode);
             }
 
-            foreach (var carrier in _assignedOrder.CarriersInProductionList)
+            // then loop through all products in the order that are in production or have finished production
+            foreach (var product in _assignedOrder.ProductsInProductionList)
             {
-                TreeNode carrierNode = new TreeNode();
-                String carrierNodeString = "CID: " + carrier.CarrierID + " | Amount: " + carrier.ContainerAmount + " | State: " + carrier.CarrierState;
-                if (carrier.CarrierState == OrderState.DONE)
+                TreeNode productNode = new TreeNode();
+                String productNodeString = "Product ID: " + product.ProductID + " | Amount: " + product.ContainerAmount + " | State: " + product.ProductState;
+
+                // change the background color of the nodes based on the state of the product
+                // and add start or end times if the product has started or finished production
+                if (product.ProductState == OrderState.DONE)
                 {
-                    carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss") + " | End: " + carrier.EndTime.ToString("yyyy/MM/dd hh:mm:ss");
-                    carrierNode.BackColor = Color.FromArgb(255, 128, 128, 255);
+                    productNodeString += " | Start: " + product.ProductStartTime.ToString("yyyy/MM/dd hh:mm:ss") + " | End: " + product.ProductEndTime.ToString("yyyy/MM/dd hh:mm:ss");
+                    productNode.BackColor = Color.FromArgb(255, 128, 128, 255);
                 }
-                else if (carrier.CarrierState == OrderState.BUSY)
+                else if (product.ProductState == OrderState.BUSY)
                 {
-                    carrierNodeString += " | Start: " + carrier.StartTime.ToString("yyyy/MM/dd hh:mm:ss");
-                    carrierNode.BackColor = Color.FromArgb(255, 255, 255, 128);
-                    carrierNode.Expand();
-                }
-
-                carrierNode.Text = carrierNodeString;
-
-                foreach (var task in carrier.CompletedTasks)
-                {
-                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status + " | Start: " + task.StartTime + " | End: " + task.EndTime;
-
-                    TreeNode taskNode = new TreeNode(taskNodeString);
-
-                    taskNode.BackColor = Color.FromArgb(255, 128, 128, 255);
-
-                    carrierNode.Nodes.Add(taskNode);
+                    productNodeString += " | Start: " + product.ProductStartTime.ToString("yyyy/MM/dd hh:mm:ss");
+                    productNode.BackColor = Color.FromArgb(255, 255, 255, 128);
+                    productNode.Expand();
                 }
 
-                foreach (var task in carrier.TaskQueue)
-                {
-                    String taskNodeString = "TID: " + task.TaskId.ToString() + " | Task: " + task.TaskName + " | State: " + task.Status;
+                productNode.Text = productNodeString;
 
-                    TreeNode taskNode = new TreeNode(taskNodeString);
+                productNode = AddProcessesToProductNode(product, productNode);
 
-                    carrierNode.Nodes.Add(taskNode);
-                }
-
-                CarrierTreeView.Nodes.Add(carrierNode);
+                ProductTreeView.Nodes.Add(productNode);
             }
+        }
+
+        /// <summary>
+        /// Add processs to the given product and its associated product tree node
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="productNode"></param>
+        /// <returns></returns>
+        private TreeNode AddProcessesToProductNode(Product product, TreeNode productNode)
+        {
+            foreach (var process in product.ProductCompletedProcesses)
+            {
+                String processNodeString = "Process ID: " + process.ProcessID.ToString() + " | Process: " + process.ProcessName + " | State: " + process.ProcessState.ToString() + " | Start: " + process.ProcessStartTime + " | End: " + process.ProcessEndTime;
+
+                TreeNode processNode = new TreeNode(processNodeString);
+
+                processNode.BackColor = Color.FromArgb(255, 128, 128, 255);
+
+                productNode.Nodes.Add(processNode);
+            }
+
+            foreach (var process in product.ProductProcessQueue)
+            {
+                String processNodeString = "Process ID: " + process.ProcessID.ToString() + " | Process: " + process.ProcessName + " | State: " + process.ProcessState.ToString();
+
+                TreeNode processNode = new TreeNode(processNodeString);
+
+                productNode.Nodes.Add(processNode);
+            }
+
+            return productNode;
         }
     }
 }

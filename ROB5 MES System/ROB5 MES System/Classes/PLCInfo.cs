@@ -10,14 +10,13 @@ namespace ROB5_MES_System
 {
     public class PLCInfo : INotifyPropertyChanged
     {
-        private bool _connectionStatus; // weather we are connected or not
+        private bool _connectionStatus; // determines connection status to PLC
+        private int _placement; // the physical placement in the production system, given by an int to define the position
         private int _id; // the id of the plc "hard coded"
-        private int _placement; // The physical placement in the production system, given by an int to define the position
-        private string _appState; // What the application is doing right now
+        private string _appState; // what the application is doing right now
 
-        //private string _nodeId; // the path to find the opcua information on the node
-        private string _type; // what type of application moduel is currently mounted [filling stubbering]
-        private ushort _carrierID; // the id of the carrier that is currently being processed
+        private string _type; // what type of application module is currently mounted [filling or stoppering]
+        private ushort _productID; // the id of the product that is currently being processed
 
         public bool ConnectionStatus
         {
@@ -26,6 +25,16 @@ namespace ROB5_MES_System
             { 
                 _connectionStatus = value;
                 OnPropertyChanged(nameof(ConnectionStatus));
+            }
+        }
+
+        public int Placement
+        {
+            get { return _placement; }
+            set
+            {
+                _placement = value;
+                OnPropertyChanged(nameof(Placement));
             }
         }
 
@@ -38,16 +47,6 @@ namespace ROB5_MES_System
                     throw new ArgumentNullException("PLC ID can not 0 or less than 0");
                 _id = value;
                 OnPropertyChanged(nameof(Id));
-            }
-        }
-
-        public int Placement
-        {
-            get { return _placement; }
-            set 
-            { 
-                _placement = value; 
-                OnPropertyChanged(nameof(Placement));
             }
         }
 
@@ -71,28 +70,18 @@ namespace ROB5_MES_System
             }
         }
 
-        /*public string NodeId
+        public ushort ProductID
         {
-            get { return _nodeId; }
-            set { _nodeId = value; }
-        }*/
-
-        private string GenerateNodeId(int PLCid)
-        {
-            // placeholder
-            return (PLCid + 2).ToString();
-        }
-
-        public ushort CarrierID
-        {
-            get { return _carrierID; }
+            get { return _productID; }
             set
             {
-                _carrierID = value;
-                OnPropertyChanged(nameof(CarrierID));
+                _productID = value;
+                OnPropertyChanged(nameof(ProductID));
             }
         }
 
+        // an event handler that runs when a variable in the class is changed
+        // is used to automatically update the SystemStatus form upon changes in the PLCInfo class
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -100,14 +89,18 @@ namespace ROB5_MES_System
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Constructor of the PLCInfo class
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="placement"></param>
         public PLCInfo(int id, int placement)
         {
-            Id = id;
             Placement = placement;
-            //NodeId = nodeId;
+            Id = id;
             Type = "N/A";
             AppState = "N/A";
-            CarrierID = 0;
+            ProductID = 0;
         }
     }
 }

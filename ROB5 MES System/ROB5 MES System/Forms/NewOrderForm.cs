@@ -24,13 +24,16 @@ namespace ROB5_MES_System
             LoadNewOrderForm();
         }
 
-        // function to load the new order form
+        /// <summary>
+        /// Load the New Order form
+        /// </summary>
         public void LoadNewOrderForm()
         {
             // replace max order number with current max order number from all lists
-            int maxOrderNumber = MainWindowForm.database.get_order_number();
+            int maxOrderNumber = MainWindowForm.database.GetMaxOrderNumber();
             OrderNumberDispLabel.Text = maxOrderNumber.ToString();
 
+            // replace operations list with new operations list incase new operations have been added
             OperationsListBox.Items.Clear();
             OperationsListBox.DisplayMember = "DisplayText";
             OperationsListBox.ValueMember = "OperationID";
@@ -42,16 +45,17 @@ namespace ROB5_MES_System
         // event function for click on start order button
         private void StartOrderButton_Click(object sender, EventArgs e)
         {
-            // pull data from input fields
+            // get all operations from the operations list box and check if there is at least 1 operation added
             List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
             if(orderOperations.Count > 0)
             {
+                // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
                 string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
+                int maxOrderNumber = MainWindowForm.database.GetMaxOrderNumber();
 
-                int maxOrderNumber = MainWindowForm.database.get_order_number();
                 MainWindowForm.mesSystem.AddOrderToEndOfProductionQueue(containerAmount, containerType, companyName, medicineType, orderOperations);
 
                 // show confirmation dialogue of order being created
@@ -61,10 +65,10 @@ namespace ROB5_MES_System
 
                 if (result == DialogResult.OK)
                 {
-                    // reload new order form to update order id and reset input fields
+                    // reload new order form to update order id
                     LoadNewOrderForm();
 
-                    // refresh the current orders form if it is open 
+                    // refresh the production queue form if it is open 
                     ProductionQueueForm productionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
 
                     if (productionQueueForm != null)
@@ -84,27 +88,30 @@ namespace ROB5_MES_System
         // event function for click on plan order button
         private void PlanOrderButton_Click(object sender, EventArgs e)
         {
+            // get all operations from the operations list box and check if there is at least 1 operation added
             List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
             if(orderOperations.Count > 0)
             {
+                // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;
                 int containerAmount = Convert.ToInt32(ContainerAmountNumeric.Value);
                 string companyName = CompanyNameTextBox.Text.Length == 0 ? "No Company" : CompanyNameTextBox.Text;
                 string medicineType = MedicineTypeBox.Text.Length == 0 ? "No Medicine" : MedicineTypeBox.Text;
+                int maxOrderNumber = MainWindowForm.database.GetMaxOrderNumber();
 
-                int maxOrderNumber = MainWindowForm.database.get_order_number();
-                Order order = new Order(containerAmount, containerType, companyName, maxOrderNumber, OrderState.PEND, medicineType, orderOperations);
-                MainWindowForm.mesSystem.PlannedOrders.AddLast(order);
-                order.SendOrderInfoToDatabase();
+                MainWindowForm.mesSystem.AddOrderToEndOfPlannedOrders(containerAmount, containerType, companyName, medicineType, orderOperations);
 
+                // show confirmation dialogue of order being created
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 String caption = String.Format("Order {0} created", maxOrderNumber);
                 DialogResult result = MessageBox.Show(caption, caption, buttons, MessageBoxIcon.Information);
 
                 if (result == DialogResult.OK)
                 {
+                    // reload new order form to update order id
                     LoadNewOrderForm();
 
+                    // refresh the planned orders form if it is open 
                     PlannedOrdersForm plannedOrdersForm = Application.OpenForms.OfType<PlannedOrdersForm>().FirstOrDefault();
 
                     if (plannedOrdersForm != null)
@@ -121,6 +128,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for click on add operation button
         private void AddOperationButton_Click(object sender, EventArgs e)
         {
             if (OperationsComboBox.SelectedItem != null)
@@ -129,6 +137,7 @@ namespace ROB5_MES_System
             }
         }
 
+        // event function for click on remove operation button
         private void RemoveOperationButton_Click(object sender, EventArgs e)
         {
             if (OperationsListBox.SelectedItem != null)

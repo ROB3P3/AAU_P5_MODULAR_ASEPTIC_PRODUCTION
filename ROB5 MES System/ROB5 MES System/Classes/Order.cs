@@ -8,66 +8,73 @@ namespace ROB5_MES_System
 {
     public class Order
     {
-        private int _orderNumber; // brugt | odrenummer som er gemt i DB
-        private DateTime? _orderStartTime; // brugt
-        private DateTime? _orderEndTime; // brugt
-        private string _orderCustomer; // brugt
-        private string _medicineType; // brugt
-        private OrderState _orderState; // brugt
+        private int _orderNumber; // order number 
+        private DateTime? _orderStartTime; // order start time
+        private DateTime? _orderEndTime; // order end time
+        private string _orderCustomer; // order's customer
+        private string _medicineType; // medicine type associated with the order
+        private OrderState _orderState; // current state of the order
 
-        private string _containerType; // brugt | hvilken type af container er denn odre 
-        private int _containerAmount; // brugt | hvor mange containere har kunden bestilt
-        private int _containersInProduction;
-        private int _containersProduced;
+        private string _containerType; // container type associated with the order
+        private int _containerAmount; // container amount in the order
 
-        private int _carriersTotal; // brugt | hvor mange carrieres er gennerert til denne odre
-        private int _carriersInProduction; // brugt | hvor mange carrieres er i produktion lige nu
-        private int _carriersProduced; // brugt | hvor mange carrieres er færdigproduceret 
+        private LinkedList<Product> _productsInOrderList; // list of products in the order (not in production or finished)
+        private LinkedList<Product> _productsInProductionList; // list of products in the order that are in production or finished
 
-        private LinkedList<Carrier> _carriersInOrder; // brugt | en liste af de carriere objekter som er i odren
-        private LinkedList<Carrier> _carriersInProductionList;
+        private List<Operation> _operationList; // a process list associated with the order
 
-        private List<Operation> _operationList;
-
-        private Thread _productionThread;
-        public void GenerateCarriers(string containerType, int containerAmount)
+        private Thread _productionThread; // seperate thread for handling production of the order
+        /// <summary>
+        /// Generate products to an order based on a number of containers
+        /// </summary>
+        /// <param name="containerAmount"></param>
+        public void GenerateProducts(int containerAmount)
         {
-            //generates carriers based on the amount of containers in the order
-            int fullCarriers = containerAmount / 5; // 5 containers per carrier
-            int containerRemainder = containerAmount % 5; // remainder of containers that do not fit in a full carrier
+            int fullProducts = containerAmount / 5; // there can be 5 containers in on a product
+            int containerRemainder = containerAmount % 5; // remainder of containers that do not fit into a full product
 
-            for (int i = 0; i < fullCarriers; i++)
+            for (int i = 0; i < fullProducts; i++)
             {
-                Carrier carrier = new Carrier(-1, 5, containerType, _orderNumber); // her bliver carriersne genereret med 5 containere og et id
-                _carriersInOrder.AddLast(carrier);
+                Product product = new Product(-1, 5, _containerType, _orderNumber); // here the products are generated with 5 containers each
+                _productsInOrderList.AddLast(product);
             }
 
-            _carriersTotal = fullCarriers;
-
-            if (containerRemainder != 0) // if there is a remainder of containers that do not fit in a full carrier
+            if (containerRemainder != 0) // if there is a remainder of containers that do not fit in a full product
             {
-                _carriersInOrder.AddLast(new Carrier(-1, containerRemainder, containerType, _orderNumber)); // add a carrier with the remainder of containers
-                _carriersTotal += 1;
+                _productsInOrderList.AddLast(new Product(-1, containerRemainder, _containerType, _orderNumber)); // add a product with the remainder of containers
             }
 
-            Console.WriteLine(string.Format("{0} full carriers added and 1 remainder carrier with {1} containers, making for {2} containers", fullCarriers, containerRemainder, containerAmount));
+            Console.WriteLine(string.Format("{0} full products added and 1 remainder product with {1} containers, making for {2} containers", fullProducts, containerRemainder, containerAmount));
 
         }
-        // tilfæjer et task objekt til køen af tasks på denne carriere
-        public void AddTaskToCarriers(string taskName, string taskDescription, int taskId)
+
+        /// <summary>
+        /// Assign a process to the products in the order's product list
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <param name="processDescription"></param>
+        /// <param name="processId"></param>
+        public void AddProcessToAllProducts(string processName, string processDescription, int processId)
         {
-            foreach (var carrier in _carriersInOrder)
+            foreach (var product in _productsInOrderList)
             {   
-                Task task = new Task(taskName, taskDescription, taskId, "Not yet started");
-                carrier.AddTaskToEndOfCarrier(task);
+                Process process = new Process(processName, processDescription, processId, OrderState.QUEUE);
+                product.AddProcessToEndOfProduct(process);
             }
         }
 
+        /// <summary>
+        /// Send order information to the database
+        /// </summary>
         public void SendOrderInfoToDatabase()
         {
-            MainWindowForm.database.insert_data_order(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _operationList, _orderStartTime, _orderEndTime);
+            MainWindowForm.database.InsertDataOrder(_orderNumber, _orderState.ToString(), _containerAmount, _containerType, _orderCustomer, _medicineType, _operationList, _orderStartTime, _orderEndTime);
         }
 
+        /// <summary>
+        /// Start the production of the order
+        /// This starts a new thread for the ProdutionHandler, if no thread for it exists already
+        /// </summary>
         public void StartOrderProduction()
         {
             // create new thread for productionhandler if no thread for it exists
@@ -82,22 +89,15 @@ namespace ROB5_MES_System
         {
             MainWindowForm.isProductionRunning = true;
 
-            // send start bånd komando
+            // send start transport belt command
             string _command = "begin";
             OpcuaHandler(_command);
-            // afvent første carriere informatiopn fra filling station. 
-            // tag første carriere far carrieres in order og send den til carrieres in production list
-            // tjek om denne carrier skal fyldes
-            // send svar til filling station "start" eller "pass it on"
-            // Slet filling opgave fra carriern
-
         }
 
         private void OpcuaHandler(string serverCommand)
         {
             MainWindowForm.opcuaPLC09.ModifyNodeValue("ServerCommand", serverCommand);
         }
-
 
         public int OrderNumber
         {
@@ -184,69 +184,29 @@ namespace ROB5_MES_System
             }
         }
 
-        public int ContainersInProduction
+        public int ProductsTotal
         {
-            get { return _containersInProduction; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Containers in production cannot be negative.");
-                _containersInProduction = value;
-            }
+            get { return _productsInOrderList.Count + _productsInProductionList.Count; }
         }
 
-        public int ContainersProduced
+        public int ProductsInProduction
         {
-            get { return _containersProduced; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Containers produced cannot be negative.");
-                _containersProduced = value;
-            }
+            get { return _productsInProductionList.Count(product => product.ProductState == OrderState.BUSY); }
         }
 
-        public int CarriersTotal
+        public int ProductsProduced
         {
-            get { return _carriersTotal; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Total carriers cannot be negative.");
-                _carriersTotal = value;
-            }
+            get { return _productsInProductionList.Count(product => product.ProductState == OrderState.DONE); }
         }
 
-        public int CarriersInProduction
+        public LinkedList<Product> ProductsInOrderList
         {
-            get { return _carriersInProduction; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Carriers in production cannot be negative.");
-                _carriersInProduction = value;
-            }
-        }
-
-        public int CarriersProduced
-        {
-            get { return _carriersProduced; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Carriers produced cannot be negative.");
-                _carriersProduced = value;
-            }
-        }
-
-        public LinkedList<Carrier> CarriersInOrder
-        {
-            get { return _carriersInOrder; }
+            get { return _productsInOrderList; }
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("Carriers in order cannot be null.");
-                _carriersInOrder = value;
+                    throw new ArgumentNullException("Products in order cannot be null.");
+                _productsInOrderList = value;
             }
         }
 
@@ -261,17 +221,27 @@ namespace ROB5_MES_System
             }
         }
 
-        public LinkedList<Carrier> CarriersInProductionList
+        public LinkedList<Product> ProductsInProductionList
         {
-            get { return _carriersInProductionList; }
+            get { return _productsInProductionList; }
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("Carriers in production list cannot be null.");
-                _carriersInProductionList = value;
+                    throw new ArgumentNullException("Products in production list cannot be null.");
+                _productsInProductionList = value;
             }
         }
 
+        /// <summary>
+        /// Constructor for Order class
+        /// </summary>
+        /// <param name="containerAmount"></param>
+        /// <param name="containerType"></param>
+        /// <param name="customer"></param>
+        /// <param name="orderNumber"></param>
+        /// <param name="orderState"></param>
+        /// <param name="medicineType"></param>
+        /// <param name="operationList"></param>
         public Order(int containerAmount, string containerType, string customer, int orderNumber, OrderState orderState, string medicineType, List<Operation> operationList)
         {
             _containerAmount = containerAmount;
@@ -280,20 +250,21 @@ namespace ROB5_MES_System
             _orderCustomer = customer;
             _orderState = orderState;
             _medicineType = medicineType;
-            _carriersInOrder = new LinkedList<Carrier>();
-            _carriersInProductionList = new LinkedList<Carrier>();
+            _productsInOrderList = new LinkedList<Product>();
+            _productsInProductionList = new LinkedList<Product>();
             _operationList = operationList;
             _orderStartTime = null;
             _orderEndTime = null;
-            GenerateCarriers(_containerType, _containerAmount);
+            GenerateProducts(_containerAmount);
+
             foreach (var operation in operationList)
             {
-                AddTaskToCarriers(operation.OperationName, operation.OperationDescription, operation.OperationID);
+                AddProcessToAllProducts(operation.OperationName, operation.OperationDescription, operation.OperationID);
             }
             
-            foreach (var carrier in _carriersInOrder)
+            foreach (var product in _productsInOrderList)
             {
-                carrier.PrintCarrierInfo();
+                product.PrintProductInfo();
             }
         }
     }

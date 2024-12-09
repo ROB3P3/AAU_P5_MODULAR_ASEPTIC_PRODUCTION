@@ -14,10 +14,9 @@ namespace ROB5_MES_System
         public static MESSystem mesSystem { get; set; }
         public static OPCUA opcuaPLC09;
         public static OPCUA opcuaPLC08;
-        // applications/modules that are connected to the system
-        public static List<PLCInfo> plcs { get; set; }
-        public static BindingList<Operation> operations { get; set; }
-        public static bool isProductionRunning { get; set; }
+        public static List<PLCInfo> plcs { get; set; } // list of plcs that are connected to the system
+        public static BindingList<Operation> operations { get; set; } // list of operations that are available in the system
+        public static bool isProductionRunning { get; set; } // flag to check if the production is running
         public MainWindowForm()
         {
             mesSystem = new MESSystem();
@@ -28,30 +27,23 @@ namespace ROB5_MES_System
 
             InitializeComponent();
 
-            database.create_table_order();
-            database.create_table_production();
-            database.create_table_operations();
-            database.create_table_tasks();
+            database.CreateTableOrderData();
+            database.CreateTableProductionData();
+            database.CreateTableOperations();
+            database.CreateTableProcessData();
 
-            database.get_operations();
-            database.get_production_queue();
-            database.get_planned_orders();
+            database.GetOperationsData();
+            database.GetProductionQueueData();
+            database.GetPlannedOrdersData();
 
             // setup the opcua connections to the plc modules in a new thread to not block the main thread while connecting
             Thread opcuaThread = new Thread(startOPCUA);
             opcuaThread.Start();
-
-
-            // test timer for every second to update the date label
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 1000;
-            timer.Tick += Timer_Tick;
-            timer.Start();
-
-            DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:MM:ss");
         }
 
-        // function to setup the opcua connection to the plc modules
+        /// <summary>
+        /// Setup the OPCUA connection to the PLC modules
+        /// </summary>
         public static void startOPCUA()
         {
             // plc 09
@@ -60,29 +52,19 @@ namespace ROB5_MES_System
             opcuaPLC08 = new OPCUA("opc.tcp://172.20.1.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", plcs[1]);
         }
 
-        // temporary function for adding modules ?
-        // maybe make a form for them ?
+        /// <summary>
+        /// Get list of plc modules that are connected to the system
+        /// </summary>
+        /// <returns></returns>
         public List<PLCInfo> plcList()
         {
             List<PLCInfo> plcList = new List<PLCInfo>();
-            // add the plc modules to the list
             // PLC 09
             plcList.Add(new PLCInfo(9, 1));
             // PLC 08
             plcList.Add(new PLCInfo(8, 2));
 
             return plcList;
-        }
-
-
-        /// <summary>
-        /// timer tick event to update the date label every second
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Timer_Tick(object? sender, EventArgs e)
-        {
-            DateLabel.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
         }
 
         // event function to show submenu items under production control of left menubar 
@@ -197,7 +179,9 @@ namespace ROB5_MES_System
             }
         }
 
-        // function to show the order details form
+        /// <summary>
+        /// Show the Order details form
+        /// </summary>
         private static OrderForm orderForm;
         public static void ShowOrderForm(Order clickedOrder, Form mdiParent)
         {
@@ -214,21 +198,28 @@ namespace ROB5_MES_System
             orderForm.LoadOrderForm(clickedOrder);
         }
 
-        public static Order getOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)
+        /// <summary>
+        /// Get the Order object from the cell that is clicked
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static Order GetOrderFromCell(DataGridViewCell cell, LinkedList<Order> list)
         {
             return mesSystem.GetOrderAtIndex(cell.RowIndex, list);
         }
 
+        // Event function that runs when the system is closed using the close button in the GUI
         private void MainWindowForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Console.WriteLine("system closed");
-            LinkedList<Order> allOrders = mesSystem.Orders;
+            LinkedList<Order> allOrders = mesSystem.OrderQueue;
             foreach (var order in mesSystem.PlannedOrders)
             {
                 allOrders.AddLast(order);
             }
-            database.update_order_data(allOrders);
-            database.update_operations_data(operations);
+            database.UpdateOrderData(allOrders);
+            database.UpdateOperationsData(operations);
         }
     }
 }

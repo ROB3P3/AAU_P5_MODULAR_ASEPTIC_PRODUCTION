@@ -18,28 +18,30 @@ namespace ROB5_MES_System
             LoadApplications();
         }
 
+        /// <summary>
+        /// Load the PLCs/Applications into the system status data grid
+        /// </summary>
         public void LoadApplications()
         {
+            // clear the data grid
             systemStatusDataGrid.DataSource = null;
+            // sort the list of plcs by their placement in the production system
             MainWindowForm.plcs.Sort((x, y) => x.Placement.CompareTo(y.Placement));
 
+            // using a bindingsource for the data grid so it updates by itself
             BindingSource plcBindingSource = new BindingSource();
             plcBindingSource.DataSource = MainWindowForm.plcs;
 
             systemStatusDataGrid.DataSource = plcBindingSource;
         }
 
-        private void startProductionButton_MouseClick(object sender, MouseEventArgs e)
+        // event function for when start production button is clicked
+        private void startProductionButton_Click(object sender, EventArgs e)
         {
-            if (MainWindowForm.mesSystem.Orders.Count > 0)
+            if (MainWindowForm.mesSystem.OrderQueue.Count > 0)
             {
-                MainWindowForm.mesSystem.Orders.First.Value.StartOrderProduction();
+                MainWindowForm.mesSystem.OrderQueue.First.Value.StartOrderProduction();
             }
-        }
-
-        private void SystemStatusForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
