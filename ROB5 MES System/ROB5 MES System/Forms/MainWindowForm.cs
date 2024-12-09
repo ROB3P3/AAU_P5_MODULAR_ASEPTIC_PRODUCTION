@@ -37,17 +37,33 @@ namespace ROB5_MES_System
             database.GetPlannedOrdersData();
 
             // setup the opcua connections to the plc modules in a new thread to not block the main thread while connecting
-            Thread opcuaThread = new Thread(startOPCUA);
-            opcuaThread.Start();
+            Thread opcuaThread09 = new(startOPCUA09);
+            Thread opcuaThread08 = new(startOPCUA08);
+            opcuaThread09.Start();
+            opcuaThread08.Start();
+
+            /*Thread opcuaThread = new Thread(startOPCUA);
+            opcuaThread.Start();*/
         }
 
         /// <summary>
         /// Setup the OPCUA connection to the PLC modules
         /// </summary>
+        /// 
         public static void startOPCUA()
         {
             // plc 09
             opcuaPLC09 = new OPCUA("opc.tcp://172.20.13.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", plcs[0]);
+            // plc 08
+            opcuaPLC08 = new OPCUA("opc.tcp://172.20.1.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", plcs[1]);
+        }
+        public static void startOPCUA09()
+        {
+            // plc 09
+            opcuaPLC09 = new OPCUA("opc.tcp://172.20.13.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC09_MAIN", plcs[0]);
+        }
+        public static void startOPCUA08()
+        {
             // plc 08
             opcuaPLC08 = new OPCUA("opc.tcp://172.20.1.1:4840", "ns=2;s=|var|CECC-LK.Application.MODULE_PLC08_MAIN", plcs[1]);
         }

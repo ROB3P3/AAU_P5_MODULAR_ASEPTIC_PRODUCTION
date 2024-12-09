@@ -97,6 +97,7 @@ namespace ROB5_MES_System
         private void OpcuaHandler(string serverCommand)
         {
             MainWindowForm.opcuaPLC09.ModifyNodeValue("ServerCommand", serverCommand);
+            MainWindowForm.opcuaPLC08.ModifyNodeValue("ServerCommand", serverCommand);
         }
 
         public int OrderNumber

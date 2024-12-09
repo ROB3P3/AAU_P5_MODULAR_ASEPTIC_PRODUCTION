@@ -259,6 +259,8 @@ namespace ROB5_MES_System.Classes
                                 // send the product to the PLC
                                 // letting the PLC know that the process is valid
                                 OpcuaHandler("valid");
+                                _currentOrder = order;
+                                _productInOrder = product;
                                 return;
                             }
                             else
@@ -393,6 +395,7 @@ namespace ROB5_MES_System.Classes
                 case "done":
                     Console.WriteLine("Application is done");
                     // remove the current process from the product
+                    // print the order info
                     ProductInOrder.CompleteFirstProcessInProductQueue();
                     ProductInOrder.PrintProductInfo();
 
@@ -479,6 +482,7 @@ namespace ROB5_MES_System.Classes
         /// </summary>
         private void UpdateOrderForm()
         {
+            Console.WriteLine("Updating Order Form");
             OrderForm orderForm = Application.OpenForms.OfType<OrderForm>().FirstOrDefault();
 
             if (orderForm != null)
@@ -492,6 +496,7 @@ namespace ROB5_MES_System.Classes
         /// </summary>
         private void UpdateProductionQueueForm()
         {
+            Console.WriteLine("Updating Production Queue Form");
             ProductionQueueForm produtionQueueForm = Application.OpenForms.OfType<ProductionQueueForm>().FirstOrDefault();
 
             if (produtionQueueForm != null)
