@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="4.0.0.0" runtimeid="3.5.4.0" libversion="3.5.7.0" compiler="3.5.7.20" lmm="3.5.17.0" profile="CODESYS V3.5 SP17+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="PLCs" devicename="MODULE_PLC09" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_STRING" size="81" swapsize="0" typeclass="String" iecname="STRING" />
+    <TypeSimple name="T_UINT" size="2" swapsize="2" typeclass="UInt" iecname="UINT" />
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="MODULE_PLC09_MAIN">
+        <Node name="AppState" type="T_STRING" access="ReadWrite" />
+        <Node name="AppType" type="T_STRING" access="ReadWrite" />
+        <Node name="CarrierID" type="T_UINT" access="ReadWrite" />
+        <Node name="CarrierIdString" type="T_STRING" access="ReadWrite" />
+        <Node name="ServerCommand" type="T_STRING" access="ReadWrite" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>
