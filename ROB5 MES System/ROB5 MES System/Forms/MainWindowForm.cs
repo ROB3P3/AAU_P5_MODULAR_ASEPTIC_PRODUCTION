@@ -42,8 +42,8 @@ namespace ROB5_MES_System
             opcuaThread09.Start();
             opcuaThread08.Start();
 
-            //Thread opcuaThread = new Thread(startOPCUA08);
-            //opcuaThread.Start();
+            /*Thread opcuaThread = new Thread(startOPCUA);
+            opcuaThread.Start();*/
         }
 
         /// <summary>

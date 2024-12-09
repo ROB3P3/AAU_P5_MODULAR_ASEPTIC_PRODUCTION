@@ -259,6 +259,8 @@ namespace ROB5_MES_System.Classes
                                 // send the product to the PLC
                                 // letting the PLC know that the process is valid
                                 OpcuaHandler("valid");
+                                _currentOrder = order;
+                                _productInOrder = product;
                                 return;
                             }
                             else
@@ -394,17 +396,12 @@ namespace ROB5_MES_System.Classes
                     Console.WriteLine("Application is done");
                     // remove the current process from the product
                     // print the order info
-                    Console.WriteLine("reached here1");
                     ProductInOrder.CompleteFirstProcessInProductQueue();
-                    Console.WriteLine("reached her2");
                     ProductInOrder.PrintProductInfo();
-                    Console.WriteLine("reached her3");
 
                     // check if there are any products left in the order's product list and that all products in the order's product production list are done
                     if (_currentOrder.ProductsInOrderList.Count <= 0 && _currentOrder.ProductsInProductionList.All(product => product.ProductState == OrderState.DONE))
                     {
-                        Console.WriteLine("reached here 4");
-
                         // set the order end time and state to done
                         _currentOrder.OrderEndTime = DateTime.Now;
                         _currentOrder.OrderState = OrderState.DONE;
