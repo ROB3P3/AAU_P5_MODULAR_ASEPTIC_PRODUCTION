@@ -522,14 +522,12 @@ namespace ROB5_MES_System.Classes
                                     reader.GetDateTime("process_end_time")
                                 );
 
-                                //product.ProductCompletedProcesses.AddLast(process);
                             }
 
                             int productID = reader.GetInt32("product_id");
                             if(order.ProductsInProductionList.Any(product => product.ProductID == productID))
                             {
-                                Console.WriteLine("product already added to order {0} {1}", productID, orderNumber);
-                                order.ProductsInProductionList.Last.Value.ProductCompletedProcesses.AddLast(process);
+                                order.ProductsInProductionList.First.Value.ProductCompletedProcesses.AddFirst(process);
                                 continue;
                             }
                             Product product = new Product(
@@ -541,11 +539,10 @@ namespace ROB5_MES_System.Classes
                                 reader.GetDateTime("start_time_product"),
                                 reader.GetDateTime("end_time_product")
                             );
-                            Console.WriteLine("read product from database {0} {1}", productID, orderNumber);
 
-                           
+                            product.ProductCompletedProcesses.AddFirst(process);
 
-                            order.ProductsInProductionList.AddLast(product);
+                            order.ProductsInProductionList.AddFirst(product);
                         }
                     }
                 }
@@ -649,7 +646,27 @@ namespace ROB5_MES_System.Classes
                         // checking that there are products associated to the order, and adding them
                         if (!reader.IsDBNull(reader.GetOrdinal("product_id")))
                         {
+                            // checking that there are processs associated to the product, and adding them
+                            Process process = null;
+                            if (!reader.IsDBNull(reader.GetOrdinal("process_id")))
+                            {
+                                process = new Process(
+                                    MainWindowForm.operations.FirstOrDefault(item => item.OperationID == reader.GetInt32("process_id")).OperationName,
+                                    MainWindowForm.operations.FirstOrDefault(item => item.OperationID == reader.GetInt32("process_id")).OperationDescription,
+                                    reader.GetInt32("process_id"),
+                                    Enum.Parse<OrderState>(reader.GetString("process_state")),
+                                    reader.GetDateTime("process_start_time"),
+                                    reader.GetDateTime("process_end_time")
+                                );
+                            }
+
                             int productID = reader.GetInt32("product_id");
+                            if(order.ProductsInProductionList.Any(product => product.ProductID == productID))
+                            {
+                                order.ProductsInProductionList.First.Value.ProductCompletedProcesses.AddFirst(process);
+                                continue;
+                            }
+
                             Product product = new Product(
                                 productID,
                                 reader.GetInt32("product_container_amount"),
@@ -662,22 +679,8 @@ namespace ROB5_MES_System.Classes
 
                             // adding the containers from the product to the total amount produced
                             containersProduced += reader.GetInt32("product_container_amount");
-                            order.ProductsInProductionList.AddLast(product);
-
-                            // checking that there are processs associated to the product, and adding them
-                            if (!reader.IsDBNull(reader.GetOrdinal("process_id")))
-                            {
-                                Process process = new Process(
-                                    MainWindowForm.operations.FirstOrDefault(item => item.OperationID == reader.GetInt32("process_id")).OperationName,
-                                    MainWindowForm.operations.FirstOrDefault(item => item.OperationID == reader.GetInt32("process_id")).OperationDescription,
-                                    reader.GetInt32("process_id"),
-                                    Enum.Parse<OrderState>(reader.GetString("process_state")),
-                                    reader.GetDateTime("process_start_time"),
-                                    reader.GetDateTime("process_end_time")
-                                );
-
-                                product.ProductCompletedProcesses.AddLast(process);
-                            }
+                            order.ProductsInProductionList.AddFirst(product);
+                            product.ProductCompletedProcesses.AddFirst(process);
                         }
                     }
                 }
