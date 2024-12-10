@@ -206,6 +206,14 @@ namespace ROB5_MES_System.Classes
                         plcinfo.AppState = (string)value;
                         Console.WriteLine("\nPLC {0} event:", plcinfo.Id);
                         Console.WriteLine("Application state changed, new state is: {0}\n", value);
+                        if (plcinfo.AppState == "N/A")
+                        {
+                            plcinfo.ConnectionStatus = false;
+                        }
+                        else if (plcinfo.AppState == "ready")
+                        {
+                            plcinfo.ConnectionStatus = true;
+                        }
                         if (MainWindowForm.isProductionRunning) { ApplicationHandler(client, (string)value); }
                         break;
                     case "CarrierID":
@@ -318,48 +326,58 @@ namespace ROB5_MES_System.Classes
                 }
                 UpdateProductionQueueForm();
                 
-                // get the first product in ProductsInOrder list and set as new product
-                _productInOrder = CurrentOrder.ProductsInOrderList.ElementAt(0);
-
-                // assign the productID the RFID read to the product in the order
-                _productInOrder.ProductID = productID;
-                Console.WriteLine("Product {0} assigned to order {1}", productID, _currentOrder.OrderNumber);
-
-                // add the product to the list of products in production
-                _productInOrder.ProductState = OrderState.BUSY;
-                if(_productInOrder.ProductStartTime == DateTime.MinValue)
+                if(_currentOrder.ProductsInOrderList.Count > 0)
                 {
-                    _productInOrder.ProductStartTime = DateTime.Now;
-                }
-                _currentOrder.ProductsInProductionList.AddLast(ProductInOrder);
-                Console.WriteLine("Product {0} added to order's product production list", _productInOrder.ProductID);
+                    // get the first product in ProductsInOrder list and set as new product
+                    _productInOrder = _currentOrder.ProductsInOrderList.ElementAt(0);
 
-                // remove the product from the list of products in order that are not in production
-                _currentOrder.ProductsInOrderList.Remove(ProductInOrder);
-                Console.WriteLine("Product {0} removed from the order's product order list", _productInOrder.ProductID);
+                    // assign the productID the RFID read to the product in the order
+                    _productInOrder.ProductID = productID;
+                    Console.WriteLine("Product {0} assigned to order {1}", productID, _currentOrder.OrderNumber);
 
-                // print product info
-                _productInOrder.PrintProductInfo();
+                    // add the product to the list of products in production
+                    _productInOrder.ProductState = OrderState.BUSY;
+                    if (_productInOrder.ProductStartTime == DateTime.MinValue)
+                    {
+                        _productInOrder.ProductStartTime = DateTime.Now;
+                    }
+                    _currentOrder.ProductsInProductionList.AddLast(ProductInOrder);
+                    Console.WriteLine("Product {0} added to order's product production list", _productInOrder.ProductID);
 
-                // check if the desired process is the first process in the queue, if not then pass the product on
-                if (_productInOrder.ProductProcessQueue.ElementAt(0).ProcessName == process)
-                {
-                    // send the product to the PLC
-                    Console.WriteLine("Product {0} sent to PLC with command {1}", ProductInOrder.ProductID, "valid");
-                    _productInOrder.ProductProcessQueue.ElementAt(0).ProcessState = OrderState.BUSY;
-                    _productInOrder.ProductProcessQueue.ElementAt(0).ProcessStartTime = DateTime.Now;
-                    UpdateOrderForm();
+                    // remove the product from the list of products in order that are not in production
+                    _currentOrder.ProductsInOrderList.Remove(ProductInOrder);
+                    Console.WriteLine("Product {0} removed from the order's product order list", _productInOrder.ProductID);
 
-                    OpcuaHandler("valid");
-                    return;
+                    // print product info
+                    _productInOrder.PrintProductInfo();
+
+                    // check if the desired process is the first process in the queue, if not then pass the product on
+                    if (_productInOrder.ProductProcessQueue.ElementAt(0).ProcessName == process)
+                    {
+                        // send the product to the PLC
+                        Console.WriteLine("Product {0} sent to PLC with command {1}", ProductInOrder.ProductID, "valid");
+                        _productInOrder.ProductProcessQueue.ElementAt(0).ProcessState = OrderState.BUSY;
+                        _productInOrder.ProductProcessQueue.ElementAt(0).ProcessStartTime = DateTime.Now;
+                        UpdateOrderForm();
+
+                        OpcuaHandler("valid");
+                        return;
+                    }
+                    else
+                    {
+                        // pass the product on to the next module if the first process is not the desired process
+                        Console.WriteLine("Product {0} does not have {1} as its first process, passing on to next module", ProductInOrder.ProductID, process);
+                        OpcuaHandler("pass");
+                        return;
+                    }
                 }
                 else
                 {
-                    // pass the product on to the next module if the first process is not the desired process
-                    Console.WriteLine("Product {0} does not have {1} as its first process, passing on to next module", ProductInOrder.ProductID, process);
+                    Console.WriteLine("No more products in order's product list, passing product on to next module");
                     OpcuaHandler("pass");
                     return;
                 }
+                
             }
             else
             {
@@ -388,6 +406,9 @@ namespace ROB5_MES_System.Classes
                     break;
                 case "running":
                     Console.WriteLine("Application is running");
+                    break;
+                case "N/A":
+                    Console.WriteLine("Application is not available");
                     break;
                 case "passed":
                     Console.WriteLine("Application has passed product to next module");

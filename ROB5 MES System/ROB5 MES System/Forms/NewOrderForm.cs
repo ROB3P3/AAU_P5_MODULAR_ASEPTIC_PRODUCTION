@@ -21,6 +21,12 @@ namespace ROB5_MES_System
         {
             InitializeComponent();
             ContainerTypeComboBox.SelectedIndex = 0;
+            OperationsListBox.Items.Clear();
+            OperationsListBox.DisplayMember = "DisplayText";
+            OperationsListBox.ValueMember = "OperationID";
+            OperationsComboBox.DataSource = MainWindowForm.operations;
+            OperationsComboBox.DisplayMember = "DisplayText";
+            OperationsComboBox.ValueMember = "OperationID";
             LoadNewOrderForm();
         }
 
@@ -34,12 +40,12 @@ namespace ROB5_MES_System
             OrderNumberDispLabel.Text = maxOrderNumber.ToString();
 
             // replace operations list with new operations list incase new operations have been added
-            OperationsListBox.Items.Clear();
-            OperationsListBox.DisplayMember = "DisplayText";
-            OperationsListBox.ValueMember = "OperationID";
-            OperationsComboBox.DataSource = MainWindowForm.operations;
-            OperationsComboBox.DisplayMember = "DisplayText";
-            OperationsComboBox.ValueMember = "OperationID";
+            //OperationsListBox.Items.Clear();
+            //OperationsListBox.DisplayMember = "DisplayText";
+            //OperationsListBox.ValueMember = "OperationID";
+            //OperationsComboBox.DataSource = MainWindowForm.operations;
+            //OperationsComboBox.DisplayMember = "DisplayText";
+            //OperationsComboBox.ValueMember = "OperationID";
         }
 
         // event function for click on start order button
