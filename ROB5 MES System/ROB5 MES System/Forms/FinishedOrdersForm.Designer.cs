@@ -41,6 +41,7 @@
             // 
             finishedOrdersDataGrid.AllowUserToResizeRows = false;
             finishedOrdersDataGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            finishedOrdersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             finishedOrdersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             finishedOrdersDataGrid.Location = new Point(12, 48);
             finishedOrdersDataGrid.Name = "finishedOrdersDataGrid";
