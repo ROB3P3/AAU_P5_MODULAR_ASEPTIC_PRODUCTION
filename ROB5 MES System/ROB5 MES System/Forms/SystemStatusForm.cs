@@ -12,6 +12,7 @@ namespace ROB5_MES_System
 {
     public partial class SystemStatusForm : Form
     {
+        private BindingSource plcBindingSource = new BindingSource();
         public SystemStatusForm()
         {
             InitializeComponent();
@@ -29,10 +30,10 @@ namespace ROB5_MES_System
             MainWindowForm.plcs.Sort((x, y) => x.Placement.CompareTo(y.Placement));
 
             // using a bindingsource for the data grid so it updates by itself
-            BindingSource plcBindingSource = new BindingSource();
             plcBindingSource.DataSource = MainWindowForm.plcs;
 
             systemStatusDataGrid.DataSource = plcBindingSource;
+            systemStatusDataGrid.AutoGenerateColumns = true;
         }
 
         // event function for when start production button is clicked
