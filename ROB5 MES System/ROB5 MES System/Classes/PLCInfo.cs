@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net.NetworkInformation;
-using System.Security.AccessControl;
-using System.Web;
-using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
 {
@@ -21,8 +15,8 @@ namespace ROB5_MES_System
         public bool ConnectionStatus
         {
             get { return _connectionStatus; }
-            set 
-            { 
+            set
+            {
                 _connectionStatus = value;
                 OnPropertyChanged(nameof(ConnectionStatus));
             }
@@ -53,8 +47,8 @@ namespace ROB5_MES_System
         public string Type
         {
             get { return _type; }
-            set 
-            { 
+            set
+            {
                 _type = value;
                 OnPropertyChanged(nameof(Type));
             }
@@ -63,8 +57,8 @@ namespace ROB5_MES_System
         public string AppState
         {
             get { return _appState; }
-            set 
-            { 
+            set
+            {
                 _appState = value;
                 OnPropertyChanged(nameof(AppState));
             }

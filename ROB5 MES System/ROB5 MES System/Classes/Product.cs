@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-
-namespace ROB5_MES_System
+﻿namespace ROB5_MES_System
 {
     public class Product
     {
@@ -13,7 +9,7 @@ namespace ROB5_MES_System
         private string _containerType; // container type on the product 
         private DateTime _productStartTime; // product's start time in production
         private DateTime _productEndTime; // product's end time in production 
-        
+
         private LinkedList<Process> _productProcessQueue; // list of processs in queue to be performed on the product 
         private LinkedList<Process> _productCompletedProcesses; // list of completed processs on the product
 
@@ -39,7 +35,7 @@ namespace ROB5_MES_System
                 completeProcess.ProcessState = OrderState.DONE;
                 _productCompletedProcesses.AddLast(completeProcess);
                 _productProcessQueue.RemoveFirst();
-                if(_productProcessQueue.Count <= 0)
+                if (_productProcessQueue.Count <= 0)
                 {
                     _productEndTime = DateTime.Now;
                     _productState = OrderState.DONE;
@@ -99,7 +95,7 @@ namespace ROB5_MES_System
             get { return _productState; }
             set
             {
-                if(value == null)
+                if (value == null)
                     throw new ArgumentNullException("Product state cannot be null.");
                 _productState = value;
             }
@@ -205,8 +201,8 @@ namespace ROB5_MES_System
                 _productID, _orderID, _productProcessQueue.Count, _productCompletedProcesses.Count));
 
             Console.Write("Process in queue: [ ");
-            
-            foreach(var process in _productProcessQueue)
+
+            foreach (var process in _productProcessQueue)
             {
                 Console.Write(process.ProcessName + " ");
             }

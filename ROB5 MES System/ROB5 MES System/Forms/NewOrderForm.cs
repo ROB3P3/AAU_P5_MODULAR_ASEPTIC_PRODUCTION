@@ -1,16 +1,4 @@
-﻿using CsvHelper;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-using ROB5_MES_System;
+﻿using System.Data;
 using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
@@ -53,7 +41,7 @@ namespace ROB5_MES_System
         {
             // get all operations from the operations list box and check if there is at least 1 operation added
             List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
-            if(orderOperations.Count > 0)
+            if (orderOperations.Count > 0)
             {
                 // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;
@@ -96,7 +84,7 @@ namespace ROB5_MES_System
         {
             // get all operations from the operations list box and check if there is at least 1 operation added
             List<Operation> orderOperations = OperationsListBox.Items.Cast<Operation>().ToList();
-            if(orderOperations.Count > 0)
+            if (orderOperations.Count > 0)
             {
                 // pull data from input fields
                 string containerType = ContainerTypeComboBox.Text;

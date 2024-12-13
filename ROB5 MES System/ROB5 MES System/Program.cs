@@ -1,7 +1,3 @@
-using ROB5_MES_System.Classes;
-using System.Diagnostics;
-
-
 namespace ROB5_MES_System
 {
     internal static class Program
