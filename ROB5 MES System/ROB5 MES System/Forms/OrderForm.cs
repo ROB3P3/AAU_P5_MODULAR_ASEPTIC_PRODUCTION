@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ROB5_MES_System
+﻿namespace ROB5_MES_System
 {
     public partial class OrderForm : Form
     {
@@ -54,7 +42,7 @@ namespace ROB5_MES_System
             ContainerTypeDispLabel.Text = _assignedOrder.ContainerType.ToString();
             ProductAmountDispLabel.Text = _assignedOrder.ProductsTotal.ToString();
 
-            
+
             // clear the tree view
             ProductTreeView.Nodes.Clear();
 

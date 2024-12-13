@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 
@@ -62,7 +56,7 @@ namespace ROB5_MES_System.Classes
                     PRIMARY KEY (order_number)
                 );
             ";
-            
+
             DatabaseConnection();
 
             MySqlCommand cmd = new MySqlCommand(createTableOrder, mysql);
@@ -287,7 +281,7 @@ namespace ROB5_MES_System.Classes
         /// <param name="operationID"></param>
         /// <param name="operationName"></param>
         /// <param name="operationDescription"></param>
-        public void InsertDateOperations(int operationID, string operationName, string operationDescription) 
+        public void InsertDateOperations(int operationID, string operationName, string operationDescription)
         {
             // sql query for inserting data into operations table
             string insertDataOperations = @"
@@ -472,7 +466,7 @@ namespace ROB5_MES_System.Classes
                 baseQueryCommand += " AND o.start_time BETWEEN '" + startDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + endDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "'";
             }
 
-            using(MySqlCommand cmd = new MySqlCommand(baseQueryCommand, mysql))
+            using (MySqlCommand cmd = new MySqlCommand(baseQueryCommand, mysql))
             {
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -483,7 +477,7 @@ namespace ROB5_MES_System.Classes
                     {
                         int orderNumber = reader.GetInt32("order_number");
 
-                        if(!orderMap.TryGetValue(orderNumber, out Order order))
+                        if (!orderMap.TryGetValue(orderNumber, out Order order))
                         {
                             order = new Order(
                                 reader.GetInt32("container_amount"),
@@ -508,7 +502,8 @@ namespace ROB5_MES_System.Classes
                         }
 
                         // checking that there are products associated to the order, and adding them
-                        if (!reader.IsDBNull(reader.GetOrdinal("product_id"))) {
+                        if (!reader.IsDBNull(reader.GetOrdinal("product_id")))
+                        {
                             // checking that there are processs associated to the product, and adding them
                             Process process = null;
                             if (!reader.IsDBNull(reader.GetOrdinal("process_id")))
@@ -525,7 +520,7 @@ namespace ROB5_MES_System.Classes
                             }
 
                             int productID = reader.GetInt32("product_id");
-                            if(order.ProductsInProductionList.Any(product => product.ProductID == productID))
+                            if (order.ProductsInProductionList.Any(product => product.ProductID == productID))
                             {
                                 order.ProductsInProductionList.First.Value.ProductCompletedProcesses.AddFirst(process);
                                 continue;
@@ -592,7 +587,7 @@ namespace ROB5_MES_System.Classes
 
             bool isEmpty = true;
 
-            if(checkCmd.ExecuteScalar() == null)
+            if (checkCmd.ExecuteScalar() == null)
             {
                 isEmpty = false;
             }
@@ -636,10 +631,11 @@ namespace ROB5_MES_System.Classes
                     c.order_number = @orderNumber
             ";
 
-            using(MySqlCommand cmd = new MySqlCommand(baseQueryCommand, mysql)){
+            using (MySqlCommand cmd = new MySqlCommand(baseQueryCommand, mysql))
+            {
                 cmd.Parameters.AddWithValue("@orderNumber", orderNumber);
 
-                using(MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
@@ -661,7 +657,7 @@ namespace ROB5_MES_System.Classes
                             }
 
                             int productID = reader.GetInt32("product_id");
-                            if(order.ProductsInProductionList.Any(product => product.ProductID == productID))
+                            if (order.ProductsInProductionList.Any(product => product.ProductID == productID))
                             {
                                 order.ProductsInProductionList.First.Value.ProductCompletedProcesses.AddFirst(process);
                                 continue;
@@ -690,13 +686,13 @@ namespace ROB5_MES_System.Classes
             // first clearing the products in the order to avoid duplicates
             order.ProductsInOrderList.Clear();
             int remainingContainers = totalContainerAmount - containersProduced;
-            if(remainingContainers > 0)
+            if (remainingContainers > 0)
             {
                 // adding the remaining products to the order
                 order.GenerateProducts(remainingContainers);
 
                 // adding operations to these products
-                foreach(var operation in order.OperationList)
+                foreach (var operation in order.OperationList)
                 {
                     order.AddProcessToAllProducts(operation.OperationName, operation.OperationDescription, operation.OperationID);
                 }
@@ -738,7 +734,7 @@ namespace ROB5_MES_System.Classes
 
             // create the order data table and insert the new order data
             CreateTableOrderData();
-            foreach(var order in orders)
+            foreach (var order in orders)
             {
                 InsertDataOrder(order.OrderNumber, order.OrderState.ToString(), order.ContainerAmount, order.ContainerType, order.OrderCustomer, order.MedicineType, order.OperationList, order.OrderStartTime, order.OrderEndTime);
             }
@@ -761,7 +757,7 @@ namespace ROB5_MES_System.Classes
 
             // create the operations table and insert the new operations data
             CreateTableOperations();
-            foreach(var operation in operations)
+            foreach (var operation in operations)
             {
                 InsertDateOperations(operation.OperationID, operation.OperationName, operation.OperationDescription);
             }
@@ -805,7 +801,7 @@ namespace ROB5_MES_System.Classes
             reader.Close();
 
             // update the orders in the database with the updated operations list
-            foreach(var (order_number, updatedJsonArray) in updatedList)
+            foreach (var (order_number, updatedJsonArray) in updatedList)
             {
                 string updateQuery = "UPDATE production.order_data SET operation_list = @updatedJsonArray WHERE order_number = @order_number";
                 MySqlCommand updateCmd = new MySqlCommand(updateQuery, mysql);
@@ -815,12 +811,12 @@ namespace ROB5_MES_System.Classes
             }
 
             // remove the operation from the orders in the production queue and planned orders
-            foreach(var order in MainWindowForm.mesSystem.OrderQueue)
+            foreach (var order in MainWindowForm.mesSystem.OrderQueue)
             {
                 order.OperationList.RemoveAll(operation => operation.OperationID == operationID);
             }
 
-            foreach(var order in MainWindowForm.mesSystem.PlannedOrders)
+            foreach (var order in MainWindowForm.mesSystem.PlannedOrders)
             {
                 order.OperationList.RemoveAll(operation => operation.OperationID == operationID);
             }

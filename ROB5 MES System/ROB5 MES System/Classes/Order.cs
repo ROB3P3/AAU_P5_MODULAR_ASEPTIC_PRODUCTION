@@ -1,8 +1,4 @@
 ﻿using ROB5_MES_System.Classes;
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Threading;
 
 namespace ROB5_MES_System
 {
@@ -57,7 +53,7 @@ namespace ROB5_MES_System
         public void AddProcessToAllProducts(string processName, string processDescription, int processId)
         {
             foreach (var product in _productsInOrderList)
-            {   
+            {
                 Process process = new Process(processName, processDescription, processId, OrderState.QUEUE);
                 product.AddProcessToEndOfProduct(process);
             }
@@ -216,7 +212,7 @@ namespace ROB5_MES_System
             get { return _operationList; }
             set
             {
-                if(value == null)
+                if (value == null)
                     throw new ArgumentNullException("Operation list cannot be null.");
                 _operationList = value;
             }
@@ -262,7 +258,7 @@ namespace ROB5_MES_System
             {
                 AddProcessToAllProducts(operation.OperationName, operation.OperationDescription, operation.OperationID);
             }
-            
+
             foreach (var product in _productsInOrderList)
             {
                 product.PrintProductInfo();

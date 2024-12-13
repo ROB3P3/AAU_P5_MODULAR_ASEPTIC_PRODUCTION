@@ -253,7 +253,7 @@ namespace ROB5_MES_System.Classes
                     {
                         Console.WriteLine("Product {0} is already assigned to order {1}, checking if the first process is the desired process", productID, order);
                         _productExists = true;
-                        
+
                         // check if the product has any processs left
                         if (product.ProductProcessQueue.Count > 0)
                         {
@@ -325,8 +325,8 @@ namespace ROB5_MES_System.Classes
                     _currentOrder.OrderStartTime = DateTime.Now;
                 }
                 UpdateProductionQueueForm();
-                
-                if(_currentOrder.ProductsInOrderList.Count > 0)
+
+                if (_currentOrder.ProductsInOrderList.Count > 0)
                 {
                     // get the first product in ProductsInOrder list and set as new product
                     _productInOrder = _currentOrder.ProductsInOrderList.ElementAt(0);
@@ -377,7 +377,7 @@ namespace ROB5_MES_System.Classes
                     OpcuaHandler("pass");
                     return;
                 }
-                
+
             }
             else
             {

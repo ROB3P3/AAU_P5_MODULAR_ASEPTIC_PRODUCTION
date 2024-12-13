@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ROB5_MES_System
+﻿namespace ROB5_MES_System
 {
     public class Process
     {

@@ -1,10 +1,5 @@
-using System;
-using System.Threading;
-using System.Diagnostics;
-using System.Windows.Forms;
-using Opc.Ua;
-using ROB5_MES_System.Classes;
 using System.ComponentModel;
+using ROB5_MES_System.Classes;
 
 namespace ROB5_MES_System
 {

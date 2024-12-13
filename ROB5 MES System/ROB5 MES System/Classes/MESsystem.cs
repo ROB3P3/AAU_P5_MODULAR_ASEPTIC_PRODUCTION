@@ -1,6 +1,4 @@
 ﻿using ROB5_MES_System.Classes;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace ROB5_MES_System
 {
